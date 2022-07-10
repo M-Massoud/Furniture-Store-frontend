@@ -1,3 +1,50 @@
+*{
+  user-select: none;
+}
+.imghover{
+  transition: all 1.3s linear;
+}
+.imghover:hover{
+  transform: scale(1.1);
+  cursor: pointer;
+}
+.imgcontainer{
+  overflow: hidden;
+}
+.itemlist{
+  font-size: 1.2rem;
+}
+.itemlist:hover{
+  cursor: pointer;
+  color:rgb(76, 0, 255);
+  text-decoration: underline;
+}
+.imgItem{
+  transition: all 1.1s linear;
+
+}
+.hide{
+  display: none;
+}
+.imgItem:hover{
+cursor: pointer;
+transform: scale(1.09);
+}
+
+@media only screen and (max-width: 800px) {
+  
+  .rotatimg {
+    transform: scale(1.3);
+   }
+   .itemlist{
+    font-size: .9rem;
+  }
+}
+
+
+
+
+/* jjjj************************* */
 .App {
   text-align: center;
 }
