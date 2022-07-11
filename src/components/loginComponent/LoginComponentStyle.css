@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bg-main {
+  background-color: #EBEBEB;
+}
+
+.bg-secondary-1 {
+  background-color: var(--secondary-color);
+}
+
+.bg-secondary-1:hover {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.text-main {
+  color: var(--secondary-color);
+}
+
+.text-hover-red:hover {
+  cursor: pointer;
+  color: var(--main-color);
+}
+
+.white {
+  color: white;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.flex-space-around {
+  display: flex;
+  justify-content: space-around;
+}
+
+.overlay {
+  z-index: 3;
+  position: absolute;
+  right: 1%;
+  top: 30%;
+}
+
+.border-custom {
+  border: 2px solid gray;
+  border-radius: 1rem;
+}
+
+.relativePosition{
+  position: relative;
+}
