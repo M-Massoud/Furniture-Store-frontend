@@ -1,56 +1,81 @@
 import './ShoppingCartComponentStyle.css';
-import { Link, NavLink } from "react-router-dom";
-import { FaPlusCircle, FaMinusCircle, FaTrashAlt } from "react-icons/fa";
+import { Link, NavLink } from 'react-router-dom';
+import { FaPlusCircle, FaMinusCircle, FaTrashAlt } from 'react-icons/fa';
 
 export default function ShoppingCart() {
-    return (
-        <div className="row col-12">
-            <div className="m-5 p-3 col-10 col-md-8 border-1 shadow-lg rounded">
-                <div className="row mx-2 mx-md-5 col-12 col-md-12">
-                    <p className="col-3 col-md-5">Item</p>
-                    <p className="col-3 col-md-2">Qty</p>
-                    <p className="col-3 col-md-2">Price</p>
-                    <p className="col-3 col-md-2">Subtotal</p>
-                </div>
-                <hr />
-                <div className="row mx-2 mx-md-5 col-12 col-md-12">
-                    <div className="row col-5 col-md-5">
-                        <img className="col-3" src="https://variety.com/wp-content/uploads/2020/03/movie-theater-popcorn-placeholder.jpg?w=1000" alt="" />
-                        <p className="col-9 mt-2">MetroPol-EM Bed</p>
-                    </div>
-                    <div className="row col-2 p-2">
-                        <FaMinusCircle className="col-md-4 mt-2" />
-                        <input type="number" className="col-4 p-1" min="1" max="5" />
-                        <FaPlusCircle className="col-md-4 mt-2" />
-                    </div>
-                    <p className="col-2 mt-2 mx-4 text-danger">EGP1300.5</p>
-                    <div className="row col-2">
-                        <p className="col-6 mt-2 text-danger">EGP1300.5</p>
-                        <FaTrashAlt className="col-6 my-2 text-secondary" />
+  return (
+    <>
+      <div className="container py-5 px-5 px-sm-0">
+        <div className="row shopping-cart-cols">
+          <div className="col-lg-8  shadow-lg rounded py-4">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Item</th>
+                  <th scope="col  " style={{ textAlign: 'center' }}>
+                    Qty
+                  </th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="col-3">
+                    <img
+                      className="col-6"
+                      src="https://variety.com/wp-content/uploads/2020/03/movie-theater-popcorn-placeholder.jpg?w=1000"
+                      alt=""
+                    />
+                    <p className="col-12">MetroPol-EM Bed</p>
+                  </td>
+                  <td className="quantity-icons">
+                    <span>
+                      <FaMinusCircle />
+                      <input type="number" min="1" max="5" />
+                      <FaPlusCircle />
+                    </span>
+                  </td>
+                  <td>
+                    <p className="text-danger">EGP1300.5</p>
+                  </td>
+                  <td>
+                    <p className=" text-danger">
+                      EGP1300.5
+                      <FaTrashAlt className="col-6 my-2 text-secondary" />
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-                    </div>
-                </div>
+          <div className="  col-lg-3   shadow-lg rounded py-4">
+            <h4>Order Summary</h4>
+            <hr />
+            <div className="row">
+              <p className="col-6">Subtotal</p>
+              <p className="col-6" text-danger>
+                EGP 13.500
+              </p>
+            </div>
+            <div className="row">
+              <p className="col">
+                Shipping (-free delevery (cairo , Giza, October City ,
+                Alexandria and North Coast))
+              </p>
+              <p className="col text-danger">EGP 0</p>
             </div>
 
-            <div className="col-10 col-md-3 m-5 m-md-0 my-md-5 p-4 border-1 shadow-lg rounded">
-                <h4>Order Summary</h4>
-                <hr />
-                <div className="row">
-                    <p className="col-6">Subtotal</p>
-                    <p className="col-6" text-danger>EGP 13.500</p>
-                </div>
-                <div className="row">
-                    <p className="col-6">Shipping (-free delevery (cairo , Giza, October City , Alexandria and North Coast))</p>
-                    <p className="col-6 text-danger">EGP 0</p>
-                </div>
-
-                <hr />
-                <div className="row">
-                    <p className="col-6">Order Total</p>
-                    <p className="col-6 font-bold text-danger">EGP 13.500</p>
-                </div>
-                <button className="btn btn-danger col-12">Check Out</button>
+            <hr />
+            <div className="row">
+              <p className="col-6">Order Total</p>
+              <p className="col-6 font-bold text-danger">EGP 13.500</p>
             </div>
+            <button className="btn btn-danger col-12">Check Out</button>
+          </div>
         </div>
-    )
+      </div>
+    </>
+  );
 }

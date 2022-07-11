@@ -1,9 +1,17 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .white {
   color: white;
+}
+
+.quantity-icons {
+  text-align: center;
+}
+
+.shopping-cart-cols {
+  gap: 35px;
+}
+
+@media screen and (max-width: 768px) {
+  .quantity-icons input {
+    width: 50%;
+  }
 }

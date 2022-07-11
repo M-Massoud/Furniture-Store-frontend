@@ -160,12 +160,12 @@ export default function LoginForm() {
         })
     }
     return (
-        <div className="m-5 p-5 border-1 shadow-lg rounded">
+        <div className="col-md-9 mx-auto my-5 p-5 border-1 shadow-lg rounded">
             <h2 className="text-main mb-5">Create Your Account</h2>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <div className="mb-3">
                     <label htmlFor="firstName" className="form-label font-bold">First Name</label>
-                    <input type="text" className={`form-control ${registerDataErrors.firstNameError ? "is-invalid" : ""}`} name="firstName" aria-describedby="firstNameHelp" value={registerData.firstName} onChange={(event) => { changeRegisterData(event) }} required />
+                    <input  type="text" className={`form-control ${registerDataErrors.firstNameError ? "is-invalid" : ""}`} name="firstName" aria-describedby="firstNameHelp" value={registerData.firstName} onChange={(event) => { changeRegisterData(event) }} required />
                     <div id="firstNameHelp" className="form-text text-danger">{registerDataErrors.firstNameError}</div>
                 </div>
                 <div className="mb-3">
