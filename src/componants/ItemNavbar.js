@@ -1,11 +1,10 @@
 
 function NavBar(props) {
-  var listItem1 = document.getElementById('item1');
+  let listItem1 = document.getElementById('item1');
   let listItem2 = document.getElementById('item2');
   let listItem3 = document.getElementById('item3');
   let listItem4 = document.getElementById('item4');
   const displayFun1 = () => {
-    ;
     listItem3.classList.add('d-none');
     listItem2.classList.add('d-none');
     listItem1.classList.remove('d-none');
