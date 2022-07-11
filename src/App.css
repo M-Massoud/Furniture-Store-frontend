@@ -1,46 +1,93 @@
-*{
+/* variables */
+:root {
+  --main-color: #c02234;
+  --secondary-color: #20284f;
+  --product-card-font-size: 18px;
+}
+
+* {
   user-select: none;
 }
-.imghover{
+.imghover {
   transition: all 1.3s linear;
 }
-.imghover:hover{
+.imghover:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
-.imgcontainer{
+.imgcontainer {
   overflow: hidden;
 }
-.itemlist{
+.itemlist {
   font-size: 1.2rem;
 }
-.itemlist:hover{
+.itemlist:hover {
   cursor: pointer;
-  color:rgb(76, 0, 255);
+  color: rgb(76, 0, 255);
   text-decoration: underline;
 }
-.imgItem{
+.imgItem {
   transition: all 1.1s linear;
-
 }
-.hide{
+.hide {
   display: none;
 }
-.imgItem:hover{
-cursor: pointer;
-transform: scale(1.09);
+.imgItem:hover {
+  cursor: pointer;
+  transform: scale(1.09);
 }
 
 @media only screen and (max-width: 800px) {
-  
   .rotatimg {
     transform: scale(1.3);
-   }
-   .itemlist{
-    font-size: .9rem;
+  }
+  .itemlist {
+    font-size: 0.9rem;
   }
 }
 
+<<<<<<< HEAD
 
 
 
+=======
+/* jjjj************************* */
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+>>>>>>> d317855aaed2ca5d5e6673f34de1850d42020b59
