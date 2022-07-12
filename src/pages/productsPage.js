@@ -5,16 +5,29 @@ import CardComponent from '../components/cardComponent/cardComponent';
 import SidebarComponent from '../components/sidebarComponent/sidebarComponent';
 export default function ProductsPage() {
   const [productsData, setProductsData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxPagesNumber, setMaxPagesNumber] = useState(1);
 
   useEffect(() => {
     axiosInstance
-      .get('/products')
-      .then(res => setProductsData(res.data))
+      .get(`/products/page/${currentPage}`)
+      .then(res => {
+        setProductsData(res.data.data.products);
+        setMaxPagesNumber(res.data.data.maxPagesNumber);
+      })
       .catch(err => console.log(err));
-  }, []);
+  }, [currentPage]);
 
   console.log('productsData');
   console.log(productsData);
+
+  function previousPage() {
+    (currentPage > 1) ? setCurrentPage(currentPage - 1) : setCurrentPage(currentPage);
+  }
+
+  function nextPage() {
+    (currentPage < maxPagesNumber) ? setCurrentPage(currentPage + 1) : setCurrentPage(currentPage);
+  }
 
   return (
     <>
@@ -39,6 +52,10 @@ export default function ProductsPage() {
               })}
             </div>
           </div>
+        </div>
+        <div className="flex-space-around my-5">
+          <button class="btn bg-secondary-1 white" onClick={() => previousPage()}>Previous</button>
+          <button class="btn bg-secondary-1 white" onClick={() => nextPage()}>Next</button>
         </div>
       </div>
     </>

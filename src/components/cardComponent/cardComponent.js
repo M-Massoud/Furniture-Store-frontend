@@ -9,8 +9,8 @@ export default function CardComponent({ product }) {
     <>
       <div class="col">
         <div className="card shadow-lg product-card">
-          {/* <img src={product.image} className="card-img-top" alt="..." /> */}
-          <img src={img} className="card-img-top" alt="..." />
+          <img src={product.image} className="card-img-top" alt="..." />
+          {/* <img src={img} className="card-img-top" alt="..." /> */}
 
           <div className="card-body">
             <h5 className="card-title">{product.name}</h5>
