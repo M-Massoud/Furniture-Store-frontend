@@ -1,28 +1,31 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../network/Config';
+import { useParams } from 'react-router-dom';
 
 import CardComponent from '../components/cardComponent/cardComponent';
 import SidebarComponent from '../components/sidebarComponent/sidebarComponent';
-export default function ProductsPage() {
-  const [productsData, setProductsData] = useState([]);
+export default function SubCategoryPage() {
+  const [subCategoryData, setsubCategoryData] = useState([]);
+  const params = useParams();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPagesNumber, setMaxPagesNumber] = useState(1);
 
   useEffect(() => {
     axiosInstance
       // .get(`/products/page/${currentPage}`)
-      .get('/products')
+      .get(`/subCategory/${params.id}`)
 
       .then(res => {
         // setProductsData(res.data.data.products);
-        setProductsData(res.data);
+        setsubCategoryData(res.data.products);
         setMaxPagesNumber(res.data.data.maxPagesNumber);
       })
       .catch(err => console.log(err));
   }, [currentPage]);
 
   console.log('productsData');
-  console.log(productsData);
+  console.log(subCategoryData);
 
   function previousPage() {
     currentPage > 1
@@ -50,7 +53,7 @@ export default function ProductsPage() {
               <CardComponent />
               <CardComponent /> */}
 
-              {productsData.map(product => {
+              {subCategoryData.map(product => {
                 return (
                   <div className="col" key={product._id}>
                     <CardComponent product={product} />
