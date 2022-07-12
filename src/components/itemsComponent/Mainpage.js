@@ -2,7 +2,15 @@ import Leftimg from './Leftimg';
 import Rightimg from './Rightimg';
 import NavBar from './ItemsNav';
 import ItemImg from './ItemImg';
+import React, { useState, useEffect } from 'react';
+
 function Main() {
+  const [itemDisplay, setItemdisplay]= useState('d-none');
+  console.log(itemDisplay);
+  useEffect(() => {
+    setItemdisplay('')
+  }, []);
+
     return (
         <>
             <div className="col-sm-11 m-auto  row">

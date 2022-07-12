@@ -4,27 +4,23 @@ function NavBar(props) {
   let listItem2 = document.getElementById('item2');
   let listItem3 = document.getElementById('item3');
   let listItem4 = document.getElementById('item4');
-  const displayFun1 = () => {
-    ;
+  const displayFun1 = () => { 
     listItem3.classList.add('d-none');
     listItem2.classList.add('d-none');
     listItem1.classList.remove('d-none');
     listItem4.classList.add('d-none');
-
   };  
   const displayFun2 = () => {
     listItem4.classList.add('d-none');
     listItem3.classList.add('d-none');
     listItem2.classList.remove('d-none');
     listItem1.classList.add('d-none');
-   
   }; 
   const displayFun3 = () => {
     listItem4.classList.add('d-none');
     listItem3.classList.remove('d-none');
     listItem1.classList.add('d-none');
     listItem2.classList.add('d-none');
-   
   }; 
   const displayFun4 = () => {
     listItem3.classList.add('d-none');
