@@ -9,6 +9,7 @@ import WishListComponent from './components/wishListComponent/WishListComponent'
 import ShoppingCartComponent from './components/shoppingCartComponent/ShoppingCartComponent';
 import checkoutcomponent from './components/checkoutcomponent';
 import ProductsPage from './pages/productsPage';
+import SubCategory from './pages/subCategoryPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path={'/wishList'} component={WishListComponent} />
         <Route path={'/shoppingCart'} component={ShoppingCartComponent} />
         <Route path={'/checkOut'} component={checkoutcomponent} />
+        <Route path={'/subCategory/:id'} component={SubCategory} />
         {/* <Route path={'*'} component={PageNotFound} /> */}
       </Switch>
     </Router>
