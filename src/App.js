@@ -7,6 +7,7 @@ import LoginComponent from './components/loginComponent/LoginComponent';
 import RegisterationComponent from './components/registerationComponent/RegisterationComponent';
 import WishListComponent from './components/wishListComponent/WishListComponent';
 import ShoppingCartComponent from './components/shoppingCartComponent/ShoppingCartComponent';
+import checkoutcomponent from './components/checkoutcomponent';
 import ProductsPage from './pages/productsPage';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path={'/register'} component={RegisterationComponent} />
         <Route path={'/wishList'} component={WishListComponent} />
         <Route path={'/shoppingCart'} component={ShoppingCartComponent} />
+        <Route path={'/checkOut'} component={checkoutcomponent} />
         {/* <Route path={'*'} component={PageNotFound} /> */}
       </Switch>
     </Router>
