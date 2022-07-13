@@ -31,19 +31,20 @@ function Form(props) {
     /////////////////////////////////////////////
     const ErrorHandling = (input, value) => {
 
-        let phonPatern =new RegExp("[0-9]");
+        let phonPatern = new RegExp("[0-9]");
+        let namePatern =new RegExp(/^[A-Z]+$/i);
         switch (input) {
             //regex = new Regex("[0-9]");
             case 'fname':
                 setFormerror({
                     ...formError,
-                    fnameError: value.length === 0 ? "This field is required" : "",
+                    fnameError: value.length === 0 ? "This field is required" : namePatern.test(value) ? "":"FirstName must be Characters",
                 });
                 break;
             case 'lname':
                     setFormerror({
                         ...formError,
-                        lnameError: value.length === 0 ? "This field is required" : "",
+                        lnameError: value.length === 0 ? "This field is required" : namePatern.test(value) ? "":"LastName must be Characters",
                     });
                 break;
             case 'street':
@@ -61,7 +62,7 @@ function Form(props) {
                 case 'phone':
                     setFormerror({
                         ...formError, 
-                        phoneError: value.length === 0 ? "This field is required" : phonPatern.test(value) ? "" : "Phone number must be Numbers",
+                        phoneError: value.length === 0 ? "This field is required" : !phonPatern.test(value) ? "Phone Number must be Numbers" : value.length > 11 ? "Phone Number Should not be greater than 11 number": "",
                     });
                 break;
             default:

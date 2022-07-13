@@ -1,4 +1,4 @@
-import Form from "./../formcomponent/index";
+import UpdateForm from "../formcomponent/UpdateformComponent";
 import { useState } from "react";
 function PaymentSelect() {
   const [checked, setCheck] = useState(true);
@@ -53,7 +53,7 @@ function PaymentSelect() {
           My billing and shipping address are the same.
         </label>
       </div>
-      <Form hide={formChecked} />
+      <UpdateForm hide={formChecked} />
       <hr></hr>
       <div className="form-check">
         <input
@@ -80,7 +80,7 @@ function PaymentSelect() {
           My billing and shipping address are the same.
         </label>
       </div>
-      <Form hide2={formChecked2} />
+      <UpdateForm hide2={formChecked2} />
     </>
   );
 }

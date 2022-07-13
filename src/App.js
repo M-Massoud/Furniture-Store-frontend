@@ -7,9 +7,11 @@ import LoginComponent from './components/loginComponent/LoginComponent';
 import RegisterationComponent from './components/registerationComponent/RegisterationComponent';
 import WishListComponent from './components/wishListComponent/WishListComponent';
 import ShoppingCartComponent from './components/shoppingCartComponent/ShoppingCartComponent';
-import checkoutcomponent from './components/checkoutcomponent';
+import checkoutcomponent from './components/checkoutcomponent/CheckoutComponent';
 import ProductsPage from './pages/productsPage';
 import SubCategory from './pages/subCategoryPage';
+import FaqComponent from './components/faqComponent/FaQComponent';
+import 'bootstrap/dist/js/bootstrap.min.js';
 
 function App() {
   return (

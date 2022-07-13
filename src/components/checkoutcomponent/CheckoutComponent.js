@@ -1,6 +1,6 @@
-import Form from "./../formcomponent/index";
+import Form from "../formcomponent/FormComponent";
 
-import PaymentSelect from './../paymentcomponent/index';
+import PaymentSelect from './../paymentcomponent/PaymentComponent';
 function Checkout() {
    
   return (
