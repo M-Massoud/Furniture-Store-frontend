@@ -1,68 +1,25 @@
-.Box {
-  /* padding: 80px 60px; */
-  background: #20284f;
+.footer {
+  background: var(--secondary-color);
   color: #fff;
-  /* position: fixed;add was absolute */
-  /* bottom: 0; */
-  width: 100%;
-  /* margin-top: 20px;add */
-  padding-top: 35px;/*add*/
 }
-.Container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 1000px;
-  margin: 0 auto;
-  /* padding-top: 100px; */
+
+.footer h5 {
+  text-transform: uppercase;
 }
-.content ul {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  justify-items: center;
-  align-content: center;
-  list-style: none;
-  flex-wrap: wrap;
+
+.footer p {
+  margin-bottom: 0px !important;
 }
-.content li{
-  margin-top:10px
+
+.footer .icon svg {
+  font-size: 23px;
 }
-.Row {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  justify-items: center;
-  grid-gap: 20px;
+
+.footer h6 {
+  font-size: 15px;
 }
-.Column {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  /* margin-left: 60px; */
-  align-items: center;/*add*/
-}
-.FooterLink {
-  color: #fff;
-  margin-bottom: 20px;
-  font-size: 12px;
+
+.footer a {
+  color: white;
   text-decoration: none;
-  text-align:left;
-}
-.FooterLink:hover {
-  color: red;
-  transition: 200ms ease-in;
-}
-.Heading {
-
-  font-size: 24px;
-  color: #ff4800;
-  margin-bottom: 40px;
-  font-weight: bold;
-}
-
-@media (max-width: 1000px) {
-  .Row {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    justify-items: center;
-  }
 }

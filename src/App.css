@@ -5,8 +5,12 @@
   --product-card-font-size: 18px;
 }
 
+body {
+  background-color: whitesmoke !important;
+}
+
 * {
-  user-select: none;
+  /* user-select: none; */
   margin: 0;
   padding: 0;
   box-sizing: border-box;
