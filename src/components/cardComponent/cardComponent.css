@@ -2,22 +2,22 @@
   padding: 0 !important;
 }
 
-.card.product-card .add-to-cart {
+.add-to-cart {
   text-transform: uppercase;
 }
 
-.card.product-card .product-price {
+.product-price {
   display: flex;
   justify-content: space-between;
 }
 
-.card.product-card .old-price {
+.old-price {
   text-decoration: line-through;
   color: #9397aa !important;
 }
 
-.card.product-card .old-price,
-.card.product-card .final-price {
+.old-price,
+.final-price {
   font-size: var(--product-card-font-size);
 }
 
