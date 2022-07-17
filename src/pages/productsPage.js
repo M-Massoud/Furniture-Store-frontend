@@ -21,8 +21,8 @@ export default function ProductsPage() {
       .catch(err => console.log(err));
   }, [currentPage]);
 
-  console.log('productsData');
-  console.log(productsData);
+  // console.log('productsData');
+  // console.log(productsData);
 
   function previousPage() {
     currentPage > 1
@@ -62,12 +62,12 @@ export default function ProductsPage() {
         </div>
         <div className="flex-space-around my-5">
           <button
-            class="btn bg-secondary-1 white"
+            className="btn bg-secondary-1 white"
             onClick={() => previousPage()}
           >
             Previous
           </button>
-          <button class="btn bg-secondary-1 white" onClick={() => nextPage()}>
+          <button className="btn bg-secondary-1 white" onClick={() => nextPage()}>
             Next
           </button>
         </div>
