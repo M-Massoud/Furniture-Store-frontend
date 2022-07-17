@@ -9,7 +9,9 @@ import WishListComponent from './components/wishListComponent/WishListComponent'
 import ShoppingCartComponent from './components/shoppingCartComponent/ShoppingCartComponent';
 import checkoutcomponent from './components/checkoutcomponent/CheckoutComponent';
 import ProductsPage from './pages/productsPage';
-import SubCategory from './pages/subCategoryPage';
+import SingleProductPage from './pages/singleProductPage';
+import SubCategoryPage from './pages/subCategoryPage';
+import NotFound from './components/404/NotFound';
 import FaqComponent from './components/faqComponent/FaQComponent';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
@@ -18,14 +20,15 @@ function App() {
     <Router>
       <Switch>
         <Route path={'/'} exact component={Main} />
-        <Route path={'/products'} component={ProductsPage} />
+        <Route path={'/products'} exact component={ProductsPage} />
+        <Route path={'/products/:id'} exact component={SingleProductPage} />
         <Route path={'/login'} component={LoginComponent} />
         <Route path={'/register'} component={RegisterationComponent} />
         <Route path={'/wishList'} component={WishListComponent} />
         <Route path={'/shoppingCart'} component={ShoppingCartComponent} />
         <Route path={'/checkOut'} component={checkoutcomponent} />
-        <Route path={'/subCategory/:id'} component={SubCategory} />
-        {/* <Route path={'*'} component={PageNotFound} /> */}
+        <Route path={'/subCategory/:id'} exact component={SubCategoryPage} />
+        <Route path={'*'} component={NotFound} />
       </Switch>
     </Router>
   );

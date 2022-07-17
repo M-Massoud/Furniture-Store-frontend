@@ -2,18 +2,20 @@ import '../cardComponent/cardComponent.css';
 import img from '../../images/product1-img.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
+import { Link } from 'react-router-dom';
 
 export default function CardComponent({ product }) {
-  console.log(product);
+  // console.log(product);
   return (
     <>
       <div className="card shadow-lg product-card h-100">
         {/* <img src={product.image} className="card-img-top" alt="..." /> */}
-        <img src={img} className="card-img-top" alt="..." />
-
+        <Link to={`/products/${product._id}`}>
+          <img src={img} className="card-img-top" alt="..." />
+        </Link>
         <div className="card-body  d-flex flex-column">
           <h5 className="card-title">{product.name}</h5>
-          <p className="card-text">{product.description}</p>
+          <p className="card-text ">{product.description}</p>
 
           <div className="mt-auto">
             {product.discount ? (
