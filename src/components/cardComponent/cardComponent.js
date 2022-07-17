@@ -1,11 +1,36 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axiosInstance from '../../network/Config';
 import '../cardComponent/cardComponent.css';
 import img from '../../images/product1-img.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import { Link } from 'react-router-dom';
+import { FaRegHeart, FaHeart } from 'react-icons/fa';
 
 export default function CardComponent({ product }) {
-  // console.log(product);
+  // console.log(product._id);
+  const [favProductIcon, setfavProductIcon] = useState(false);
+  // const [favProduct, setfavProduct] = useState();
+  function changeFavProductIcon() {
+    setfavProductIcon(favProductIcon ? false : true);
+  }
+  const addTowishList = () => {
+    console.log('add', product._id);
+    axiosInstance
+      .put('/user/1/wishlist', {
+        wishList: [product._id],
+      })
+      .then(res => console.log(res))
+      .catch(error => console.log(error));
+  };
+  const removTowishList = () => {
+    console.log('remove', product._id);
+    axiosInstance
+      .delete('/user/1/wishlist', {
+        data: { wishList: [product._id] },
+      })
+      .then(res => console.log(res))
+      .catch(error => console.log(error));
+  };
   return (
     <>
       <div className="card shadow-lg product-card h-100">
@@ -36,7 +61,28 @@ export default function CardComponent({ product }) {
                 add to card
               </a>
               <span className="wishlist-icon">
-                <FontAwesomeIcon icon={faHeart} size="xl" />
+                {favProductIcon ? (
+                  <FaHeart
+                    className="hover white"
+                    style={{
+                      color: 'red',
+                      fontSize: '22px',
+                    }}
+                    onClick={e => {
+                      changeFavProductIcon();
+                      removTowishList();
+                    }}
+                  />
+                ) : (
+                  <FaRegHeart
+                    className="hover-effect gray"
+                    style={{ fontSize: '22px' }}
+                    onClick={e => {
+                      changeFavProductIcon();
+                      addTowishList();
+                    }}
+                  />
+                )}
               </span>
             </div>
           </div>
@@ -45,3 +91,6 @@ export default function CardComponent({ product }) {
     </>
   );
 }
+
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faHeart } from '@fortawesome/free-regular-svg-icons';

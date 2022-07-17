@@ -32,6 +32,8 @@ export default function ProductsPage() {
     setKeword(`subCategory/${subCategoryId}`);
     console.log(clickedLi, subCategoryId, keyword);
   }
+  // console.log('productsData');
+  // console.log(productsData);
 
   function previousPage() {
     currentPage > 1
@@ -76,6 +78,7 @@ export default function ProductsPage() {
           >
             Previous
           </button>
+
           <button
             className="btn bg-secondary-1 white"
             onClick={() => nextPage()}
