@@ -1,12 +1,10 @@
 .not-found-page {
   display: flex;
-  width: 100%;
-  height: auto;
-  /* padding-bottom: 40px; */
-  justify-content: space-around;
+  flex-direction: column;
+  gap: 25px;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: whitesmoke;
+  text-align: center;
 }
-@media screen and (max-width: 780px) {
-    .not-found-page  {
-        display: block;
-    }
-  }

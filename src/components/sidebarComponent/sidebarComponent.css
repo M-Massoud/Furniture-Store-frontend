@@ -1,3 +1,15 @@
 .sidebar-box {
   background-color: white;
 }
+
+.accordion li {
+  line-break: anywhere;
+}
+
+.card-img-top {
+  transition: transform 0.7s;
+}
+
+.card-img-top:hover {
+  transform: scale(1.015);
+}
