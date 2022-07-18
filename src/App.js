@@ -16,6 +16,7 @@ import SubCategoryPage from './pages/subCategoryPage';
 import NotFound from './components/404/NotFound';
 import FaqComponent from './components/faqComponent/FaQComponent';
 import Footer from './components/Footer/Footer';
+import Search from './components/Search/Search';
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
         <Route path={'/checkOut'} component={checkoutcomponent} />
         <Route path={'/subCategory/:id'} exact component={SubCategoryPage} />
         <Route path={'/FAQ'} exact component={FaqComponent} />
-
+        <Route path={"/search/:id"}  ><Search /></Route>
+        
         <Route path={'*'} component={NotFound} />
       </Switch>
       <Footer />
