@@ -8,30 +8,40 @@ export default function ProductsPage() {
   const [productsData, setProductsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPagesNumber, setMaxPagesNumber] = useState(1);
+  const [itemCount, setItemCount] = useState(10);
   const [keyword, setKeword] = useState('products');
 
   useEffect(() => {
     axiosInstance
-      // .get(`/products/page/${currentPage}`)
-      .get(`/${keyword}`)
+      // .get(`/${keyword}`)
+      .get(`/products`, {
+        params: {
+          page: currentPage,
+          itemCount: itemCount,
+        }
+      })
 
       .then(res => {
         // setProductsData(res.data.data.products);
-        if (keyword === 'products') setProductsData(res.data);
-        else setProductsData(res.data.products);
-        setMaxPagesNumber(res.data.data.maxPagesNumber);
+        // if (keyword === 'products') {
+        // setProductsData(res.data);
+        setProductsData(res.data.resData.products);
+        setMaxPagesNumber(res.data.resData.maxPagesNumber);
+        // }
+        // else setProductsData(res.data.products);
+        // setMaxPagesNumber(res.data.data.maxPagesNumber);
       })
       .catch(err => console.log(err));
-  }, [keyword]);
+  }, [currentPage, keyword]);
 
   // console.log('productsData:', productsData);
 
-  function handleSubCategoryLink(e) {
-    const clickedLi = e.target.closest('li');
-    const subCategoryId = clickedLi.dataset.subcategoryid;
-    setKeword(`subCategory/${subCategoryId}`);
-    console.log(clickedLi, subCategoryId, keyword);
-  }
+  // function handleSubCategoryLink(e) {
+  //   const clickedLi = e.target.closest('li');
+  //   const subCategoryId = clickedLi.dataset.subcategoryid;
+  //   setKeword(`subCategory/${subCategoryId}`);
+  //   console.log(clickedLi, subCategoryId, keyword);
+  // }
   // console.log('productsData');
   // console.log(productsData);
 
@@ -52,7 +62,7 @@ export default function ProductsPage() {
       <div className="container pt-5">
         <div className="row">
           <div className="col-12 col-sm-4 col-md-3 col-lg-3">
-            <SidebarComponent handleSubCategoryLink={handleSubCategoryLink} />
+            {/* <SidebarComponent handleSubCategoryLink={handleSubCategoryLink} /> */}
           </div>
           <div className="col col-sm-8 col-md-9 col-lg-9">
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3  g-4 ">
@@ -71,21 +81,32 @@ export default function ProductsPage() {
             </div>
           </div>
         </div>
-        <div className="flex-space-around my-5">
-          <button
-            className="btn bg-secondary-1 white"
-            onClick={() => previousPage()}
-          >
-            Previous
-          </button>
-
-          <button
-            className="btn bg-secondary-1 white"
-            onClick={() => nextPage()}
-          >
-            Next
-          </button>
-        </div>
+        <nav className='my-5 mx-5' aria-label="...">
+          <ul className="pagination">
+            <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>
+              <span className="page-link" onClick={() => previousPage()}>Previous</span>
+            </li>
+            {currentPage === 1 ? <li className="page-item active" aria-current="page">
+              <span className="page-link" onClick={() => setCurrentPage(1)}>{currentPage}</span>
+            </li> : <li className="page-item"><a className="page-link" href='#' onClick={() => setCurrentPage(1)}>1</a></li>}
+            {maxPagesNumber >= 2 ? currentPage === 2 ? <li className="page-item active" aria-current="page">
+              <span className="page-link">{currentPage}</span>
+            </li> : <li className="page-item" onClick={() => setCurrentPage(2)}><a className="page-link" href='#' onClick={() => setCurrentPage(2)}>2</a></li> : ''}
+            {maxPagesNumber >= 3 ? currentPage === 3 ? <li className="page-item active" aria-current="page">
+              <span className="page-link" onClick={() => setCurrentPage(3)}>{currentPage}</span>
+            </li> : <li className="page-item"><a className="page-link" href='#' onClick={() => setCurrentPage(3)}>3</a></li> : ''}
+            {currentPage > 3 ? <li className="page-item"><a className="page-link disabled" href='#'>...</a></li> : ''}
+            {currentPage > 3 ? <li className="page-item active" aria-current="page">
+              <span className="page-link">{currentPage}</span>
+            </li> : ''}
+            {maxPagesNumber > 5 ? currentPage < maxPagesNumber - 2 ? <li className="page-item"><a className="page-link disabled" href=''>...</a></li> : '' : ''}
+            {maxPagesNumber > 4 ? currentPage < maxPagesNumber - 1 ? <li className="page-item"><a className="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber - 1)}>{maxPagesNumber - 1}</a></li> : '' : ''}
+            {maxPagesNumber > 3 ? currentPage < maxPagesNumber ? <li className="page-item"><a className="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber)}>{maxPagesNumber}</a></li> : '' : ''}
+            <li className={currentPage === maxPagesNumber ? "page-item  disabled" : "page-item"}>
+              <a className="page-link" href='#' onClick={() => nextPage()}>Next</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </>
   );
