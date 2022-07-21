@@ -10,11 +10,11 @@ export default function SidebarComponent(probs) {
   useEffect(() => {
     axiosInstance
       .get('/category')
-      .then(res => setCategories(res.data))
+      .then(res => setCategories(res.data.resData.categories))
       .catch(err => console.log(err));
   }, []);
-  // console.log('---------------- category data -------');
-  // console.log(categories);
+  console.log('---------------- category data -------');
+  console.log(categories);
 
   // the react fragment to solve the key error because <> is redundant in our case
   return (
