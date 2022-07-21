@@ -34,7 +34,7 @@ const Footer = () => {
             <a
               className="icon"
               href="https://github.com/M-Massoud/Furniture-Store"
-              target="_blank"
+              target="_blank" rel="noreferrer"
             >
               <FaGithub />
             </a>

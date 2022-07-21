@@ -17,6 +17,7 @@ import NotFound from './components/404/NotFound';
 import FaqComponent from './components/faqComponent/FaQComponent';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
+import ProductForm from './components/productForm/productForm'
 
 function App() {
   return (
