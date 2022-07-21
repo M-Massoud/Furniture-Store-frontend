@@ -13,6 +13,7 @@ import checkoutcomponent from './components/checkoutcomponent/CheckoutComponent'
 import ProductsPage from './pages/productsPage';
 import SingleProductPage from './pages/singleProductPage';
 import SubCategoryPage from './pages/subCategoryPage';
+import AdminDashBoardPage from "./pages/adminDashBoardPage";
 import NotFound from './components/404/NotFound';
 import FaqComponent from './components/faqComponent/FaQComponent';
 import Footer from './components/Footer/Footer';
@@ -34,7 +35,7 @@ function App() {
         <Route path={'/subCategory/:id'} exact component={SubCategoryPage} />
         <Route path={'/FAQ'} exact component={FaqComponent} />
         <Route path={"/search/:id"}  ><Search /></Route>
-        
+        <Route path={'/admin-dashBoard'} component={AdminDashBoardPage} />
         <Route path={'*'} component={NotFound} />
       </Switch>
       <Footer />

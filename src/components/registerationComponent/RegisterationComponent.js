@@ -157,6 +157,58 @@ export default function LoginForm() {
         })
         .catch((error) => {
             console.log(error.response.data.message);
+            (error.response.data.message).includes('email_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, userEmailError: 'email registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
+            (error.response.data.message).includes('mobile_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, mobileError: 'mobile registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
+            (error.response.data.message).includes('cardNumber_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, cardNumberError: 'card number registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
+            switch (error.response.data.message) {
+                case "Internal ErrorError: firstName length should be between 1 and 12 numbers ":
+                    {
+                        setRegisterDataErrors({
+                            ...registerDataErrors,
+                            firstNameError: 'firstName length should be between 1 and 12 numbers',
+                        });
+                    }
+                    break;
+                case "Internal ErrorError: lastName length should be between 1 and 12 numbers ":
+                    {
+                        setRegisterDataErrors({
+                            ...registerDataErrors,
+                            lastNameError: 'lastName length should be between 1 and 12 numbers',
+                        });
+                    }
+                    break;
+                case "Internal ErrorError: mobile length should be between 10 and 14  numbers ":
+                    {
+                        console.log("her");
+                        setRegisterDataErrors({
+                            ...registerDataErrors,
+                            mobileError: 'mobile length should be between 10 and 14  numbers',
+                        });
+                    }
+                    break;
+                case "Internal ErrorError: card type should be one of these ['visa','mastercard','meza'] ":
+                    {
+                        console.log("her");
+                        setRegisterDataErrors({
+                            ...registerDataErrors,
+                            cardTypeError: "card type should be one of these ['visa','mastercard','meza']",
+                        });
+                    }
+                    break;
+                case "Internal ErrorError: card number length should be 16 numbers ":
+                    {
+                        console.log("her");
+                        setRegisterDataErrors({
+                            ...registerDataErrors,
+                            cardNumberError: 'card number length should be 16 numbers',
+                        });
+                    }
+                    break;
+                default:
+                    setRegisterDataErrors({
+                        ...registerDataErrors,
+                    });
+            }
         })
     }
     return (
@@ -165,7 +217,7 @@ export default function LoginForm() {
             <form onSubmit={(e) => handleSubmit(e)}>
                 <div className="mb-3">
                     <label htmlFor="firstName" className="form-label font-bold">First Name</label>
-                    <input  type="text" className={`form-control ${registerDataErrors.firstNameError ? "is-invalid" : ""}`} name="firstName" aria-describedby="firstNameHelp" value={registerData.firstName} onChange={(event) => { changeRegisterData(event) }} required />
+                    <input type="text" className={`form-control ${registerDataErrors.firstNameError ? "is-invalid" : ""}`} name="firstName" aria-describedby="firstNameHelp" value={registerData.firstName} onChange={(event) => { changeRegisterData(event) }} required />
                     <div id="firstNameHelp" className="form-text text-danger">{registerDataErrors.firstNameError}</div>
                 </div>
                 <div className="mb-3">
