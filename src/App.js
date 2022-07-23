@@ -24,7 +24,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path={'/'} exact component={Main} />
+        <Route path={'/'} exact component={ProductForm} />
         <Route path={'/products'} exact component={ProductsPage} />
         <Route path={'/products/:id'} exact component={SingleProductPage} />
         <Route path={'/login'} component={LoginComponent} />
