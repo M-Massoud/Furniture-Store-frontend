@@ -18,13 +18,14 @@ import NotFound from './components/404/NotFound';
 import FaqComponent from './components/faqComponent/FaQComponent';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
-import ProductForm from './components/productForm/productForm'
+import ProductForm from './components/productForm/productForm';
+import UserProfile from './components/userProfileComponent/userProfilePage';
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route path={'/'} exact component={ProductForm} />
+        <Route path={'/'} exact component={UserProfile} />
         <Route path={'/products'} exact component={ProductsPage} />
         <Route path={'/products/:id'} exact component={SingleProductPage} />
         <Route path={'/login'} component={LoginComponent} />
