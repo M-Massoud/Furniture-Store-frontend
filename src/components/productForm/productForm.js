@@ -65,9 +65,6 @@ function ProductForm(props) {
                 discount: formDetails.Pdiscount,
                 subCategory: { id: formDetails.subCateId, title: formDetails.Psubcategory },
                 image: formDetails.Pimg,
-                
-                
-           // headers: {'Authorization': 'BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzc1M2VkMDMxOWFhNjM2YTQ4ZmI4YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1ODU0ODIzNywiZXhwIjoxNjU5MTUzMDM3fQ.O7SQANdvsl01iOM3rd91lWpLfgj7XW5Tw4nn-QzHogM'}
         })
         .then(res => console.log(res))
         .catch(error => console.log(error));
@@ -77,11 +74,10 @@ function ProductForm(props) {
         console.log("Deleted");
         axiosInstance
         .delete(`/products/${formDetails.ProdId}`, {        
-           // headers: {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzc1M2VkMDMxOWFhNjM2YTQ4ZmI4YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1ODUzOTI1OSwiZXhwIjoxNjU5MTQ0MDU5fQ.f3TP-afoR8etla7pIV7fSIEHjkfYjQLRzFlvnjGmNfA'}
+          
     })
         .then(res => console.log(res))
         .catch(error => console.log(error));
-        
     };// delet product
     /////////////////////////////////////////////
     const ErrorHandling = (input, value) => { 
