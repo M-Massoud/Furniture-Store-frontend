@@ -1,6 +1,11 @@
 // import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
@@ -13,7 +18,7 @@ import checkoutcomponent from './components/checkoutcomponent/CheckoutComponent'
 import ProductsPage from './pages/productsPage';
 import SingleProductPage from './pages/singleProductPage';
 import SubCategoryPage from './pages/subCategoryPage';
-import AdminDashBoardPage from "./pages/adminDashBoardPage";
+import AdminDashBoardPage from './pages/adminDashBoardPage';
 import NotFound from './components/404/NotFound';
 import FaqComponent from './components/faqComponent/FaQComponent';
 import Footer from './components/Footer/Footer';
@@ -25,7 +30,14 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path={'/'} exact component={UserProfile} />
+        {/* <Route path={'/'} exact component={UserProfile} /> */}
+        {/* <Route path={'/'} exact component={Main} /> */}
+        <Route path={'/'} exact component={ProductForm} />
+        {/* 
+        <PrivateRoute path={'/products'} requiredRole="user">
+          <ProductsPage />
+        </PrivateRoute> */}
+
         <Route path={'/products'} exact component={ProductsPage} />
         <Route path={'/products/:id'} exact component={SingleProductPage} />
         <Route path={'/login'} component={LoginComponent} />
@@ -35,7 +47,9 @@ function App() {
         <Route path={'/checkOut'} component={checkoutcomponent} />
         <Route path={'/subCategory/:id'} exact component={SubCategoryPage} />
         <Route path={'/FAQ'} exact component={FaqComponent} />
-        <Route path={"/search/:id"}  ><Search /></Route>
+        <Route path={'/search/:id'}>
+          <Search />
+        </Route>
         <Route path={'/admin-dashBoard'} component={AdminDashBoardPage} />
         <Route path={'*'} component={NotFound} />
       </Switch>

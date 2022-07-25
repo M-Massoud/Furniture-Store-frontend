@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './LoginComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../../network/Config';
+import jwt from 'jwt-decode';
 
 export default function LoginForm() {
   const [loginData, setLoginData] = useState({
@@ -79,6 +80,13 @@ export default function LoginForm() {
         serIsAuthenticated(false);
       });
   }
+
+  // if (localStorage.getItem('token') != null) {
+  //   const user = jwt(localStorage.getItem('token'));
+  //   console.log(user);
+  //   console.log(isAuthenticated);
+  // }
+
   return (
     <div className="container">
       <div className="row flex-space-around my-5">

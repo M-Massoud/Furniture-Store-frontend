@@ -2,7 +2,6 @@ import { useState } from 'react';
 import axiosInstance from '../../network/Config';
 function ProductForm(props) {
     const [formDetails, setFormDetails] = useState({
-        ProdId:"",
         Pname: "",
         subCateId:"",
         Psubcategory:"",
@@ -13,7 +12,6 @@ function ProductForm(props) {
         Pdiscount:""
     });
     const [formError, setFormerror] = useState({
-        ProdId:"",
         Pname: "",
         subCateId:"",
         Psubcategory:"",
@@ -26,7 +24,7 @@ function ProductForm(props) {
     });
     function handelFormchange(e) {
         // console.log(e.target.id, e.target.value);
-        console.log(formDetails)
+        // console.log(formDetails)
         setFormDetails({
             ...formDetails,
             [e.target.id]: e.target.value
@@ -38,21 +36,21 @@ function ProductForm(props) {
         // console.log(formDetails);
     };//handleSubmit function
     const addingProduct = () => {
-        console.log("ADDED");
         axiosInstance
-            .post('/products', {
-                    name: formDetails.Pname,
-                    description: formDetails.Pdescrip,
-                    stockAmount: formDetails.Pamount,
-                    price: formDetails.Pprice,
-                    discount: formDetails.Pdiscount,
-                    subCategory: { id: formDetails.subCateId, title: formDetails.Psubcategory },
-                    image: formDetails.Pimg
-               // headers: {'Authorization': 'BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzc1M2VkMDMxOWFhNjM2YTQ4ZmI4YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1ODU0ODIzNywiZXhwIjoxNjU5MTUzMDM3fQ.O7SQANdvsl01iOM3rd91lWpLfgj7XW5Tw4nn-QzHogM'}
-            })
-            .then(res => console.log(res))
-            .catch(error => console.log(error));
-    };// ADDing func
+        .post('/products', {
+                name: formDetails.Pname,
+                description: formDetails.Pdescrip,
+                stockAmount: formDetails.Pamount,
+                price: formDetails.Pprice,
+                discount: formDetails.Pdiscount,
+                subCategory: { id: formDetails.subCateId, title: formDetails.Psubcategory },
+                image:formDetails.Pimg
+                },
+                { headers: {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzU4N2YxODVmZmJhOTQ4YTBkYzIyNSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1ODY2OTA2NCwiZXhwIjoxNjU5MjczODY0fQ.aoeoA7HfWURqkhcfhV5pW7elWuA0ltbhelM4N5wuM8M'}
+        })
+        .then(res => console.log(res ,formDetails))
+        .catch(error => console.log(error));
+};// ADDing func
     const editingProduct = () => {
         console.log("EDited");
         axiosInstance
@@ -64,10 +62,12 @@ function ProductForm(props) {
                 price: formDetails.Pprice,
                 discount: formDetails.Pdiscount,
                 subCategory: { id: formDetails.subCateId, title: formDetails.Psubcategory },
-                image: formDetails.Pimg,
+                image: formDetails.Pimg,}
+                ,{
+                headers: {'Authorization': 'BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzc1M2VkMDMxOWFhNjM2YTQ4ZmI4YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1ODU0ODIzNywiZXhwIjoxNjU5MTUzMDM3fQ.O7SQANdvsl01iOM3rd91lWpLfgj7XW5Tw4nn-QzHogM'}
         })
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
+        .then(res => console.log(formDetails))
+        .catch(error => console.log(error,formDetails));
 
     };// Editing func
     const deleteProduct = () => {
@@ -84,12 +84,7 @@ function ProductForm(props) {
         // let imgURl = new RegExp(/^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/);
         switch (input) {
             //regex = new Regex("[0-9]");
-            case 'ProdId':
-                setFormerror({
-                    ...formError,
-                    ProdIdError: value.length === 0 ? "This field is required" : "",
-                });
-            break;
+         
             case 'Pname':
                 setFormerror({
                     ...formError,
@@ -149,11 +144,9 @@ function ProductForm(props) {
         <>
             <div className='col-10 offset-1 col-md-8 offset-md-2 border p-3 rounded shadow'>
                 <h3 className='text-center mt-2'> Product Control </h3>
-                <form className={`co-12  row m-auto `} onSubmit={(e) => handleSubmit(e)}>
+                <form className={`co-12  row m-auto `} onSubmit={(e) => handleSubmit(e)} method="post" encType="multipart/form-data">    
                     {/* //// */}
-                                 <label  htmlFor='ProdId' className="form-label  mt-2 "> Product ID</label >
-                <input type='number' min={1} id='ProdId' name='ProdId' className={`form-control mb-2 ${formError.ProdIdError && "border-danger"} `}  onChange={(e) => handelFormchange(e)} />
-                    <div id="nameHelp" className="form-text text-danger">{formError.ProdIdError}</div>
+                                 
                     {/* //// */}
                                   <label  htmlFor='Pname' className="form-label mt-2"> Product Name</label >
                 <input type='text' id={'Pname'} name={'Pname'} className={`form-control ${formError.PnameError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
@@ -167,13 +160,17 @@ function ProductForm(props) {
                 <input type='text' id={'Psubcategory'} name={'Psubcategory'} className={`form-control ${formError.PsubcategoryError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
                     <div id="nameHelp" className="form-text text-danger">{formError.PsubcategoryError}</div>
                     {/* //// */}
-                                  <label  htmlFor='Pdescrip' className="form-label   mt-2 mb-2"> Product Description</label >
+                 <label  htmlFor='Pdescrip' className="form-label   mt-2 mb-2"> Product Description</label >
                 <input type='text' id={'Pdescrip'} name={'Pdescrip'} className={`form-control ${formError.PdescripError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
                     <div id="nameHelp" className="form-text text-danger">{formError.PdescripError}</div>
                     {/* //// */}
-                    <label  htmlFor='Pimg' className="form-label   mt-2 mb-2"> Product Image URL</label >
-                <input type='text' id={'Pimg'} name={'Pimg'} className={`form-control ${formError.PimgError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
-                <div id="nameHelp" className="form-text text-danger">{formError.PimgError}</div>
+
+                   <label  htmlFor='Pimg' className="form-label   mt-2 mb-2"> Product Image</label >
+
+                  <input type='file' id={'Pimg'} name={'Pimg'} className={`form-control ${formError.PimgError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
+
+                  <div id="nameHelp" className="form-text text-danger">{formError.PimgError}</div>
+
                     {/* //// */}                
                                   <label  htmlFor='Pamount' className="form-label  mt-2 "> Stock Amount</label >
                 <input type='number'  min={1} id='Pamount' name='Pamount' className={`form-control mb-2 ${formError.PamountError && "border-danger"} `}  onChange={(e) => handelFormchange(e)} />
