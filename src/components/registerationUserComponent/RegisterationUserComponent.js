@@ -1,5 +1,5 @@
 import { useState } from "react";
-import './RegisterationComponentStyle.css';
+import './RegisterationUserComponentStyle.css';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axiosInstance from "../../network/Config";
 
@@ -141,7 +141,7 @@ export default function LoginForm() {
     function handleSubmit(event) {
         event.preventDefault();
         console.log(registerData);
-        axiosInstance.post("http://localhost:8080/users", {
+        axiosInstance.post("/users", {
             firstName: registerData.firstName,
             lastName: registerData.lastName,
             // userName: registerData.userName,

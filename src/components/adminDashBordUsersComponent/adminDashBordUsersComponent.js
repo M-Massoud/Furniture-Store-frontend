@@ -15,7 +15,10 @@ export default function AdminDashBoardUsersPage() {
                 params: {
                     page: currentPage,
                     itemCount: 10,
-                }
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
             })
 
             .then(res => {

@@ -1,0 +1,38 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.text-main {
+  color: #1C2755;
+}
+
+.bg-secondary-1 {
+  background-color: var(--secondary-color);
+}
+
+.bg-secondary-1:hover {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.text-hover-red:hover {
+  cursor: pointer;
+  color: var(--main-color);
+}
+
+.white {
+  color: white;
+}
+
+.overlay {
+  z-index: 3;
+  position: absolute;
+  right: 1%;
+  top: 30%;
+}
+
+.relativePosition{
+  position: relative;
+}
