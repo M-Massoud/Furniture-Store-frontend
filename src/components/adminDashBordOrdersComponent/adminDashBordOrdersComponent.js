@@ -16,7 +16,10 @@ export default function AdminDashBoardOrdersPage() {
                 params: {
                     page: currentPage,
                     itemCount: 10,
-                }
+                },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
             })
             .then(res => {
                 setOrdersData(res.data.resData.orders);
