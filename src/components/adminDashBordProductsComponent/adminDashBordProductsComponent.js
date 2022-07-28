@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../../network/Config';
 import { FaTrashAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 export default function AdminDashBoardProductsPage() {
     const [productsData, setProductsData] = useState([]);
@@ -19,7 +20,7 @@ export default function AdminDashBoardProductsPage() {
             .then(res => {
                 setProductsData(res.data.resData.products);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
-                console.log(res.data.resData.products);
+                // console.log(res.data.resData.products);
             })
             .catch(err => console.log(err));
     }, [currentPage]);
@@ -38,7 +39,9 @@ export default function AdminDashBoardProductsPage() {
 
     function deleteproduct(id) {
         if (window.confirm("Are You Sure") == true) {
-            axiosInstance.delete(`/products/${id}`)
+            axiosInstance.delete(`/products/${id}`,{
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            })
                 .then(res => {
                     console.log(res.data);
                     setDeletingError('successful');
@@ -75,6 +78,7 @@ export default function AdminDashBoardProductsPage() {
 
     return (
         <>
+        <div className='container-fluid' >
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -100,6 +104,17 @@ export default function AdminDashBoardProductsPage() {
                                 <td>{product.price}</td>
                                 <td>{product.discount}</td>
                                 <td>{product.subCategory.title}</td>
+
+                                <td>
+                                    <Link  to={ {
+                                  pathname: "/editProduct",state:product
+                                    } }  >   
+                                     <button className='btn btn-primary' >
+                                        Edit 
+                                    </button>
+                                    </Link>
+                                </td>
+
                                 <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteproduct(product._id) }} /></td>
                             </tr>
                         );
@@ -133,6 +148,7 @@ export default function AdminDashBoardProductsPage() {
                     </li>
                 </ul>
             </nav>
+            </div>
         </>
     );
 }

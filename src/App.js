@@ -26,9 +26,10 @@ import NotFound from './components/404/NotFound';
 import FaqComponent from './components/faqComponent/FaQComponent';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
-import ProductForm from './components/productForm/productForm';
+import AddProductForm from './components/productForm/addProductForm';
 // import UserProfile from './components/userProfileComponent/userProfilePage';
 import UserProfilePage from "./pages/userProfilePage";
+import EditProductForm from './components/productForm/editProductForm';
 
 // function PrivateRoute({ children, requiredRole, ...rest }) {
 //   let user = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
@@ -105,7 +106,7 @@ function App() {
       <Switch>
         {/* <Route path={'/'} exact component={UserProfile} /> */}
         {/* <Route path={'/'} exact component={Main} /> */}
-        <Route path={'/'} exact component={ProductForm} />
+        <Route path={'/'} exact component={AddProductForm} />
 
         <PrivateRoute path={'/admin-dashBoard'} requiredRole="admin">
           <AdminDashBoardPage />
@@ -125,6 +126,8 @@ function App() {
         <Route path={'/search/:id'}>
           <Search />
         </Route>
+        <Route path={'/editProduct'} exact component={EditProductForm} />
+
         {/* <Route path={'/admin-dashBoard'} component={AdminDashBoardPage} /> */}
         {/* <Route path={'/profile/:id'} component={UserProfilePage} /> */}
         <PrivateRoute path={'/profile/:id'} requiredRole="userById">
