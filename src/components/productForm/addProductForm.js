@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axiosInstance from '../../network/Config';
-function ProductForm(props) {
+function AddProductForm(props) {
     const [formDetails, setFormDetails] = useState({
         Pname: "",
         subCateId:"",
@@ -51,34 +51,7 @@ function ProductForm(props) {
         .then(res => console.log(res ,formDetails))
         .catch(error => console.log(error));
 };// ADDing func
-    const editingProduct = () => {
-        console.log("EDited");
-        axiosInstance
-            .put('/products', {
-                id:formDetails.ProdId,
-                name: formDetails.Pname,
-                description: formDetails.Pdescrip,
-                stockAmount: formDetails.Pamount,
-                price: formDetails.Pprice,
-                discount: formDetails.Pdiscount,
-                subCategory: { id: formDetails.subCateId, title: formDetails.Psubcategory },
-                image: formDetails.Pimg,}
-                ,{
-                headers: {'Authorization': 'BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzc1M2VkMDMxOWFhNjM2YTQ4ZmI4YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1ODU0ODIzNywiZXhwIjoxNjU5MTUzMDM3fQ.O7SQANdvsl01iOM3rd91lWpLfgj7XW5Tw4nn-QzHogM'}
-        })
-        .then(res => console.log(formDetails))
-        .catch(error => console.log(error,formDetails));
-
-    };// Editing func
-    const deleteProduct = () => {
-        console.log("Deleted");
-        axiosInstance
-        .delete(`/products/${formDetails.ProdId}`, {        
-          
-    })
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
-    };// delet product
+  
     /////////////////////////////////////////////
     const ErrorHandling = (input, value) => { 
         // let imgURl = new RegExp(/^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/);
@@ -185,9 +158,6 @@ function ProductForm(props) {
                     <div id="nameHelp" className="form-text text-danger">{formError.PdiscountError}</div>
                     <div className='border col-10 offset-1 d-flex justify-content-evenly p-3 rounded shadow flex-wrap'>
                         <button className='btn btn-primary col-8 mt-2 col-sm-5 col-md-3' onClick={()=>addingProduct()}>Add Product</button>
-                        <button className='btn btn-success col-8 mt-2 col-sm-5 col-md-3' onClick={()=>editingProduct()}>Edit Product</button>
-                        <button className='btn btn-danger col-8 mt-2 col-sm-6 mt-sm-2 col-md-3'onClick={()=>deleteProduct()}>Delete Product</button>
-
                     </div>
                               </form>
         
@@ -198,4 +168,4 @@ function ProductForm(props) {
     
 };
 
-export default ProductForm;
+export default AddProductForm;
