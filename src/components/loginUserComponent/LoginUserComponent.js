@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import './LoginUserComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../../network/Config';
-import jwt from 'jwt-decode';
 
 export default function LoginForm() {
+  const location = useLocation();
+  const history = useHistory();
   const [loginData, setLoginData] = useState({
     userEmail: '',
     userPassword: '',
@@ -43,8 +44,8 @@ export default function LoginForm() {
             value.length === 0
               ? 'This field is required'
               : /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)
-              ? ''
-              : 'Field must be at email format',
+                ? ''
+                : 'Field must be at email format',
         });
         break;
       case 'userPassword':
@@ -74,18 +75,13 @@ export default function LoginForm() {
         setResData(response.data);
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
+        history.push(location.state.from.pathname);
       })
       .catch(error => {
         console.log(error.response.data.message);
         serIsAuthenticated(false);
       });
   }
-
-  // if (localStorage.getItem('token') != null) {
-  //   const user = jwt(localStorage.getItem('token'));
-  //   console.log(user);
-  //   console.log(isAuthenticated);
-  // }
 
   return (
     <div className="container">
@@ -102,9 +98,8 @@ export default function LoginForm() {
               </label>
               <input
                 type="email"
-                className={`form-control ${
-                  loginDataErrors.userEmailError ? 'border-danger' : ''
-                }`}
+                className={`form-control ${loginDataErrors.userEmailError ? 'border-danger' : ''
+                  }`}
                 name="userEmail"
                 aria-describedby="userEmailHelp"
                 value={loginData.email}
@@ -124,9 +119,8 @@ export default function LoginForm() {
               <div className="input-group relativePosition">
                 <input
                   type={isShownPassword ? 'text' : 'password'}
-                  className={`form-control ${
-                    loginDataErrors.userPasswordError ? 'border-danger' : ''
-                  }`}
+                  className={`form-control ${loginDataErrors.userPasswordError ? 'border-danger' : ''
+                    }`}
                   name="userPassword"
                   aria-describedby="userPasswordHelp"
                   value={loginData.password}
@@ -167,7 +161,6 @@ export default function LoginForm() {
           >
             Sign up
           </Link>
-          {/* <button type="submit" className="btn bg-secondary-1 white mt-3 col-12" onClick={navigate('/')}>Sign up</button> */}
         </div>
       </div>
     </div>

@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import './LoginAdminComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../../network/Config';
 
 export default function LoginAdminForm() {
+  const location = useLocation();
+  const history = useHistory();
   const [loginData, setLoginData] = useState({
     adminEmail: '',
     adminPassword: '',
@@ -72,6 +74,7 @@ export default function LoginAdminForm() {
         setResData(response.data);
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
+        history.push(location.state.from.pathname);
       })
       .catch(error => {
         console.log(error.response.data.message);
