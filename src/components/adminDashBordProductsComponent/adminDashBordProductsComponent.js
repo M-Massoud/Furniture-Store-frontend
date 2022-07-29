@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import AdminDashBoardPage from "../../pages/adminDashBoardPage";
 import axiosInstance from '../../network/Config';
 import { FaTrashAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -39,8 +40,8 @@ export default function AdminDashBoardProductsPage() {
 
     function deleteproduct(id) {
         if (window.confirm("Are You Sure") == true) {
-            axiosInstance.delete(`/products/${id}`,{
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            axiosInstance.delete(`/products/${id}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             })
                 .then(res => {
                     console.log(res.data);
@@ -78,76 +79,83 @@ export default function AdminDashBoardProductsPage() {
 
     return (
         <>
-        <div className='container-fluid' >
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Stock Amount</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Discount</th>
-                        <th scope="col">Sub Category</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {productsData.map(product => {
-                        return (
-                            <tr key={product._id}>
-                                <td>{product._id}</td>
-                                <td>{product.name}</td>
-                                <td>{product.description}</td>
-                                <td>{product.stockAmount}</td>
-                                <td>{product.image}</td>
-                                <td>{product.price}</td>
-                                <td>{product.discount}</td>
-                                <td>{product.subCategory.title}</td>
+            <div className='container'>
+                <div className='row m-5 col-12'>
+                    <AdminDashBoardPage />
+                    <div className='col-9'>
+                        <div className='container-fluid' >
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Stock Amount</th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Discount</th>
+                                        <th scope="col">Sub Category</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {productsData.map(product => {
+                                        return (
+                                            <tr key={product._id}>
+                                                <td>{product._id}</td>
+                                                <td>{product.name}</td>
+                                                <td>{product.description}</td>
+                                                <td>{product.stockAmount}</td>
+                                                <td>{product.image}</td>
+                                                <td>{product.price}</td>
+                                                <td>{product.discount}</td>
+                                                <td>{product.subCategory.title}</td>
 
-                                <td>
-                                    <Link  to={ {
-                                  pathname: "/editProduct",state:product
-                                    } }  >   
-                                     <button className='btn btn-primary' >
-                                        Edit 
-                                    </button>
-                                    </Link>
-                                </td>
+                                                <td>
+                                                    <Link to={{
+                                                        pathname: "/editProduct", state: product
+                                                    }}  >
+                                                        <button className='btn btn-primary' >
+                                                            Edit
+                                                        </button>
+                                                    </Link>
+                                                </td>
 
-                                <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteproduct(product._id) }} /></td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-            {allertMessage()}
-            <nav className='my-5 mx-5' aria-label="...">
-                <ul class="pagination">
-                    <li class={currentPage === 1 ? "page-item  disabled" : "page-item "}>
-                        <span class="page-link" onClick={() => previousPage()}>Previous</span>
-                    </li>
-                    {currentPage === 1 ? <li class="page-item active" aria-current="page">
-                        <span class="page-link" onClick={() => setCurrentPage(1)}>{currentPage}</span>
-                    </li> : <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(1)}>1</a></li>}
-                    {maxPagesNumber >= 2 ? currentPage === 2 ? <li class="page-item active" aria-current="page">
-                        <span class="page-link">{currentPage}</span>
-                    </li> : <li class="page-item" onClick={() => setCurrentPage(2)}><a class="page-link" href='#' onClick={() => setCurrentPage(2)}>2</a></li> : ''}
-                    {maxPagesNumber >= 3 ? currentPage === 3 ? <li class="page-item active" aria-current="page">
-                        <span class="page-link" onClick={() => setCurrentPage(3)}>{currentPage}</span>
-                    </li> : <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(3)}>3</a></li> : ''}
-                    {currentPage > 3 ? <li class="page-item"><a class="page-link disabled" href='#'>...</a></li> : ''}
-                    {currentPage > 3 ? <li class="page-item active" aria-current="page">
-                        <span class="page-link">{currentPage}</span>
-                    </li> : ''}
-                    {maxPagesNumber > 5 ? currentPage < maxPagesNumber - 2 ? <li class="page-item"><a class="page-link disabled" href=''>...</a></li> : '' : ''}
-                    {maxPagesNumber > 4 ? currentPage < maxPagesNumber - 1 ? <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber - 1)}>{maxPagesNumber - 1}</a></li> : '' : ''}
-                    {maxPagesNumber > 3 ? currentPage < maxPagesNumber ? <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber)}>{maxPagesNumber}</a></li> : '' : ''}
-                    <li class={currentPage === maxPagesNumber ? "page-item  disabled" : "page-item"}>
-                        <a class="page-link" href='#' onClick={() => nextPage()}>Next</a>
-                    </li>
-                </ul>
-            </nav>
+                                                <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteproduct(product._id) }} /></td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                            {allertMessage()}
+                            <nav className='my-5 mx-5' aria-label="...">
+                                <ul class="pagination">
+                                    <li class={currentPage === 1 ? "page-item  disabled" : "page-item "}>
+                                        <span class="page-link" onClick={() => previousPage()}>Previous</span>
+                                    </li>
+                                    {currentPage === 1 ? <li class="page-item active" aria-current="page">
+                                        <span class="page-link" onClick={() => setCurrentPage(1)}>{currentPage}</span>
+                                    </li> : <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(1)}>1</a></li>}
+                                    {maxPagesNumber >= 2 ? currentPage === 2 ? <li class="page-item active" aria-current="page">
+                                        <span class="page-link">{currentPage}</span>
+                                    </li> : <li class="page-item" onClick={() => setCurrentPage(2)}><a class="page-link" href='#' onClick={() => setCurrentPage(2)}>2</a></li> : ''}
+                                    {maxPagesNumber >= 3 ? currentPage === 3 ? <li class="page-item active" aria-current="page">
+                                        <span class="page-link" onClick={() => setCurrentPage(3)}>{currentPage}</span>
+                                    </li> : <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(3)}>3</a></li> : ''}
+                                    {currentPage > 3 ? <li class="page-item"><a class="page-link disabled" href='#'>...</a></li> : ''}
+                                    {currentPage > 3 ? <li class="page-item active" aria-current="page">
+                                        <span class="page-link">{currentPage}</span>
+                                    </li> : ''}
+                                    {maxPagesNumber > 5 ? currentPage < maxPagesNumber - 2 ? <li class="page-item"><a class="page-link disabled" href=''>...</a></li> : '' : ''}
+                                    {maxPagesNumber > 4 ? currentPage < maxPagesNumber - 1 ? <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber - 1)}>{maxPagesNumber - 1}</a></li> : '' : ''}
+                                    {maxPagesNumber > 3 ? currentPage < maxPagesNumber ? <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber)}>{maxPagesNumber}</a></li> : '' : ''}
+                                    <li class={currentPage === maxPagesNumber ? "page-item  disabled" : "page-item"}>
+                                        <a class="page-link" href='#' onClick={() => nextPage()}>Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     );

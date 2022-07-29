@@ -45,14 +45,14 @@ export default function CardComponent({ product }) {
           <div className="mt-auto">
             {product.discount ? (
               <div className="product-price">
-                <h6 className="old-price">EGP {product.price}</h6>
+                <h6 className="old-price">EGP {(product.price).toFixed(2)}</h6>
                 <h6 className="final-price">
-                  EGP {product.price - product.discount}
+                  EGP {(product.price - product.discount).toFixed(2)}
                 </h6>
               </div>
             ) : (
               <div className="product-price ">
-                <h6 className="final-price">EGP {product.price}</h6>
+                <h6 className="final-price">EGP {(product.price).toFixed(2)}</h6>
               </div>
             )}
 

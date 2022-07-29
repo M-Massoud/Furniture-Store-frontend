@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import AdminDashBoardPage from "../../pages/adminDashBoardPage";
 import axiosInstance from '../../network/Config';
 import { FaTrashAlt } from 'react-icons/fa';
 import { customToString } from "../adminDashBordSubCategoriesComponent/adminDashBordSubCategoriesComponent";
@@ -80,62 +81,69 @@ export default function AdminDashBoardOrdersPage() {
 
     return (
         <>
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">User ID</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Created At</th>
-                        <th scope="col">Total Price</th>
-                        <th scope="col">quantity</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {ordersData.map(order => {
-                        return (
-                            <tr key={order._id}>
-                                <td>{order._id}</td>
-                                <td>{order.userId != null ? `${order.userId.firstName} ${order.userId.lastName}` : ''}</td>
-                                <td>{customToString(order.product)}</td>
-                                <td>{order.created_at}</td>
-                                <td>{order.totalPrice}</td>
-                                <td>{order.quantity}</td>
-                                <td>{order.Status}</td>
-                                <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteorder(order._id) }} /></td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-            {allertMessage()}
-            <nav className='my-5 mx-5' aria-label="...">
-                <ul class="pagination">
-                    <li class={currentPage === 1 ? "page-item  disabled" : "page-item "}>
-                        <span class="page-link" onClick={() => previousPage()}>Previous</span>
-                    </li>
-                    {currentPage === 1 ? <li class="page-item active" aria-current="page">
-                        <span class="page-link" onClick={() => setCurrentPage(1)}>{currentPage}</span>
-                    </li> : <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(1)}>1</a></li>}
-                    {maxPagesNumber >= 2 ? currentPage === 2 ? <li class="page-item active" aria-current="page">
-                        <span class="page-link">{currentPage}</span>
-                    </li> : <li class="page-item" onClick={() => setCurrentPage(2)}><a class="page-link" href='#' onClick={() => setCurrentPage(2)}>2</a></li> : ''}
-                    {maxPagesNumber >= 3 ? currentPage === 3 ? <li class="page-item active" aria-current="page">
-                        <span class="page-link" onClick={() => setCurrentPage(3)}>{currentPage}</span>
-                    </li> : <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(3)}>3</a></li> : ''}
-                    {currentPage > 3 ? <li class="page-item"><a class="page-link disabled" href='#'>...</a></li> : ''}
-                    {currentPage > 3 ? <li class="page-item active" aria-current="page">
-                        <span class="page-link">{currentPage}</span>
-                    </li> : ''}
-                    {maxPagesNumber > 5 ? currentPage < maxPagesNumber - 2 ? <li class="page-item"><a class="page-link disabled" href=''>...</a></li> : '' : ''}
-                    {maxPagesNumber > 4 ? currentPage < maxPagesNumber - 1 ? <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber - 1)}>{maxPagesNumber - 1}</a></li> : '' : ''}
-                    {maxPagesNumber > 3 ? currentPage < maxPagesNumber ? <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber)}>{maxPagesNumber}</a></li> : '' : ''}
-                    <li class={currentPage === maxPagesNumber ? "page-item  disabled" : "page-item"}>
-                        <a class="page-link" href='#' onClick={() => nextPage()}>Next</a>
-                    </li>
-                </ul>
-            </nav>
+            <div className='container'>
+                <div className='row m-5 col-12'>
+                    <AdminDashBoardPage />
+                    <div className='col-9'>
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">User ID</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Total Price</th>
+                                    <th scope="col">quantity</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {ordersData.map(order => {
+                                    return (
+                                        <tr key={order._id}>
+                                            <td>{order._id}</td>
+                                            <td>{order.userId != null ? `${order.userId.firstName} ${order.userId.lastName}` : ''}</td>
+                                            <td>{customToString(order.product)}</td>
+                                            <td>{order.created_at}</td>
+                                            <td>{order.totalPrice}</td>
+                                            <td>{order.quantity}</td>
+                                            <td>{order.Status}</td>
+                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteorder(order._id) }} /></td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                        {allertMessage()}
+                        <nav className='my-5 mx-5' aria-label="...">
+                            <ul class="pagination">
+                                <li class={currentPage === 1 ? "page-item  disabled" : "page-item "}>
+                                    <span class="page-link" onClick={() => previousPage()}>Previous</span>
+                                </li>
+                                {currentPage === 1 ? <li class="page-item active" aria-current="page">
+                                    <span class="page-link" onClick={() => setCurrentPage(1)}>{currentPage}</span>
+                                </li> : <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(1)}>1</a></li>}
+                                {maxPagesNumber >= 2 ? currentPage === 2 ? <li class="page-item active" aria-current="page">
+                                    <span class="page-link">{currentPage}</span>
+                                </li> : <li class="page-item" onClick={() => setCurrentPage(2)}><a class="page-link" href='#' onClick={() => setCurrentPage(2)}>2</a></li> : ''}
+                                {maxPagesNumber >= 3 ? currentPage === 3 ? <li class="page-item active" aria-current="page">
+                                    <span class="page-link" onClick={() => setCurrentPage(3)}>{currentPage}</span>
+                                </li> : <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(3)}>3</a></li> : ''}
+                                {currentPage > 3 ? <li class="page-item"><a class="page-link disabled" href='#'>...</a></li> : ''}
+                                {currentPage > 3 ? <li class="page-item active" aria-current="page">
+                                    <span class="page-link">{currentPage}</span>
+                                </li> : ''}
+                                {maxPagesNumber > 5 ? currentPage < maxPagesNumber - 2 ? <li class="page-item"><a class="page-link disabled" href=''>...</a></li> : '' : ''}
+                                {maxPagesNumber > 4 ? currentPage < maxPagesNumber - 1 ? <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber - 1)}>{maxPagesNumber - 1}</a></li> : '' : ''}
+                                {maxPagesNumber > 3 ? currentPage < maxPagesNumber ? <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber)}>{maxPagesNumber}</a></li> : '' : ''}
+                                <li class={currentPage === maxPagesNumber ? "page-item  disabled" : "page-item"}>
+                                    <a class="page-link" href='#' onClick={() => nextPage()}>Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }

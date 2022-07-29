@@ -1,12 +1,12 @@
 import { useState } from "react";
-import './RegisterationUserComponentStyle.css';
+import { useHistory } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axiosInstance from "../../network/Config";
+import './RegisterationUserComponentStyle.css';
 
 export default function LoginForm() {
 
-    const token = localStorage.getItem('token');
-    console.log(`token:${token}`);
+    const history = useHistory();
 
     const [registerData, setRegisterData] = useState({
         firstName: "",
@@ -18,7 +18,6 @@ export default function LoginForm() {
         cardType: "visa",
         cardNumber: "",
         userEmail: "",
-        // userName: "",
         userPassword: "",
         userPasswordConfirm: "",
     });
@@ -33,7 +32,6 @@ export default function LoginForm() {
         cardTypeError: "",
         cardNumberError: "",
         userEmailError: "",
-        // userNameError: "",
         userPasswordError: "",
         userPasswordConfirmError: "",
     });
@@ -113,12 +111,6 @@ export default function LoginForm() {
                     userEmailError: value.length === 0 ? "This field is required" : /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "" : "Field must be at email format",
                 });
                 break;
-            // case "userName":
-            //     setRegisterDataErrors({
-            //         ...registerDataErrors,
-            //         userNameError: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/.test(value) ? "" : "User Name shouldn't have space or any special character except for '_'"
-            //     });
-            //     break;
             case "userPassword":
                 setRegisterDataErrors({
                     ...registerDataErrors,
@@ -144,72 +136,70 @@ export default function LoginForm() {
         axiosInstance.post("/users", {
             firstName: registerData.firstName,
             lastName: registerData.lastName,
-            // userName: registerData.userName,
             email: registerData.userEmail,
             password: registerData.userPassword,
             mobile: registerData.mobile,
             address: { 'city': registerData.city, 'street': registerData.street, 'building': registerData.building },
             payment: { 'cardType': registerData.cardType, 'cardNumber': registerData.cardNumber },
-
         })
-        .then((response) => {
-            console.log(response.data);
-        })
-        .catch((error) => {
-            console.log(error.response.data.message);
-            (error.response.data.message).includes('email_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, userEmailError: 'email registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
-            (error.response.data.message).includes('mobile_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, mobileError: 'mobile registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
-            (error.response.data.message).includes('cardNumber_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, cardNumberError: 'card number registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
-            switch (error.response.data.message) {
-                case "Internal ErrorError: firstName length should be between 1 and 12 numbers ":
-                    {
+            .then((response) => {
+                history.push('/login-user');
+            })
+            .catch((error) => {
+                console.log(error.response.data.message);
+                (error.response.data.message).includes('email_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, userEmailError: 'email registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
+                (error.response.data.message).includes('mobile_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, mobileError: 'mobile registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
+                (error.response.data.message).includes('cardNumber_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, cardNumberError: 'card number registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
+                switch (error.response.data.message) {
+                    case "Internal ErrorError: firstName length should be between 1 and 12 numbers ":
+                        {
+                            setRegisterDataErrors({
+                                ...registerDataErrors,
+                                firstNameError: 'firstName length should be between 1 and 12 numbers',
+                            });
+                        }
+                        break;
+                    case "Internal ErrorError: lastName length should be between 1 and 12 numbers ":
+                        {
+                            setRegisterDataErrors({
+                                ...registerDataErrors,
+                                lastNameError: 'lastName length should be between 1 and 12 numbers',
+                            });
+                        }
+                        break;
+                    case "Internal ErrorError: mobile length should be between 10 and 14  numbers ":
+                        {
+                            console.log("her");
+                            setRegisterDataErrors({
+                                ...registerDataErrors,
+                                mobileError: 'mobile length should be between 10 and 14  numbers',
+                            });
+                        }
+                        break;
+                    case "Internal ErrorError: card type should be one of these ['visa','mastercard','meza'] ":
+                        {
+                            console.log("her");
+                            setRegisterDataErrors({
+                                ...registerDataErrors,
+                                cardTypeError: "card type should be one of these ['visa','mastercard','meza']",
+                            });
+                        }
+                        break;
+                    case "Internal ErrorError: card number length should be 16 numbers ":
+                        {
+                            console.log("her");
+                            setRegisterDataErrors({
+                                ...registerDataErrors,
+                                cardNumberError: 'card number length should be 16 numbers',
+                            });
+                        }
+                        break;
+                    default:
                         setRegisterDataErrors({
                             ...registerDataErrors,
-                            firstNameError: 'firstName length should be between 1 and 12 numbers',
                         });
-                    }
-                    break;
-                case "Internal ErrorError: lastName length should be between 1 and 12 numbers ":
-                    {
-                        setRegisterDataErrors({
-                            ...registerDataErrors,
-                            lastNameError: 'lastName length should be between 1 and 12 numbers',
-                        });
-                    }
-                    break;
-                case "Internal ErrorError: mobile length should be between 10 and 14  numbers ":
-                    {
-                        console.log("her");
-                        setRegisterDataErrors({
-                            ...registerDataErrors,
-                            mobileError: 'mobile length should be between 10 and 14  numbers',
-                        });
-                    }
-                    break;
-                case "Internal ErrorError: card type should be one of these ['visa','mastercard','meza'] ":
-                    {
-                        console.log("her");
-                        setRegisterDataErrors({
-                            ...registerDataErrors,
-                            cardTypeError: "card type should be one of these ['visa','mastercard','meza']",
-                        });
-                    }
-                    break;
-                case "Internal ErrorError: card number length should be 16 numbers ":
-                    {
-                        console.log("her");
-                        setRegisterDataErrors({
-                            ...registerDataErrors,
-                            cardNumberError: 'card number length should be 16 numbers',
-                        });
-                    }
-                    break;
-                default:
-                    setRegisterDataErrors({
-                        ...registerDataErrors,
-                    });
-            }
-        })
+                }
+            })
     }
     return (
         <div className="col-md-9 mx-auto my-5 p-5 border-1 shadow-lg rounded">
@@ -253,29 +243,18 @@ export default function LoginForm() {
                     <div className="mb-3 col-6">
                         <label htmlFor="cardType" className="form-label font-bold">Card Type</label>
                         <select className={`form-select ${registerDataErrors.cardTypeError ? "is-invalid" : ""}`} name="cardType" aria-describedby="cardTypeHelp" value={registerData.cardType} onChange={(event) => { changeRegisterData(event) }} required>
-                            {/* <option defaultValue disabled >Select Card Type</option> */}
                             <option value="visa">Visa</option>
                             <option value="mastercard">Master Card</option>
                             <option value="meza">Meza</option>
                         </select>
                         <div id="cardTypeHelp" className="form-text text-danger">{registerDataErrors.cardTypeError}</div>
                     </div>
-                    {/* <div className="mb-3 col-6">
-                        <label htmlFor="cardType" className="form-label font-bold">Card Type</label>
-                        <input type="text" className={`form-control ${registerDataErrors.cardTypeError ? "is-invalid" : ""}`} name="cardType" aria-describedby="cardTypeHelp" value={registerData.cardType} onChange={(event) => { changeRegisterData(event) }} />
-                        <div id="cardTypeHelp" className="form-text text-danger">{registerDataErrors.cardTypeError}</div>
-                    </div> */}
                     <div className="mb-3 col-6">
                         <label htmlFor="cardNumber" className="form-label font-bold">Card Number</label>
                         <input type="tel" inputMode="numeric" pattern="[0-9\s]{13,19}" autoComplete="cc-number" maxLength="19" placeholder="xxxx xxxx xxxx xxxx" className={`form-control ${registerDataErrors.cardNumberError ? "is-invalid" : ""}`} name="cardNumber" aria-describedby="cardNumberHelp" value={registerData.cardNumber} onChange={(event) => { changeRegisterData(event) }} required />
                         <div id="cardNumberHelp" className="form-text text-danger">{registerDataErrors.cardNumberError}</div>
                     </div>
                 </div>
-                {/* <div className="mb-3">
-                    <label htmlFor="userName" className="form-label font-bold">User Name</label>
-                    <input type="text" className={`form-control ${registerDataErrors.userNameError ? "is-invalid" : ""}`} name="userName" aria-describedby="userNameHelp" value={registerData.userName} onChange={(event) => { changeRegisterData(event) }} />
-                    <div id="userNameHelp" className="form-text text-danger">{registerDataErrors.userNameError}</div>
-                </div> */}
                 <div className="mb-3">
                     <label htmlFor="userEmail" className="form-label font-bold">Email Address</label>
                     <input type="email" className={`form-control ${registerDataErrors.userEmailError ? "is-invalid" : ""}`} name="userEmail" aria-describedby="userEmailHelp" value={registerData.email} onChange={(event) => { changeRegisterData(event) }} placeholder="example@email.com" required />

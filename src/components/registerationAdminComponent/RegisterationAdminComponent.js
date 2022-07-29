@@ -1,9 +1,12 @@
 import { useState } from "react";
-import './RegisterationAdminComponentStyle.css';
+import { useHistory } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axiosInstance from "../../network/Config";
+import './RegisterationAdminComponentStyle.css';
 
 export default function RegisterationAdminForm() {
+
+    const history = useHistory();
 
     const [registerData, setRegisterData] = useState({
         firstName: "",
@@ -81,7 +84,6 @@ export default function RegisterationAdminForm() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        console.log(registerData);
         axiosInstance.post("/admin", {
             firstName: registerData.firstName,
             lastName: registerData.lastName,
@@ -95,7 +97,7 @@ export default function RegisterationAdminForm() {
             },
         )
             .then((response) => {
-                console.log(response.data);
+                history.push('/');
             })
             .catch((error) => {
                 (error.response.data.message).includes('email_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, adminEmailError: 'email registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
@@ -125,7 +127,7 @@ export default function RegisterationAdminForm() {
     }
     return (
         <div className="col-md-9 mx-auto my-5 p-5 border-1 shadow-lg rounded">
-            <h2 className="text-main mb-5">Create Your Admin Account</h2>
+            <h2 className="text-main mb-5">Create New Admin Account</h2>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <div className="mb-3">
                     <label htmlFor="firstName" className="form-label font-bold">First Name</label>
