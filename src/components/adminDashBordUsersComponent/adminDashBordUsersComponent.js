@@ -43,7 +43,7 @@ export default function AdminDashBoardUsersPage() {
     }
 
     function deleteUser(id) {
-        if (window.confirm("Are You Sure") == true) {
+        if (window.confirm("Are You Sure") === true) {
             axiosInstance.delete(`/user/${id}`)
                 .then(res => {
                     console.log(res.data);

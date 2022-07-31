@@ -1,10 +1,13 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axiosInstance from '../../network/Config';
-import '../cardComponent/cardComponent.css';
-import img from '../../images/product1-img.jpg';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FaRegHeart, FaHeart } from 'react-icons/fa';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import axiosInstance from "../../network/Config";
+import "../cardComponent/cardComponent.css";
+import img from "../../images/product1-img.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import jwt from 'jwt-decode';
+
+let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
 
 export default function CardComponent({ product }) {
   // console.log(product._id);
@@ -14,22 +17,36 @@ export default function CardComponent({ product }) {
     setfavProductIcon(favProductIcon ? false : true);
   }
   const addTowishList = () => {
-    console.log('add', product._id);
+    console.log("add", product._id);
     axiosInstance
-      .put('/user/1/wishlist', {
-        wishList: [product._id],
-      })
-      .then(res => console.log(res))
-      .catch(error => console.log(error));
+      .put(
+        `/user/${token.id}/wishlist`,
+        {
+          wishList: [product._id],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, //
+          },
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error, localStorage.getItem("token")));
   };
+
   const removTowishList = () => {
-    console.log('remove', product._id);
+    console.log("remove", product._id);
     axiosInstance
-      .delete('/user/1/wishlist', {
-        data: { wishList: [product._id] },
+      .delete(`/user/${token.id}/wishlist`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        data: {
+          wishList: [product._id],
+        },
       })
-      .then(res => console.log(res))
-      .catch(error => console.log(error));
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error));
   };
   return (
     <>
@@ -45,14 +62,14 @@ export default function CardComponent({ product }) {
           <div className="mt-auto">
             {product.discount ? (
               <div className="product-price">
-                <h6 className="old-price">EGP {(product.price).toFixed(2)}</h6>
+                <h6 className="old-price">EGP {product.price.toFixed(2)}</h6>
                 <h6 className="final-price">
                   EGP {(product.price - product.discount).toFixed(2)}
                 </h6>
               </div>
             ) : (
               <div className="product-price ">
-                <h6 className="final-price">EGP {(product.price).toFixed(2)}</h6>
+                <h6 className="final-price">EGP {product.price.toFixed(2)}</h6>
               </div>
             )}
 
@@ -65,10 +82,10 @@ export default function CardComponent({ product }) {
                   <FaHeart
                     className="hover white"
                     style={{
-                      color: 'red',
-                      fontSize: '22px',
+                      color: "red",
+                      fontSize: "22px",
                     }}
-                    onClick={e => {
+                    onClick={(e) => {
                       changeFavProductIcon();
                       removTowishList();
                     }}
@@ -76,8 +93,8 @@ export default function CardComponent({ product }) {
                 ) : (
                   <FaRegHeart
                     className="hover-effect gray"
-                    style={{ fontSize: '22px' }}
-                    onClick={e => {
+                    style={{ fontSize: "22px" }}
+                    onClick={(e) => {
                       changeFavProductIcon();
                       addTowishList();
                     }}

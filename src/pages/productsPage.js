@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react';
 import axiosInstance from '../network/Config';
 
@@ -18,14 +19,16 @@ export default function ProductsPage() {
           page: currentPage,
           itemCount: itemCount,
         },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
       })
-
       .then(res => {
         setProductsData(res.data.resData.products);
         setMaxPagesNumber(res.data.resData.maxPagesNumber);
       })
       .catch(err => console.log(err));
-  }, [currentPage, keyword]);
+  }, [currentPage, itemCount, keyword]);
 
   function handleSubCategoryLink(e) {
     const clickedLi = e.target.closest('li');
@@ -85,7 +88,7 @@ export default function ProductsPage() {
             ) : (
               <li className="page-item">
                 <a
-                  className="page-link"
+                  className=" page-link "
                   href="#"
                   onClick={() => setCurrentPage(1)}
                 >
