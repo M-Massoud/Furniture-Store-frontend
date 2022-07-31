@@ -48,7 +48,9 @@ export default function AdminDashBoardSubCategoriesPage() {
 
     function deletesubCategory(id) {
         if (window.confirm("Are You Sure") == true) {
-            axiosInstance.delete(`/subCategory/${id}`)
+            axiosInstance.delete(`/subCategory/${id}`,{
+                headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
+            })
                 .then(res => {
                     console.log(res.data);
                     setDeletingError('successful');

@@ -1,25 +1,25 @@
-.footer {
+footer {
   background: var(--secondary-color);
   color: #fff;
 }
 
-.footer h5 {
+footer h5 {
   text-transform: uppercase;
 }
 
-.footer p {
+footer p {
   margin-bottom: 0px !important;
 }
 
-.footer .icon svg {
+footer .icon svg {
   font-size: 23px;
 }
 
-.footer h6 {
+footer h6 {
   font-size: 15px;
 }
 
-.footer a {
+footer a {
   color: white;
   text-decoration: none;
 }

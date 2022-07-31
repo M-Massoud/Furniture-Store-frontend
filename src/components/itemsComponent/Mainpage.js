@@ -6,7 +6,6 @@ import React, { useState, useEffect } from 'react';
 
 function Main() {
   const [itemDisplay, setItemdisplay]= useState('d-none');
-  console.log(itemDisplay);
   useEffect(() => {
     setItemdisplay('')
   }, []);

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { addProduct } from '../../redux/cartRedux';
 import axiosInstance from '../../network/Config';
 
 import '../singleProductComponent/singleProductComponent.css';
@@ -11,6 +13,7 @@ export default function SingleProductComponent() {
   //   console.log(params.id);
 
   const [productDetails, setProductDetails] = useState({});
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axiosInstance
@@ -19,7 +22,13 @@ export default function SingleProductComponent() {
       .catch(err => console.log(err));
   }, []);
 
-  console.log(productDetails);
+  // console.log(productDetails);
+
+  const handleAddToCart = () => {
+    dispatch(
+      addProduct({ product: productDetails, price: productDetails.price })
+    );
+  };
 
   return (
     <>
@@ -37,7 +46,7 @@ export default function SingleProductComponent() {
             <h1 className="single-product-title">{productDetails.name}</h1>
             <p className="single-product-title">{productDetails.description}</p>
             <h6>sub category: {productDetails.subCategory?.title}</h6>
-            {productDetails.discount ? (
+            {productDetails.discount > 0 ? (
               <div className="product-price my-3">
                 <h6 className="old-price">EGP {productDetails.price}</h6>
                 <h6 className="final-price">
@@ -50,9 +59,12 @@ export default function SingleProductComponent() {
               </div>
             )}
 
-            <a href="#" className="btn add-to-cart " style={{ width: '100%' }}>
-              add to card
-            </a>
+            <button
+              className="btn add-to-cart"
+              onClick={handleAddToCart}
+              style={{ width: '100%' }} >
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>

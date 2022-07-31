@@ -1,19 +1,25 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux/es/exports';
+import { Link } from "react-router-dom";
 import DropDowen from './DropDowen';
 import "./NewNav.css"
-import { Link } from "react-router-dom";
+import { FaCartPlus } from 'react-icons/fa';
+
 
 function NewNav() {
   const [getData, setGetData] = useState("");
   const searchedData = getData;
+  const {quantity} = useSelector(state=>state.cart);
+
   const handleChange = event => {
     setGetData(event.target.value);
     console.log('value is:', event.target.value);
   };
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-danger">
+  <header>
+    <nav className=" container navbar navbar-expand-lg navbar-dark shadow">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">Home</a>
+        <Link className="navbar-brand" to={"/"} >Furniture Store</Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
@@ -24,20 +30,26 @@ function NewNav() {
             <DropDowen />
             <DropDowen />
           </ul>
-          <form className="d-flex">
-            <input className="form-control me-2" onChange={handleChange} value={getData} type="search" placeholder="Search" aria-label="Search" />
+          <form className="d-flex align-items-center ">
+            <input className="form-control me-2 search-input" onChange={handleChange} value={getData} type="search" placeholder="Search" aria-label="Search"/>
             <Link to={{
               pathname: `/search/${searchedData}`,
               state: {
                 searchedData
               }
-            }} className="btn btn-primary">
+            }} className="btn">
               <button className="btn btn-outline-light" type="submit">Search</button>
             </Link>
           </form>
+          <Link to={"/shoppingCart"} >
+            <span className='header-cart' >
+            <FaCartPlus/> <span className='header-cart-qty'>{quantity}</span>
+            </span>
+          </Link>
         </div>
       </div>
     </nav>
+  </header>
   )
 }
 

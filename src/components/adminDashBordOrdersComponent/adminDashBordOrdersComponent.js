@@ -44,7 +44,9 @@ export default function AdminDashBoardOrdersPage() {
 
     function deleteorder(id) {
         if (window.confirm("Are You Sure") == true) {
-            axiosInstance.delete(`/orders/${id}`)
+            axiosInstance.delete(`/orders/${id}`,{
+                    headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
+            })
                 .then(res => {
                     console.log(res.data);
                     setDeletingError('successful');

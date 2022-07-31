@@ -6,7 +6,7 @@ import UserProfile from "../components/userProfileComponent/userProfilePage";
 import jwt from 'jwt-decode';
 
 let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
-console.log(token.id)
+// console.log(token.id)
 
 export default function UserProfilePage() {
 

@@ -1,5 +1,3 @@
-
-
 function UserProfile({ userData }) {
     return (
         <>

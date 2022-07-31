@@ -41,7 +41,7 @@ export default function AdminDashBoardProductsPage() {
     function deleteproduct(id) {
         if (window.confirm("Are You Sure") === true) {
             axiosInstance.delete(`/products/${id}`, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
             })
                 .then(res => {
                     console.log(res.data);

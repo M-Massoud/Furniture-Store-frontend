@@ -39,7 +39,9 @@ export default function AdminDashBoardCategoriesPage() {
 
     function deletecategory(id) {
         if (window.confirm("Are You Sure") == true) {
-            axiosInstance.delete(`/category/${id}`)
+            axiosInstance.delete(`/category/${id}`,{
+                headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
+            })
                 .then(res => {
                     console.log(res.data);
                     setDeletingError('successful');
