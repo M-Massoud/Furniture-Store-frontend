@@ -11,17 +11,20 @@ export default function ProductsPage() {
   const [maxPagesNumber, setMaxPagesNumber] = useState(1);
   const [itemCount, setItemCount] = useState(10);
   const [keyword, setKeword] = useState('products');
+  const [sort, setSort] = useState("");
+  console.log(keyword)
+  let sorted = keyword
 
   useEffect(() => {
     axiosInstance
-      .get(`/${keyword}`, {
+      .get(`/${sorted}`, {
         params: {
           page: currentPage,
           itemCount: itemCount,
         },
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
+        }
       })
       .then(res => {
         setProductsData(res.data.resData.products);
@@ -48,7 +51,22 @@ export default function ProductsPage() {
       ? setCurrentPage(currentPage + 1)
       : setCurrentPage(currentPage);
   }
-
+  const handleSorting = (e) => {
+    setSort(e.target.value);
+    if (e.target.value === "atoz") {
+      setKeword("atoz");
+    } else if (e.target.value === "ztoa") {
+      setKeword("ztoa");
+    } else if (e.target.value === "highprice") {
+      setKeword("highprice");
+    } else if (e.target.value === "lowprice") {
+      setKeword("lowprice");
+    }
+  };
+  const handleReset = (e) => {
+    setKeword("products");
+    setSort('products')
+  }
   return (
     <>
       <div className="container pt-5">
@@ -57,6 +75,16 @@ export default function ProductsPage() {
             <SidebarComponent handleSubCategoryLink={handleSubCategoryLink} />
           </div>
           <div className="col col-sm-8 col-md-9 col-lg-9">
+            <div className="  mb-4 px-4 py-4">
+              <select onChange={handleSorting} value={sort} className="form-select form-select-lg mb-3" aria-label=".form-select-lg">
+                <option checked value="products">Sort Products</option>
+                <option value="atoz" >atoz</option>
+                <option value="ztoa">ztoa</option>
+                <option value="lowprice">lowprice</option>
+                <option value="highprice">highprice</option>
+              </select>
+              <button className="btn btn-danger" onClick={handleReset}>reset</button>
+            </div>
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3  g-4 ">
               {productsData.map(product => {
                 return (
