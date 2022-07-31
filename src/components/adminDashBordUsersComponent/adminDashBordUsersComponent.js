@@ -44,7 +44,9 @@ export default function AdminDashBoardUsersPage() {
 
     function deleteUser(id) {
         if (window.confirm("Are You Sure") === true) {
-            axiosInstance.delete(`/user/${id}`)
+            axiosInstance.delete(`/user/${id}`,{
+                headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
+            })
                 .then(res => {
                     console.log(res.data);
                     setDeletingError('successful');

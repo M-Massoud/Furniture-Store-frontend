@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FaGithub, FaCcVisa } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 import './Footer.css';
 
 const Footer = () => {
   return (
-    <div className="footer">
+    <footer className='shadow'>
       <div className="container py-5">
         <div className="row">
           <div className="col">
@@ -45,7 +44,7 @@ const Footer = () => {
           Copyright © 2022 ITI TEAM 4, Inc. All rights reserved.{' '}
         </p>
       </div>
-    </div>
+    </footer>
   );
 };
 export default Footer;

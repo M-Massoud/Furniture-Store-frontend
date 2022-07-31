@@ -13,9 +13,9 @@ export default function CardComponent({ product }) {
   const [favProductIcon, setfavProductIcon] = useState(true);
   console.log(favProductIcon);
   function changeFavProductIcon() {
-    console.log(favProductIcon);
+    // console.log(favProductIcon);
     setfavProductIcon(favProductIcon ? false : true);
-    console.log(favProductIcon);
+    // console.log(favProductIcon);
   }
 
   const removTowishList = () => {

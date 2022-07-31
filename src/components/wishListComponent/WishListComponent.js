@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
 
 let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
-console.log(token.id)
+// console.log(token.id)
 export default function WishList() {
     const [keyword, setKeword] = useState('wishList');
     const [currentPage, setCurrentPage] = useState(1);

@@ -29,6 +29,7 @@ import AdminDashBoardProductsPage from "./components/adminDashBordProductsCompon
 import AdminDashBoardOrdersPage from "./components/adminDashBordOrdersComponent/adminDashBordOrdersComponent";
 import NotFound from './components/404/NotFound';
 import FaqComponent from './components/faqComponent/FaQComponent';
+import NavBar from './components/NavBar/NewNav/NewNav';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
 import AddProductForm from './components/productForm/addProductForm';
@@ -75,8 +76,9 @@ function PrivateRoute({ children, requiredRole, ...rest }) {
 function App() {
   return (
     <Router>
+      <NavBar/>
       <Switch>
-        <Route path={'/'} exact component={WishListComponent} />
+        <Route path={'/'} exact component={Main} />
         <PrivateRoute path={'/admin-dashBoard/users'} requiredRole="admin">
           <AdminDashBoardUsersPage />
         </PrivateRoute>
@@ -113,6 +115,7 @@ function App() {
           <UserProfilePage />
         </PrivateRoute>
         <Route path={'/logout'} component={Logout} />
+        <Route path={'/wishlist'} exact component={WishListComponent} />
         <Route path={'*'} component={NotFound} />
       </Switch>
       <Footer />
@@ -121,7 +124,3 @@ function App() {
 }
 
 export default App;
-
-
-// "email" : "mahmoud2019@gmail.com" ,
-// "password" : "Mahmoud@2019",
