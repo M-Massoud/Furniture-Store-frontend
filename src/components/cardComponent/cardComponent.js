@@ -80,12 +80,13 @@ export default function CardComponent({ product }) {
                 <h6 className="final-price">EGP {product.price.toFixed(2)}</h6>
               </div>
             )}
-
+            <h6>Stock Amount: {product.stockAmount}</h6>
             <div className="product-card-footer ">
               <button className="btn add-to-cart" onClick={handleAddToCart}>
-                add to card
+                add to cart
               </button>
 
+              <input type="number" defaultValue={1} min={1} max={product.stockAmount} className="col-2 mx-2 rounded border-danger text-center" />
               <span className="wishlist-icon">
                 {favProductIcon ? (
                   <FaHeart

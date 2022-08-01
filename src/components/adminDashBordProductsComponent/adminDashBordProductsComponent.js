@@ -8,6 +8,7 @@ export default function AdminDashBoardProductsPage() {
     const [productsData, setProductsData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPagesNumber, setMaxPagesNumber] = useState(1);
+    const [itemCount, setItemCount] = useState(10);
     const [deletingError, setDeletingError] = useState('');
 
     useEffect(() => {
@@ -15,7 +16,7 @@ export default function AdminDashBoardProductsPage() {
             .get(`/products`, {
                 params: {
                     page: currentPage,
-                    itemCount: 10,
+                    itemCount: itemCount,
                 }
             })
             .then(res => {
@@ -24,7 +25,7 @@ export default function AdminDashBoardProductsPage() {
                 // console.log(res.data.resData.products);
             })
             .catch(err => console.log(err));
-    }, [currentPage]);
+    }, [currentPage, itemCount]);
 
     function previousPage() {
         currentPage > 1
@@ -77,12 +78,25 @@ export default function AdminDashBoardProductsPage() {
         setTimeout(() => { setDeletingError(''); }, 2000);
     }
 
+    function changeItemPerPage(event) {
+        setItemCount(event.target.value);
+    }
+
     return (
         <>
             <div className='container'>
                 <div className='row m-5 col-12'>
                     <AdminDashBoardPage />
                     <div className='col-9'>
+                        <div className='col-3'>
+                            <select onChange={(event) => changeItemPerPage(event)} defaultValue="10" className="form-select form-select-lg mb-3" aria-label=".form-select-lg">
+                                <option checked disabled>Products Per Page</option>
+                                <option value="5" >5</option>
+                                <option value="10" >10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
                         <div className='container-fluid' >
                             <table className="table table-striped">
                                 <thead>
@@ -131,26 +145,26 @@ export default function AdminDashBoardProductsPage() {
                             <nav className='my-5 mx-5' aria-label="...">
                                 <ul className="pagination">
                                     <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>
-                                        <span className="page-link" onClick={() => previousPage()}>Previous</span>
+                                        <span className="page-link" role="button" onClick={() => previousPage()}>Previous</span>
                                     </li>
                                     {currentPage === 1 ? <li className="page-item active" aria-current="page">
                                         <span className="page-link" onClick={() => setCurrentPage(1)}>{currentPage}</span>
-                                    </li> : <li className="page-item"><a className="page-link" href='#' onClick={() => setCurrentPage(1)}>1</a></li>}
+                                    </li> : <li className="page-item"><button className="page-link" onClick={() => setCurrentPage(1)}>1</button></li>}
                                     {maxPagesNumber >= 2 ? currentPage === 2 ? <li className="page-item active" aria-current="page">
                                         <span className="page-link">{currentPage}</span>
-                                    </li> : <li className="page-item" onClick={() => setCurrentPage(2)}><a className="page-link" href='#' onClick={() => setCurrentPage(2)}>2</a></li> : ''}
+                                    </li> : <li className="page-item" onClick={() => setCurrentPage(2)}><button className="page-link" onClick={() => setCurrentPage(2)}>2</button></li> : ''}
                                     {maxPagesNumber >= 3 ? currentPage === 3 ? <li className="page-item active" aria-current="page">
                                         <span className="page-link" onClick={() => setCurrentPage(3)}>{currentPage}</span>
-                                    </li> : <li className="page-item"><a className="page-link" href='#' onClick={() => setCurrentPage(3)}>3</a></li> : ''}
-                                    {currentPage > 3 ? <li className="page-item"><a className="page-link disabled" href='#'>...</a></li> : ''}
+                                    </li> : <li className="page-item"><button className="page-link" onClick={() => setCurrentPage(3)}>3</button></li> : ''}
+                                    {((maxPagesNumber !== 4) && (currentPage > 3)) ? <li className="page-item"><button className="page-link disabled">...</button></li> : ''}
                                     {currentPage > 3 ? <li className="page-item active" aria-current="page">
                                         <span className="page-link">{currentPage}</span>
                                     </li> : ''}
-                                    {maxPagesNumber > 5 ? currentPage < maxPagesNumber - 2 ? <li className="page-item"><a className="page-link disabled" href=''>...</a></li> : '' : ''}
-                                    {maxPagesNumber > 4 ? currentPage < maxPagesNumber - 1 ? <li className="page-item"><a className="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber - 1)}>{maxPagesNumber - 1}</a></li> : '' : ''}
-                                    {maxPagesNumber > 3 ? currentPage < maxPagesNumber ? <li className="page-item"><a className="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber)}>{maxPagesNumber}</a></li> : '' : ''}
+                                    {maxPagesNumber > 5 ? currentPage < maxPagesNumber - 2 ? <li className="page-item"><button className="page-link disabled">...</button></li> : '' : ''}
+                                    {maxPagesNumber > 4 ? currentPage < maxPagesNumber - 1 ? <li className="page-item"><button className="page-link" onClick={() => setCurrentPage(maxPagesNumber - 1)}>{maxPagesNumber - 1}</button></li> : '' : ''}
+                                    {maxPagesNumber > 3 ? currentPage < maxPagesNumber ? <li className="page-item"><button className="page-link" onClick={() => setCurrentPage(maxPagesNumber)}>{maxPagesNumber}</button></li> : '' : ''}
                                     <li className={currentPage === maxPagesNumber ? "page-item  disabled" : "page-item"}>
-                                        <a className="page-link" href='#' onClick={() => nextPage()}>Next</a>
+                                        <button className="page-link" onClick={() => nextPage()}>Next</button>
                                     </li>
                                 </ul>
                             </nav>

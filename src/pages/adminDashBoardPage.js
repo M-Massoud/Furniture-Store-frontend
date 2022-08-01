@@ -7,7 +7,7 @@ export default function AdminDashBoardPage() {
             <table className="table">
                 <thead>
                     <tr>
-                        <th scope="col" className='text-hover-red'><NavLink exact activeClassName="text-success" className="nav-link" to="/admin-dashBoard/users">Users</NavLink ></th>
+                        <th scope="col" className='text-hover-red'><NavLink exact activeClassName="text-success" className="nav-link" to="/admin-dashBoard">Users</NavLink ></th>
                     </tr>
                     <tr>
                         <th scope="col" className='text-hover-red'><NavLink exact activeClassName="text-success" className="nav-link" to="/admin-dashBoard/categories">Categories</NavLink ></th>
