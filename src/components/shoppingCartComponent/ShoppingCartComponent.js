@@ -4,6 +4,7 @@ import './ShoppingCartComponentStyle.css';
 import { Link, NavLink } from 'react-router-dom';
 import { FaPlusCircle, FaMinusCircle, FaTrashAlt } from 'react-icons/fa';
 import { removeProduct } from '../../redux/cartRedux';
+import axiosInstance from "../../network/Config";
 
 export default function ShoppingCart() {
   const dispatch = useDispatch();
@@ -12,6 +13,34 @@ export default function ShoppingCart() {
   const handleRemoveProduct = product => {
     dispatch(removeProduct(product));
   };
+
+  function prepareCheckoutItems() {
+
+    let checkoutProducts = [];
+
+    for (let product of cart.products) {
+      checkoutProducts.push({ productId: product._id, quantity: 1 });
+    }
+
+    // localStorage.setItem('checkoutProducts', JSON.stringify(checkoutProducts));
+    // console.log(JSON.parse(localStorage.getItem('checkoutProducts')));
+
+    axiosInstance.post('/create-checkout-session', {
+      shoppingCart: checkoutProducts,
+    },
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+      },
+    )
+      .then(response => {
+        console.log("pushed");
+        console.log(response.data);
+        window.location.href = response.data.url || '/';
+      })
+      .catch(error => console.log(error));
+  }
 
   return (
     <>
@@ -30,11 +59,11 @@ export default function ShoppingCart() {
                 </tr>
               </thead>
               <tbody>
-                {cart.products.map((item,index) => {
+                {cart.products.map((item, index) => {
                   return (
                     <tr key={index}>
                       <td>{item.name}</td>
-                      <td>{item.price-item.discount}</td>
+                      <td>{item.price - item.discount}</td>
                       <td>
                         <span
                           onClick={() => handleRemoveProduct(item)}
@@ -96,7 +125,7 @@ export default function ShoppingCart() {
                 EGP {cart.totalPrice}
               </p>
             </div>
-            <button className="btn btn-danger col-12">Check Out</button>
+            <button className="btn btn-danger col-12" onClick={prepareCheckoutItems}>Check Out</button>
           </div>
         </div>
       </div>

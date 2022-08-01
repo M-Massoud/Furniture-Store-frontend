@@ -74,10 +74,10 @@ export default function LoginAdminForm() {
         setResData(response.data);
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
-        history.push(location.state.from.pathname);
+        history.push((location.state?.from.pathname) || '/');
       })
       .catch(error => {
-        console.log(error.response.data.message);
+        console.log(error);
         serIsAuthenticated(false);
       });
   }

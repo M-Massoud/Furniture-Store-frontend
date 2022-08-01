@@ -76,10 +76,10 @@ export default function LoginForm() {
         console.log(resData)
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
-        history.push(location.state.from.pathname);
+        history.push((location.state?.from.pathname) || '/');
       })
       .catch(error => {
-        // console.log(error.response.message);
+        console.log(error);
         serIsAuthenticated(false);
       });
   }
@@ -157,7 +157,7 @@ export default function LoginForm() {
         <div className="bg-main m-3 p-5 col-10 col-xl-5 border-custom shadow-lg">
           <h3>Create Your HUB Furniture Account</h3>
           <Link
-            to={'/register'}
+            to={'/register-user'}
             className="btn bg-secondary-1 white mt-3 col-12"
           >
             Sign up
