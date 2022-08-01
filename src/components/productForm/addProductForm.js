@@ -2,29 +2,27 @@ import { useState } from 'react';
 import axiosInstance from '../../network/Config';
 function AddProductForm(props) {
     const [formDetails, setFormDetails] = useState({
-        Pname: "",
-        subCateId:"",
-        Psubcategory:"",
-        Pdescrip: "",
-        Pimg: "",
-        Pamount: "",
-        Pprice: "",
-        Pdiscount:""
+        productName: "",
+        subCategotyId:"",
+        productSubcategory:"",
+        productDescription: "",
+        productImgage: "",
+        productAmount: "",
+        productPrice: "",
+        productDiscount:""
     });
     const [formError, setFormerror] = useState({
-        Pname: "",
-        subCateId:"",
-        Psubcategory:"",
-        Pdescrip: "",
-        Pimg: "",
-        Pamount: "",
-        Pprice: "",
-        Pdiscount:""
+        productNameError: "",
+        subCategotyIdError:"",
+        productSubcategoryError:"",
+        productDescriptionError: "",
+        productImgageError: "",
+        productAmountError: "",
+        productPriceError: "",
+        productDiscountError:""
         
     });
     function handelFormchange(e) {
-        // console.log(e.target.id, e.target.value);
-        // console.log(formDetails)
         setFormDetails({
             ...formDetails,
             [e.target.id]: e.target.value
@@ -33,18 +31,18 @@ function AddProductForm(props) {
     };// handelFormchange function
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(formDetails);
+    console.log(formDetails);
     };//handleSubmit function
     const addingProduct = () => {
         axiosInstance
         .post('/products', {
-                name: formDetails.Pname,
-                description: formDetails.Pdescrip,
-                stockAmount: formDetails.Pamount,
-                price: formDetails.Pprice,
-                discount: formDetails.Pdiscount,
-                subCategory: { id: formDetails.subCateId, title: formDetails.Psubcategory },
-                image:formDetails.Pimg
+                name: formDetails.productName,
+                description: formDetails.productDescription,
+                stockAmount: formDetails.productAmount,
+                price: formDetails.productPrice,
+                discount: formDetails.productDiscount,
+                subCategory: { id: formDetails.subCategotyId, title: formDetails.productSubcategory },
+                image:formDetails.productImgage
                 },
                 { headers: {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzU4N2YxODVmZmJhOTQ4YTBkYzIyNSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1ODY2OTA2NCwiZXhwIjoxNjU5MjczODY0fQ.aoeoA7HfWURqkhcfhV5pW7elWuA0ltbhelM4N5wuM8M'}
         })
@@ -54,56 +52,53 @@ function AddProductForm(props) {
   
     /////////////////////////////////////////////
     const ErrorHandling = (input, value) => { 
-        // let imgURl = new RegExp(/^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/);
         switch (input) {
-            //regex = new Regex("[0-9]");
-         
-            case 'Pname':
+            case 'productName':
                 setFormerror({
                     ...formError,
-                    PnameError: value.length === 0 ? "This field is required" : "",
+                    productNameError: value.length === 0 ? "This field is required" : "",
                 });
                 break;
-                case 'subCateId':
+                case 'subCategotyId':
                     setFormerror({
                         ...formError,
-                        subCateIdError: value.length === 0 ? "This field is required" : "",
+                        subCategotyIdError: value.length === 0 ? "This field is required" : "",
                     });
                     break;
-                case 'Psubcategory':
+                case 'productSubcategory':
                     setFormerror({
                         ...formError,
-                        PsubcategoryError: value.length === 0 ? "This field is required" : "",
+                        productSubcategoryError: value.length === 0 ? "This field is required" : "",
                     });
                     break;
-            case 'Pdescrip':
+            case 'productDescription':
                     setFormerror({
                         ...formError,
-                        PdescripError: value.length === 0 ? "This field is required" :"",
+                        productDescriptionError: value.length === 0 ? "This field is required" :"",
                     });
                 break;
-            case 'Pimg':
+            case 'productImgage':
                     setFormerror({
                         ...formError,
-                        PimgError: value.length === 0 ? "This field is required": "" ,
+                        productImgageError: value.length === 0 ? "This field is required": "" ,
                     });
                 break;
-            case 'Pamount':
+            case 'productAmount':
                     setFormerror({
                         ...formError,
-                        PamountError: value.length === 0 ? "This field is required" : "",
+                        productAmountError: value.length === 0 ? "This field is required" : "",
                     });
                 break;
-                case 'Pprice':
+                case 'productPrice':
                     setFormerror({
                         ...formError, 
-                        PpriceError: value.length === 0 ? "This field is required" : "",
+                        productPriceError: value.length === 0 ? "This field is required" : "",
                     });
                 break;
-                case 'Pdiscount':
+                case 'productDiscount':
                     setFormerror({
                         ...formError, 
-                        PdiscountError: value.length === 0 ? "This field is required" : "",
+                        productDiscountError: value.length === 0 ? "This field is required" : "",
                     });
                 break;
             default:
@@ -121,41 +116,41 @@ function AddProductForm(props) {
                     {/* //// */}
                                  
                     {/* //// */}
-                                  <label  htmlFor='Pname' className="form-label mt-2"> Product Name</label >
-                <input type='text' id={'Pname'} name={'Pname'} className={`form-control ${formError.PnameError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
-                    <div id="nameHelp" className="form-text text-danger">{formError.PnameError}</div>
+                                  <label  htmlFor='productName' className="form-label mt-2"> Product Name</label >
+                <input type='text' id={'productName'} name={'productName'} className={`form-control ${formError.productNameError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
+                    <div id="nameHelp" className="form-text text-danger">{formError.productNameError}</div>
                     {/* //// */}
-                    <label  htmlFor='subCateId' className="form-label  mt-2 "> subCategory ID</label >
-                <input type='number' min={1} id='subCateId' name='subCateId' className={`form-control mb-2 ${formError.subCateIdError && "border-danger"} `}  onChange={(e) => handelFormchange(e)} />
-                    <div id="nameHelp" className="form-text text-danger">{formError.subCateIdError}</div>
+                    <label  htmlFor='subCategotyId' className="form-label  mt-2 "> subCategory ID</label >
+                <input type='number' min={1} id='subCategotyId' name='subCategotyId' className={`form-control mb-2 ${formError.subCategotyIdError && "border-danger"} `}  onChange={(e) => handelFormchange(e)} />
+                    <div id="nameHelp" className="form-text text-danger">{formError.subCategotyIdError}</div>
                     {/* //// */}
-                    <label  htmlFor='Psubcategory' className="form-label mt-2"> Product subCategory</label >
-                <input type='text' id={'Psubcategory'} name={'Psubcategory'} className={`form-control ${formError.PsubcategoryError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
-                    <div id="nameHelp" className="form-text text-danger">{formError.PsubcategoryError}</div>
+                    <label  htmlFor='productSubcategory' className="form-label mt-2"> Product subCategory</label >
+                <input type='text' id={'productSubcategory'} name={'productSubcategory'} className={`form-control ${formError.productSubcategoryError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
+                    <div id="nameHelp" className="form-text text-danger">{formError.productSubcategoryError}</div>
                     {/* //// */}
-                 <label  htmlFor='Pdescrip' className="form-label   mt-2 mb-2"> Product Description</label >
-                <input type='text' id={'Pdescrip'} name={'Pdescrip'} className={`form-control ${formError.PdescripError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
-                    <div id="nameHelp" className="form-text text-danger">{formError.PdescripError}</div>
+                 <label  htmlFor='productDescription' className="form-label   mt-2 mb-2"> Product Description</label >
+                <input type='text' id={'productDescription'} name={'productDescription'} className={`form-control ${formError.productDescriptionError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
+                    <div id="nameHelp" className="form-text text-danger">{formError.productDescriptionError}</div>
                     {/* //// */}
 
-                   <label  htmlFor='Pimg' className="form-label   mt-2 mb-2"> Product Image</label >
+                   <label  htmlFor='productImgage' className="form-label   mt-2 mb-2"> Product Image</label >
 
-                  <input type='file' id={'Pimg'} name={'Pimg'} className={`form-control ${formError.PimgError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
+                  <input type='file' id={'productImgage'} name={'productImgage'} className={`form-control ${formError.productImgageError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
 
-                  <div id="nameHelp" className="form-text text-danger">{formError.PimgError}</div>
+                  <div id="nameHelp" className="form-text text-danger">{formError.productImgageError}</div>
 
                     {/* //// */}                
-                                  <label  htmlFor='Pamount' className="form-label  mt-2 "> Stock Amount</label >
-                <input type='number'  min={1} id='Pamount' name='Pamount' className={`form-control mb-2 ${formError.PamountError && "border-danger"} `}  onChange={(e) => handelFormchange(e)} />
-                    <div id="nameHelp" className="form-text text-danger">{formError.PamountError}</div>
+                                  <label  htmlFor='productAmount' className="form-label  mt-2 "> Stock Amount</label >
+                <input type='number'  min={1} id='productAmount' name='productAmount' className={`form-control mb-2 ${formError.productAmountError && "border-danger"} `}  onChange={(e) => handelFormchange(e)} />
+                    <div id="nameHelp" className="form-text text-danger">{formError.productAmountError}</div>
                     {/* //// */}
-                    <label  htmlFor='Pprice' className="form-label  mt-2 "> Product Price</label >
-                <input type='number'  min={1000} id='Pprice' name='Pprice' className={`form-control mb-2 ${formError.PpriceError && "border-danger"} `}  onChange={(e) => handelFormchange(e)} />
-                    <div id="nameHelp" className="form-text text-danger">{formError.PpriceError}</div>
+                    <label  htmlFor='productPrice' className="form-label  mt-2 "> Product Price</label >
+                <input type='number'  min={1000} id='productPrice' name='productPrice' className={`form-control mb-2 ${formError.productPriceError && "border-danger"} `}  onChange={(e) => handelFormchange(e)} />
+                    <div id="nameHelp" className="form-text text-danger">{formError.productPriceError}</div>
                      {/* //// */}
-                     <label  htmlFor='Pdiscount' className="form-label  mt-2 "> Product Discount</label >
-                <input type='number' min={300} id='Pdiscount' name='Pdiscount' className={`form-control mb-2 ${formError.PdiscountError && "border-danger"} `}  onChange={(e) => handelFormchange(e)} />
-                    <div id="nameHelp" className="form-text text-danger">{formError.PdiscountError}</div>
+                     <label  htmlFor='productDiscount' className="form-label  mt-2 "> Product Discount</label >
+                <input type='number' min={300} id='productDiscount' name='productDiscount' className={`form-control mb-2 ${formError.productDiscountError && "border-danger"} `}  onChange={(e) => handelFormchange(e)} />
+                    <div id="nameHelp" className="form-text text-danger">{formError.productDiscountError}</div>
                     <div className='border col-10 offset-1 d-flex justify-content-evenly p-3 rounded shadow flex-wrap'>
                         <button className='btn btn-primary col-8 mt-2 col-sm-5 col-md-3' onClick={()=>addingProduct()}>Add Product</button>
                     </div>

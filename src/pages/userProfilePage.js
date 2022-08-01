@@ -3,10 +3,15 @@ import { useParams } from 'react-router-dom';
 import axiosInstance from '../network/Config';
 
 import UserProfile from "../components/userProfileComponent/userProfilePage";
+import jwt from 'jwt-decode';
+
+let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
+console.log(token.id)
 
 export default function UserProfilePage() {
 
     const params = useParams();
+    console.log(params)
     const [userData, setUserData] = useState({ fitstName: '', lastName: '', email: '', mobile: 0, wishList: [], address: {}, orders: [] });
 
     useEffect(() => {

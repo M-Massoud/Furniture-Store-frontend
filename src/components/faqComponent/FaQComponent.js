@@ -1,16 +1,51 @@
 import Accordion from "./Accordioncomponent";
+import axiosInstance from './../../network/Config';
+import { useState, useEffect } from 'react';
+
+import jwt from 'jwt-decode';
+
+let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
 function FaqComponent() {
+
+  const [keyword, setKeword] = useState('wishList');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [userWishList, setuserWishList] = useState([]);
+
+  useEffect(() => {
+    axiosInstance
+      .get(`/user/${token.id}/${keyword}`, {
+        params: {
+          page: currentPage,
+          
+        //   itemCount: itemCount,
+          },
+          headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+          
+      })
+        .then(res => {
+            console.log(res.data[0].wishList)
+            setuserWishList(res.data[0].wishList)
+        // setProductsData(res.data.resData.products);
+        // setMaxPagesNumber(res.data.resData.maxPagesNumber);
+      })
+      .catch(err => console.log(err));
+  }, [keyword,currentPage]);
+// console.log(userWishList)
+
   return (
     <>
+      <div className="container-fluid">
       <div className="row flex-wrap p-2 border rounded  ">
               <div className=" col-md-3 p-2 col-8 m-auto order-2 order-md-1  mt-md-5 mt-3 " >
-                  <div className="border shadow text-center col-11 m-auto rounded py-3"> <strong>wishList</strong>
-                  <div className="col-11 m-auto text-center my-3 "> You have no items in your wish list.</div>
+                  <div className="border shadow text-center col-11 m-auto rounded py-3 "> <strong>Your wishList</strong>
+              <div className="col-11 m-auto text-center my-3 fw-bolder "> { `You have (${userWishList.length}) items in your wish list.`}</div>
                   </div>
         </div>
         <div className=" col-md-9 col-12 m-auto order-1 order-md-2 p-3 ">
           <div className=" col-11 m-auto">
-            <h5 className="p-1"> Frequently asked questions:</h5>
+            <h4 className="p-1 text-center pb-2 fw-bolder text-decoration-underline"> Frequently asked questions:</h4>
             <div className=" col-11 m-auto">
               {/* ////////////////////////// */}
               <div className="accordion shadow " id="accordionExample">
@@ -247,7 +282,11 @@ function FaqComponent() {
           </div>
         </div>
       </div>
-    </>
+
+
+
+      </div>
+          </>
   );
 }
 

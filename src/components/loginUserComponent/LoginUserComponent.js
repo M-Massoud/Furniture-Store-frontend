@@ -73,12 +73,13 @@ export default function LoginForm() {
       })
       .then(response => {
         setResData(response.data);
+        console.log(resData)
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
         history.push(location.state.from.pathname);
       })
       .catch(error => {
-        console.log(error.response.data.message);
+        // console.log(error.response.message);
         serIsAuthenticated(false);
       });
   }

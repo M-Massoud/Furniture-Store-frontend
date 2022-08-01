@@ -48,23 +48,24 @@ function PrivateRoute({ children, requiredRole, ...rest }) {
     let tokenRole = token.role;
     token = 'unAuthenticated';
     localStorage.removeItem('token');
-    tokenRole == 'user' ? history.push('/login-user') : history.push('/login-admin');
+    tokenRole === 'user' ? history.push('/login-user') : history.push('/login-admin');
   }
   // get id from url
   const requestedId = location.pathname.split('/')[2];
+  console.log(requestedId)
   return (
     <Route
       {...rest}
       render={({ location }) => {
         return (
           (token !== "unAuthenticated") &&
-          (requiredRole == 'userById' ?
-            ((token?.role == 'user') && (token?.id == requestedId)) :
-            (token?.role == requiredRole))) ?
+          (requiredRole === 'userById' ?
+            ((token?.role === 'user') && (token?.id == requestedId)) :
+            (token?.role === requiredRole))) ?
           children :
-          ((token?.role == 'user') && (token?.id != requestedId)) ?
+          ((token?.role === 'user') && (token?.id !== requestedId)) ?
             <h1>Un Authorized</h1> :
-            <Redirect to={{ pathname: requiredRole != 'admin' ? '/login-user' : '/login-admin', state: { from: location } }} />
+            <Redirect to={{ pathname: requiredRole !== 'admin' ? '/login-user' : '/login-admin', state: { from: location } }} />
           ;
       }}
     />
@@ -75,7 +76,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path={'/'} exact component={AddProductForm} />
+        <Route path={'/'} exact component={WishListComponent} />
         <PrivateRoute path={'/admin-dashBoard/users'} requiredRole="admin">
           <AdminDashBoardUsersPage />
         </PrivateRoute>
@@ -120,3 +121,7 @@ function App() {
 }
 
 export default App;
+
+
+// "email" : "mahmoud2019@gmail.com" ,
+// "password" : "Mahmoud@2019",
