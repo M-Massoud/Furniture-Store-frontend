@@ -5,19 +5,18 @@ import CardComponent from './cardComponent';
 import { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
 
-let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
-// console.log(token.id)
+
+
 export default function WishList() {
     const [keyword, setKeword] = useState('wishList');
     const [currentPage, setCurrentPage] = useState(1);
-    const [userWishList, setuserWishList] = useState([]);
+  const [userWishList, setuserWishList] = useState([]);
+  let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
     useEffect(() => {
         axiosInstance
           .get(`/user/${token.id}/${keyword}`, {
             params: {
               page: currentPage,
-              
-            //   itemCount: itemCount,
               },
               headers: {
                   Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -26,13 +25,11 @@ export default function WishList() {
           })
             .then(res => {
                 console.log(res.data[0].wishList)
-                setuserWishList(res.data[0].wishList)
-            // setProductsData(res.data.resData.products);
-            // setMaxPagesNumber(res.data.resData.maxPagesNumber);
+                setuserWishList(res.data[0].wishList);
           })
           .catch(err => console.log(err));
       }, [keyword,currentPage]);
-   console.log(userWishList)
+   console.log(userWishList,token._d)
     return (
         <>
             <div className='border row m-2 '>
