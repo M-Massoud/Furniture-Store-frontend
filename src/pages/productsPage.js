@@ -1,8 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react';
 import axiosInstance from '../network/Config';
-
-
+import Spinner from "../components/spinner";
 import CardComponent from '../components/cardComponent/cardComponent';
 import SidebarComponent from '../components/sidebarComponent/sidebarComponent';
 
@@ -11,8 +10,10 @@ export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPagesNumber, setMaxPagesNumber] = useState(1);
   const [itemCount, setItemCount] = useState(10);
+  const [filterNumber, setFilterNumber] = useState(0);
   const [keyword, setKeword] = useState('products');
   const [sort, setSort] = useState("");
+  const [isLoded, setIsLoded] = useState(false);
   console.log(keyword)
   let sorted = keyword
 
@@ -22,6 +23,8 @@ export default function ProductsPage() {
         params: {
           page: currentPage,
           itemCount: itemCount,
+          filterBy: "price",
+          filterRange: { gte: filterNumber },
         },
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -30,9 +33,10 @@ export default function ProductsPage() {
       .then(res => {
         setProductsData(res.data.resData.products);
         setMaxPagesNumber(res.data.resData.maxPagesNumber);
+        setIsLoded(true);
       })
       .catch(err => console.log(err));
-  }, [currentPage, itemCount, keyword]);
+    }, [currentPage, itemCount, filterNumber, keyword]);
 
   function handleSubCategoryLink(e) {
     const clickedLi = e.target.closest('li');
@@ -73,6 +77,11 @@ export default function ProductsPage() {
     setItemCount(event.target.value);
   }
 
+  function handleSlider(event) {
+    setKeword("products");
+    setFilterNumber(event.target.value);
+  }
+
   return (
     <>
       <div className="container pt-5">
@@ -84,14 +93,14 @@ export default function ProductsPage() {
             <div className="  mb-4 px-4 py-4">
               <select onChange={handleSorting} value={sort} className="form-select form-select-lg mb-3" aria-label=".form-select-lg">
                 <option checked value="products">Sort Products</option>
-                <option value="atoz" >atoz</option>
-                <option value="ztoa">ztoa</option>
-                <option value="lowprice">lowprice</option>
-                <option value="highprice">highprice</option>
+                <option value="atoz" >Sort By Name (A-Z)</option>
+                <option value="ztoa">Sort By Name (Z-A)</option>
+                <option value="lowprice">Price: Lowest To Highest</option>
+                <option value="highprice">Price: Highest To Lowest</option>
               </select>
               <button className="btn btn-danger" onClick={handleReset}>reset</button>
             </div>
-            <div className='col-3'>
+            <div className='col-3 mx-4'>
               <select onChange={(event) => changeItemPerPage(event)} defaultValue="10" className="form-select form-select-lg mb-3" aria-label=".form-select-lg">
                 <option checked disabled>Products Per Page</option>
                 <option value="5" >5</option>
@@ -100,18 +109,30 @@ export default function ProductsPage() {
                 <option value="20">20</option>
               </select>
             </div>
-            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3  g-4 ">
-              {productsData.map(product => {
-                return (
-                  <div className="col" key={product._id}>
-                    <CardComponent product={product} />
-                  </div>
-                );
-              })}
+            <div className='row px-5 mb-3'>
+              <div className='col-8'>
+                <label htmlFor="customRange2" className="form-label text-secondary">Filter By Price:</label>
+                <input type="range" className="form-range slider" min="0" max="10000" step="100" title={filterNumber} onChange={(event) => { handleSlider(event) }}></input>
+              </div>
+              <div className='col-3 m-2 mt-4 bg-dark rounded d-flex flex-column align-items-center justify-content-center text-light'>More Than : {filterNumber} EGP</div>
             </div>
+            {isLoded ?
+              productsData.length > 0 ?
+                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3  g-4 ">
+                  {productsData.map(product => {
+                    return (
+                      <div className="col" key={product._id}>
+                        <CardComponent product={product} />
+                      </div>
+                    );
+                  })}
+                </div> :
+                <h1 className='my-5 text-center'>No Products To Show</h1> :
+              <Spinner />}
+
           </div>
         </div>
-        <nav className='my-5 mx-5' aria-label="...">
+        <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
           <ul className="pagination">
             <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>
               <span className="page-link" role="button" onClick={() => previousPage()}>Previous</span>

@@ -24,7 +24,7 @@ export default function AdminDashBoardCategoriesPage() {
                 console.log(res.data.resData.categories);
             })
             .catch(err => console.log(err));
-    }, [currentPage,itemCount]);
+    }, [currentPage, itemCount]);
 
     function previousPage() {
         currentPage > 1
@@ -126,7 +126,7 @@ export default function AdminDashBoardCategoriesPage() {
                             </tbody>
                         </table>
                         {allertMessage()}
-                        <nav className='my-5 mx-5' aria-label="...">
+                        <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
                             <ul className="pagination">
                                 <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>
                                     <span className="page-link" role="button" onClick={() => previousPage()}>Previous</span>
