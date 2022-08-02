@@ -31,6 +31,7 @@ import UserProfilePage from "./pages/userProfilePage";
 import EditProductForm from './components/productForm/editProductForm';
 // import Logout from "./components/logoutComponent/LogoutComponent";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
+import CheckoutSuccess from "./pages/checkoutSuccessPage";
 
 
 function App() {
@@ -85,6 +86,9 @@ function App() {
         </PrivateRoute>
         <PrivateRoute path={'/shoppingCart'} requiredRole="user">
           <ShoppingCartComponent />
+        </PrivateRoute>
+        <PrivateRoute path={'/checkout/success'} requiredRole="user">
+          <CheckoutSuccess />
         </PrivateRoute>
         <Route path={'/products'} exact component={ProductsPage} />
         <Route path={'/products/:id'} exact component={SingleProductPage} />
