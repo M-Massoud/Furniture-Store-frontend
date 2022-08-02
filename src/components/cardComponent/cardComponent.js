@@ -1,61 +1,111 @@
-import { useState } from "react";
-import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux/es/hooks/useDispatch";
 import { Link } from "react-router-dom";
 import axiosInstance from "../../network/Config";
 import "../cardComponent/cardComponent.css";
 import img from "../../images/product1-img.jpg";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import jwt from 'jwt-decode';
-import { addProduct } from '../../redux/cartRedux';
+import jwt from "jwt-decode";
+import { addProduct } from "../../redux/cartRedux";
 
-let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
-
+let token = localStorage.getItem("token")
+  ? jwt(localStorage.getItem("token"))
+  : "unAuthenticated";
 
 export default function CardComponent({ product }) {
-  // console.log(product._id);
-  const [favProductIcon, setfavProductIcon] = useState(false);
-  // const [favProduct, setfavProduct] = useState();
+  const [isProductArry, setisProductArry] = useState([]);
+  const [keyword, setKeword] = useState("wishList");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [userWishList, setuserWishList] = useState([]);
+  const [favProductIcon, setfavProductIcon] = useState();
+  const [unfavProduct, setunfavProduct] = useState(true);
   const dispatch = useDispatch();
-  function changeFavProductIcon() {
-    setfavProductIcon(favProductIcon ? false : true);
-  }
 
   const handleAddToCart = () => {
     dispatch(addProduct({ product, price: product.price - product.discount }));
   };
 
   const addTowishList = () => {
+    console.log(userWishList);
     console.log("add", product._id);
-    axiosInstance
-      .put(
-        `/user/${token.id}/wishlist`,
-        {
-          wishList: [product._id],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, //
+    if (!isProductArry.includes(product._id)) {
+      axiosInstance
+        .put(
+          `/user/${token.id}/wishlist`,
+          {
+            wishList: [product._id],
           },
-        }
-      )
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error, localStorage.getItem("token")));
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          setunfavProduct(false);
+          setfavProductIcon(true);
+        })
+        .catch((error) => console.log(error));
+    } else {
+      setunfavProduct(false);
+      setfavProductIcon(true);
+    } //if condition
   };
 
   const removTowishList = () => {
     console.log("remove", product._id);
+    if (isProductArry.includes(product._id)) {
+      axiosInstance
+        .delete(`/user/${token.id}/wishlist`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          data: {
+            wishList: [product._id],
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setfavProductIcon(false);
+          setunfavProduct(true);
+        })
+        .catch((error) => console.log(error));
+    } else {
+      setfavProductIcon(false);
+      setunfavProduct(true);
+    }
+  };
+  ////////
+  useEffect(() => {
     axiosInstance
-      .delete(`/user/${token.id}/wishlist`, {
+      .get(`/user/${token.id}/${keyword}`, {
+        params: {
+          page: currentPage,
+        },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        data: {
-          wishList: [product._id],
-        },
       })
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error));
-  };
+      .then((res) => {
+        let wishList = res.data[0].wishList;
+        let productId = [];
+        setuserWishList(res.data[0].wishList);
+        for (let i = 0; i < wishList.length; i++) {
+          productId.push(wishList[i]._id);
+        }
+        setisProductArry(productId);
+        if (isProductArry.includes(product._id)) {
+          setfavProductIcon(true);
+          setunfavProduct(false);
+        } else {
+          setfavProductIcon(false);
+          setunfavProduct(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [keyword, currentPage, favProductIcon]);
+  ////////
   return (
     <>
       <div className="card shadow-lg product-card h-100">
@@ -91,23 +141,26 @@ export default function CardComponent({ product }) {
                   <FaHeart
                     className="hover white"
                     style={{
-                      color: "red",
+                      color: `red`,
                       fontSize: "22px",
                     }}
                     onClick={(e) => {
-                      changeFavProductIcon();
                       removTowishList();
                     }}
                   />
                 ) : (
+                  ""
+                )}
+                {unfavProduct ? (
                   <FaRegHeart
                     className="hover-effect gray"
                     style={{ fontSize: "22px" }}
                     onClick={(e) => {
-                      changeFavProductIcon();
                       addTowishList();
                     }}
                   />
+                ) : (
+                  ""
                 )}
               </span>
             </div>
@@ -117,6 +170,3 @@ export default function CardComponent({ product }) {
     </>
   );
 }
-
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faHeart } from '@fortawesome/free-regular-svg-icons';
