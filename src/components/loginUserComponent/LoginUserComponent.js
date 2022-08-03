@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import { loggedInSuccessfully } from '../../redux/isLoggedInRedux';
+import { emptyCart, refreshCart } from "../../redux/cartRedux";
 import './LoginUserComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../../network/Config';
@@ -80,6 +81,7 @@ export default function LoginForm() {
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
         history.push((location.state?.from.pathname) || '/');
+        dispatch(refreshCart());
         dispatch(loggedInSuccessfully("user"))
       })
       .catch(error => {

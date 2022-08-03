@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux/es/exports';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import { loggedOutSuccessfully } from '../../../redux/isLoggedInRedux';
+import { clearCartState } from "../../../redux/cartRedux";
 import { Link, useHistory } from "react-router-dom";
 import DropDowen from './DropDowen';
 import "./NewNav.css"
@@ -26,8 +27,9 @@ function NewNav() {
 
   function Logout() {
     localStorage.removeItem('token');
+    dispatch(clearCartState());
     history.push('/');
-    dispatch(loggedOutSuccessfully())
+    dispatch(loggedOutSuccessfully());
   }
 
   return (

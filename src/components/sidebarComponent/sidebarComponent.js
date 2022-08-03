@@ -40,8 +40,8 @@ export default function SidebarComponent(probs) {
             data-bs-parent="#categories-accordion"
           >
             <div className="accordion-body">
-              <Link to={'/products'}>
-                <h6>All Products</h6>
+            <Link className='btn border-0 font-bold text-dark link-danger' to={'/products'}>
+                <h5>All Products</h5>
               </Link>
 
               {categories.map(category => {
@@ -55,7 +55,7 @@ export default function SidebarComponent(probs) {
                           return (
                             <React.Fragment key={index}>
                               <li data-subcategoryid={subCategory._id}>
-                                <Link to={`/subCategory/${subCategory._id}`}>
+                              <Link className='btn border-0 text-secondary link-danger' to={`/subCategory/${subCategory._id}`}>
                                   {subCategory.title}
                                 </Link>
                               </li>
