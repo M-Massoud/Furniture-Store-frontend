@@ -92,10 +92,10 @@ export default function CheckoutSuccess() {
                                 </thead>
                                 <tbody>
                                     {
-                                        cart['products'].map((product) => {
+                                        cart['products'].map((product,index) => {
                                             return (
                                                 < tr key={product._id}>
-                                                    <td className="center">{product._id}</td>
+                                                    <td className="center">{index+1}</td>
                                                     <td className="left strong">{product.name}</td>
                                                     <td className="left">{product.description}</td>
                                                     <td className="center">1</td>

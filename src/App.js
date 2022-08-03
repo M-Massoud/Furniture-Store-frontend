@@ -40,7 +40,7 @@ function App() {
       <NavBar />
       <Switch>
         <Route path={'/'} exact component={Main} />
-        <PrivateRoute exact path={'/admin-dashBoard'} requiredRole="admin">
+        <PrivateRoute path={'/admin-dashBoard'} exact requiredRole="admin">
           <AdminDashBoardUsersPage />
         </PrivateRoute>
         <PrivateRoute path={'/admin-dashBoard/categories'} requiredRole="admin">
@@ -58,9 +58,9 @@ function App() {
         <PrivateRoute path={'/addProduct'} requiredRole="admin">
           <AddProductForm />
         </PrivateRoute>
-        <PrivateRoute path={'/editProduct'} requiredRole="admin">
+        {/* <PrivateRoute path={'/editProduct'} requiredRole="admin">
           <EditProductForm />
-        </PrivateRoute>
+        </PrivateRoute> */}
         <PrivateRoute path={'/register-admin'} requiredRole="admin">
           <RegisterationAdminComponent />
         </PrivateRoute>
@@ -81,9 +81,9 @@ function App() {
         <PrivateRoute path={'/profile/:id'} requiredRole="userById">
           <UserProfilePage />
         </PrivateRoute>
-        <PrivateRoute path={'/wishList'} requiredRole="userById">
+        {/* <PrivateRoute path={'/wishList'} requiredRole="userById">
           <WishListComponent />
-        </PrivateRoute>
+        </PrivateRoute> */}
         <PrivateRoute path={'/shoppingCart'} requiredRole="user">
           <ShoppingCartComponent />
         </PrivateRoute>
