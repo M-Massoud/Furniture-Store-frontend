@@ -40,7 +40,7 @@ function App() {
       <NavBar />
       <Switch>
         <Route path={'/'} exact component={Main} />
-        <PrivateRoute path={'/admin-dashBoard'} requiredRole="admin">
+        <PrivateRoute exact path={'/admin-dashBoard'} requiredRole="admin">
           <AdminDashBoardUsersPage />
         </PrivateRoute>
         <PrivateRoute path={'/admin-dashBoard/categories'} requiredRole="admin">
