@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react';
 import axiosInstance from '../network/Config';
 import Spinner from "../components/spinner";
@@ -14,12 +13,11 @@ export default function ProductsPage() {
   const [keyword, setKeword] = useState('products');
   const [sort, setSort] = useState("");
   const [isLoded, setIsLoded] = useState(false);
-  console.log(keyword)
-  let sorted = keyword
+  // console.log(keyword)
 
   useEffect(() => {
     axiosInstance
-      .get(`/${sorted}`, {
+      .get(`/${keyword}`, {
         params: {
           page: currentPage,
           itemCount: itemCount,
@@ -68,10 +66,11 @@ export default function ProductsPage() {
       setKeword("lowprice");
     }
   };
+
   const handleReset = (e) => {
     setKeword("products");
-    setSort('products')
-  }
+    setSort('')
+    }
 
   function changeItemPerPage(event) {
     setItemCount(event.target.value);
@@ -90,35 +89,39 @@ export default function ProductsPage() {
             <SidebarComponent handleSubCategoryLink={handleSubCategoryLink} />
           </div>
           <div className="col col-sm-8 col-md-9 col-lg-9">
-            <div className="  mb-4 px-4 py-4">
-              <select onChange={handleSorting} value={sort} className="form-select form-select-lg mb-3" aria-label=".form-select-lg">
+            <div className='sort-selectors d-flex' >
+             <div className="pb-4 w-50">
+              <select onChange={handleSorting} value={sort} className="form-select form-select-lg" aria-label=".form-select-lg">
                 <option checked value="products">Sort Products</option>
                 <option value="atoz" >Sort By Name (A-Z)</option>
                 <option value="ztoa">Sort By Name (Z-A)</option>
                 <option value="lowprice">Price: Lowest To Highest</option>
                 <option value="highprice">Price: Highest To Lowest</option>
               </select>
-              <button className="btn btn-danger" onClick={handleReset}>reset</button>
+              
             </div>
-            <div className='col-3 mx-4'>
-              <select onChange={(event) => changeItemPerPage(event)} defaultValue="10" className="form-select form-select-lg mb-3" aria-label=".form-select-lg">
-                <option checked disabled>Products Per Page</option>
+             <p className='text-muted mx-2 ms-auto mt-2' >Products per page:</p>
+            <div>
+              <select onChange={(event) => changeItemPerPage(event)} defaultValue="10" className="form-select form-select-lg" aria-label=".form-select-lg">
                 <option value="5" >5</option>
                 <option value="10" >10</option>
                 <option value="15">15</option>
                 <option value="20">20</option>
               </select>
+              </div>
             </div>
-            <div className='row px-5 mb-3'>
-              <div className='col-8'>
+              
+            <div className='row mb-3 me-1'>
+              <div className='col-9'>
                 <label htmlFor="customRange2" className="form-label text-secondary">Filter By Price:</label>
                 <input type="range" className="form-range slider" min="0" max="10000" step="100" title={filterNumber} onChange={(event) => { handleSlider(event) }}></input>
               </div>
-              <div className='col-3 m-2 mt-4 bg-dark rounded d-flex flex-column align-items-center justify-content-center text-light'>More Than : {filterNumber} EGP</div>
+              <div className='col-3 ms-auto mt-4 bg-dark rounded d-flex flex-column align-items-center justify-content-center text-light'>More Than : {filterNumber} EGP</div>
             </div>
+            <button className="btn btn-outline-dark px-4 mb-4" onClick={handleReset}>Reset</button>
             {isLoded ?
               productsData.length > 0 ?
-                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3  g-4 ">
+                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 ">
                   {productsData.map(product => {
                     return (
                       <div className="col" key={product._id}>

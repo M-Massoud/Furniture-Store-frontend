@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import axiosInstance from '../../network/Config';
 function EditProductForm(props) {
-  console.log(props.location.state);
+  // console.log(props.location.state);
+
+  const [productImg,setProductImg]=useState(props.location.state.image)
+  let formData=new FormData();
+
   const [formDetails, setFormDetails] = useState({
     productName:props.location.state.name,
     subCategoryId: props.location.state.subCategory.id,
     productSubcategoryTitle:props.location.state.subCategory.title,
     productDescription: props.location.state.description,
-    productImgage: props.location.state.image ,
     productAmount: props.location.state.stockAmount,
     productPrice: props.location.state.price,
     productDiscount: props.location.state.discount,
@@ -17,11 +20,12 @@ function EditProductForm(props) {
     subCategoryIdError: '',
     productSubcategoryTitleError: '',
     productDescriptionError: '',
-    productImgageError: '',
+    productImageError: '',
     productAmountError: '',
     productPriceError: '',
     productDiscountError: '',
   });
+
   function handelFormchange(e) {
     // console.log(e.target.id, e.target.value,formDetails);
     setFormDetails({
@@ -30,34 +34,41 @@ function EditProductForm(props) {
     });
     ErrorHandling(e.target.id, e.target.value);
   } // handelFormchange function
+
+  // handle the img change
+  const handleImgChange = (e) => {
+    setFormDetails({
+        ...formDetails,
+    })
+    setProductImg(e.target.files[0])
+ }
+
   const handleSubmit = e => {
     e.preventDefault();
-    // console.log(formDetails);
-  }; //handleSubmit function
-
-  const editProduct = () => {
     axiosInstance
       .put(
-        '/products',
-     {
-          id: props.location.state._id,   
-          name: formDetails.productName,   
-          description: formDetails.productDescription,
-          stockAmount: formDetails.productAmount,
-          price: formDetails.productPrice,
-          discount: formDetails.productDiscount,
-          subCategory: {
-            id: formDetails.subCategoryId,
-            title: formDetails.productSubcategoryTitle,
-          },
-          image: formDetails.productImgage  ,
-        },
+        '/products',formData,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        }
+          headers:  {
+          Authorization: `Bearer ${localStorage.getItem('token')}` },
+          "Content-Type": "multipart/form-data",
+          }
       )
-      .then(res => console.log(formDetails))
+      .then(res => console.log(res))
       .catch(error => console.log(error, formDetails));
+
+  }; //handleSubmit function
+
+  const editProduct = (e) => {
+    formData.append("id",props.location.state._id)
+    formData.append("name",formDetails.productName);
+    formData.append("description",formDetails.productDescription);
+    formData.append("stockAmount",formDetails.productAmount);
+    formData.append("price",formDetails.productPrice);
+    formData.append("discount",formDetails.productDiscount);
+    formData.append("subCategory[id]",formDetails.subCategoryId);
+    formData.append("subCategory[title]",formDetails.productSubcategoryTitle);
+    formData.append("image",productImg);
   }; // Editing func
   /////////////////////////////////////////////
   const ErrorHandling = (input, value) => {
@@ -89,10 +100,10 @@ function EditProductForm(props) {
           productDescriptionError: value.length === 0 ? 'This field is required' : '',
         });
         break;
-      case 'productImgage':
+      case 'productImage':
         setFormerror({
           ...formError,
-          productImgageError: value.length === 0 ? 'This field is required' : '',
+          productImageError: value.length === 0 ? 'This field is required' : '',
         });
         break;
       case 'productAmount':
@@ -206,29 +217,28 @@ function EditProductForm(props) {
             className={`form-control ${
               formError.productDescriptionError && 'border-danger'
             } `}
-            onChange={e => handelFormchange(e)}
-          />
+            onChange={e => handelFormchange(e)}  />
           <div id="nameHelp" className="form-text text-danger">
             {formError.productDescriptionError}
           </div>
           {/* //// */}
-          <label htmlFor="productImgage" className="form-label   mt-2 mb-2">
+          <label htmlFor="productImage" className="form-label   mt-2 mb-2">
             Product Image
           </label>
           <input
             type="file"
-            id={'productImgage'}
-            name={'productImgage'}
+            id={'productImage'}
+            name={'productImage'}
             className={`form-control ${
-              formError.productImgageError && 'border-danger'
+              formError.productImageError && 'border-danger'
             } `}
-            onChange={e => handelFormchange(e)}  />
+            onChange={e => handleImgChange(e)}  />
           <div id="nameHelp" className="form-text text-danger">
-            {formError.productImgageError}
+            {formError.productImageError}
           </div>
           {/* //// */}
           <label htmlFor="productAmount" className="form-label  mt-2 ">
-            Stock Amount{' '}
+            Stock Amount
           </label>
           <input
             type="number"

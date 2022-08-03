@@ -95,10 +95,14 @@ function App() {
         {/* <Route path={'/checkOut'} component={checkoutcomponent} /> */}
         <Route path={'/subCategory/:id'} exact component={SubCategoryPage} />
         <Route path={'/FAQ'} exact component={FaqComponent} />
-        <Route path={'/search/:id'}>
-          <Search />
-        </Route>
+        <Route path={'/search/:id'} component={Search} /> 
+        <Route path={'/addProudct'} exact component={AddProductForm} />
+        <Route path={'/editProduct'} exact component={EditProductForm} />
+        <PrivateRoute path={'/profile/:id'} requiredRole="userById">
+          <UserProfilePage />
+        </PrivateRoute>
         {/* <Route path={'/logout'} component={Logout} /> */}
+        <Route path={'/wishlist'} exact component={WishListComponent} />
         <Route path={'*'} component={NotFound} />
       </Switch>
       <Footer />
