@@ -9,12 +9,12 @@ import { FaCartPlus } from 'react-icons/fa';
 function NewNav() {
   const history = useHistory();
   const [getData, setGetData] = useState("");
-  const searchedData = getData;
-  const { quantity } = useSelector(state => state.cart);
+  const searchWord = getData;
+  const {quantity} = useSelector(state=>state.cart);
 
   const handleChange = event => {
     setGetData(event.target.value);
-    console.log('value is:', event.target.value);
+    // console.log('value is:', event.target.value);
   };
 
   function Logout() {
@@ -40,9 +40,9 @@ function NewNav() {
             <form className="d-flex align-items-center ">
               <input className="form-control me-2 search-input" onChange={handleChange} value={getData} type="search" placeholder="Search" aria-label="Search" />
               <Link to={{
-                pathname: `/search/${searchedData}`,
+                pathname: `/search/${searchWord}`,
                 state: {
-                  searchedData
+                  searchWord
                 }
               }} className="btn">
                 <button className="btn btn-outline-light" type="submit">Search</button>
@@ -52,8 +52,9 @@ function NewNav() {
               <span className='header-cart' >
                 <FaCartPlus /> <span className='header-cart-qty'>{quantity}</span>
               </span>
-            </Link>
-            <button className='btn border-0 mx-3 text-white' onClick={Logout}>Logout</button>
+            </Link> 
+          <button 
+            className='btn btn-outline-light ms-4' onClick={Logout}>Logout</button>
           </div>
         </div>
       </nav>

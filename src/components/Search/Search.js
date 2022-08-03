@@ -5,28 +5,39 @@ import { useLocation } from 'react-router-dom';
 function Search() {
     const location = useLocation();
     const [searchData, setSearchData] = useState("");
-    const { searchedData } = location.state;
-    console.log(searchedData)
-    console.log(searchData)
+    const { searchWord } = location.state;
+    // console.log(searchWord)
+    // console.log(searchData)
     useEffect(() => {
         axiosInstance
-            .get(`/search/${searchedData}`)
+            .get(`/search/${searchWord}`)
             .then(res => {
                 setSearchData(res.data);
             })
             .catch(err => console.log(err));
-    }, [searchedData]);
+    }, [searchWord]);
     const searchItems = [...searchData]
     return (
-        <div className="d-flex flex-wrap justify-content-around">
+        <div className='container pb-5'>   
+        
+          {
+          searchItems.length > 0 ? <h5 className='py-3'>search results for:{searchWord}</h5> :
+          <h5 className='py-5 text-center'>no search results for: {searchWord}
+          </h5>
+          }
+
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
             {searchItems.map((product) => {
                 return (
-                    <div className="d-flex flex-wrap w-ms-100 col-sm-12 w-md-50 w-lg-25 col-md-5 col-lg-5  my-4 " key={product._id}>
+                   <div className='col' key={product._id}>
                         <CardComponent product={product} />
                     </div>
                 )
             })}
+            </div>
         </div>
+        
     )
 }
 
