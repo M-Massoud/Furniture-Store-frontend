@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import './ShoppingCartComponentStyle.css';
 import { Link, NavLink } from 'react-router-dom';
 import { FaPlusCircle, FaMinusCircle, FaTrashAlt } from 'react-icons/fa';
-import { removeProduct } from '../../redux/cartRedux';
+import { removeProduct,emptyCart } from '../../redux/cartRedux';
 import axiosInstance from "../../network/Config";
 
 export default function ShoppingCart() {
@@ -13,6 +13,10 @@ export default function ShoppingCart() {
   const handleRemoveProduct = product => {
     dispatch(removeProduct(product));
   };
+
+  function handleEmptyCart(){
+    dispatch(emptyCart())
+  }
 
   function prepareCheckoutItems() {
 
@@ -74,7 +78,6 @@ export default function ShoppingCart() {
                     </tr>
                   );
                 })}
-
                 {/* <td className="col-3">
                     <img
                       className="col-6"
@@ -101,6 +104,8 @@ export default function ShoppingCart() {
                   </td> */}
               </tbody>
             </table>
+              <button className='btn btn-dark' onClick={handleEmptyCart} >
+                empty the cart </button>
           </div>
 
           <div className="col-lg-3  shadow-lg rounded py-4">

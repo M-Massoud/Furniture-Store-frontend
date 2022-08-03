@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux/es/exports';
+import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { loggedOutSuccessfully } from '../../../redux/isLoggedInRedux';
 import { Link, useHistory } from "react-router-dom";
 import DropDowen from './DropDowen';
 import "./NewNav.css"
@@ -11,6 +13,11 @@ function NewNav() {
   const [getData, setGetData] = useState("");
   const searchWord = getData;
   const {quantity} = useSelector(state=>state.cart);
+  const dispatch = useDispatch();
+  const {isLoggedIn} = useSelector(state => state.isLoggedIn);
+  const {role} = useSelector(state => state.isLoggedIn);
+
+  // console.log(isLoggedIn,role);
 
   const handleChange = event => {
     setGetData(event.target.value);
@@ -20,6 +27,7 @@ function NewNav() {
   function Logout() {
     localStorage.removeItem('token');
     history.push('/');
+    dispatch(loggedOutSuccessfully())
   }
 
   return (
@@ -53,8 +61,19 @@ function NewNav() {
                 <FaCartPlus /> <span className='header-cart-qty'>{quantity}</span>
               </span>
             </Link> 
-          <button 
-            className='btn btn-outline-light ms-4' onClick={Logout}>Logout</button>
+
+            {/* render the buttons depends on the user role */}
+            {
+              isLoggedIn === false ? <Link to={"/login-user"} > <button 
+              className='btn btn-outline-light ms-4'>Login</button> </Link> : <button 
+              className='btn btn-outline-light ms-4' onClick={Logout}>Logout</button>
+            }
+           
+            {
+              role === "admin" && <Link to={"/admin-dashboard/products"}> <button 
+              className='btn btn-outline-light ms-4'>dashboard</button> </Link>
+            }
+
           </div>
         </div>
       </nav>

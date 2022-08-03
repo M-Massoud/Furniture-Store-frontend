@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { loggedInSuccessfully } from '../../redux/isLoggedInRedux';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import './LoginAdminComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -14,6 +17,8 @@ export default function LoginAdminForm() {
 
   const [resData, setResData] = useState({});
   const [isAuthenticated, serIsAuthenticated] = useState(false);
+  const dispatch = useDispatch();
+
 
   const [loginDataErrors, setLoginDataErrors] = useState({
     adminEmailError: '',
@@ -75,6 +80,7 @@ export default function LoginAdminForm() {
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
         history.push((location.state?.from.pathname) || '/');
+        dispatch(loggedInSuccessfully("admin"))
       })
       .catch(error => {
         console.log(error);

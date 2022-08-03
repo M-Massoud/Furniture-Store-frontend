@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { loggedInSuccessfully } from '../../redux/isLoggedInRedux';
 import './LoginUserComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../../network/Config';
@@ -14,6 +16,7 @@ export default function LoginForm() {
 
   const [resData, setResData] = useState({});
   const [isAuthenticated, serIsAuthenticated] = useState(false);
+  const dispatch = useDispatch();
 
   const [loginDataErrors, setLoginDataErrors] = useState({
     userEmailError: '',
@@ -77,6 +80,7 @@ export default function LoginForm() {
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
         history.push((location.state?.from.pathname) || '/');
+        dispatch(loggedInSuccessfully("user"))
       })
       .catch(error => {
         console.log(error);
@@ -151,7 +155,10 @@ export default function LoginForm() {
             <button type="submit" className="btn bg-secondary-1 white col-12">
               Login
             </button>
-          </form>
+            <Link to={'/login-admin'} className="btn mt-2 text-hover-primary">
+                you're an admin ?
+              </Link>
+            </form>
         </div>
 
         <div className="bg-main m-3 p-5 col-10 col-xl-5 border-custom shadow-lg">
