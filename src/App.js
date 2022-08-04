@@ -40,68 +40,33 @@ function App() {
       <NavBar />
       <Switch>
         <Route path={'/'} exact component={Main} />
-        <PrivateRoute path={'/admin-dashBoard'} exact requiredRole="admin">
-          <AdminDashBoardUsersPage />
-        </PrivateRoute>
-        <PrivateRoute path={'/admin-dashBoard/categories'} requiredRole="admin">
-          <AdminDashBoardCategoriesPage />
-        </PrivateRoute>
-        <PrivateRoute path={'/admin-dashBoard/subCategories'} requiredRole="admin">
-          <AdminDashBoardSubCategoriesPage />
-        </PrivateRoute>
-        <PrivateRoute path={'/admin-dashBoard/products'} requiredRole="admin">
-          <AdminDashBoardProductsPage />
-        </PrivateRoute>
-        <PrivateRoute path={'/admin-dashBoard/orders'} requiredRole="admin">
-          <AdminDashBoardOrdersPage />
-        </PrivateRoute>
-        <PrivateRoute path={'/addProduct'} requiredRole="admin">
-          <AddProductForm />
-        </PrivateRoute>
-        {/* <PrivateRoute path={'/editProduct'} requiredRole="admin">
-          <EditProductForm />
-        </PrivateRoute> */}
-        <PrivateRoute path={'/register-admin'} requiredRole="admin">
-          <RegisterationAdminComponent />
-        </PrivateRoute>
-        {/* <PrivateRoute path={'/login-user'} requiredRole="unAuthenticated">
-          <LoginUserComponent />
-        </PrivateRoute> */}
+        <PrivateRoute path={'/admin-dashBoard'} component={AdminDashBoardUsersPage} exact requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/categories'} component={AdminDashBoardCategoriesPage} requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/subCategories'} component={AdminDashBoardSubCategoriesPage} requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/products'} component={AdminDashBoardProductsPage} requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/orders'} component={AdminDashBoardOrdersPage} requiredRole="admin" />
+        <PrivateRoute path={'/addProduct'} component={AddProductForm} requiredRole="admin" />
+        <PrivateRoute path={'/editProduct'} component={EditProductForm} requiredRole="admin" />
+        {/* <PrivateRoute path={'/login-admin'} component={LoginAdminComponent} requiredRole="unAuthenticated"/> */}
+        <PrivateRoute path={'/register-admin'} component={RegisterationAdminComponent} requiredRole="admin" />
+        {/* <PrivateRoute path={'/login-user'} component={LoginUserComponent} requiredRole="unAuthenticated"/>
+        <PrivateRoute path={'/register-user'} component={RegisterationUserComponent} requiredRole="unAuthenticated"/> */}
+        <PrivateRoute path={'/shoppingCart'} component={ShoppingCartComponent} requiredRole="user" />
+        {/* <PrivateRoute path={'/checkout'} component={CheckoutPage} requiredRole="user" /> */}
+        <PrivateRoute path={'/checkout/success'} component={CheckoutSuccess} requiredRole="user" />
+        <PrivateRoute path={'/profile/:id'} component={UserProfilePage} requiredRole="userById" />
+        <PrivateRoute path={'/wishList'} component={WishListComponent} requiredRole="userById" />
+
         <Route path={'/login-user'} component={LoginUserComponent} />
         <Route path={'/login-admin'} component={LoginAdminComponent} />
-        {/* <PrivateRoute path={'/login-admin'} requiredRole="unAuthenticated">
-          <LoginAdminComponent />
-        </PrivateRoute> */}
-        <PrivateRoute path={'/register-user'} requiredRole="unAuthenticated">
-          <RegisterationUserComponent />
-        </PrivateRoute>
-        {/* <PrivateRoute path={'/checkout'} requiredRole="user">
-          <CheckoutPage />
-        </PrivateRoute> */}
-        <PrivateRoute path={'/profile/:id'} requiredRole="userById">
-          <UserProfilePage />
-        </PrivateRoute>
-        {/* <PrivateRoute path={'/wishList'} requiredRole="userById">
-          <WishListComponent />
-        </PrivateRoute> */}
-        <PrivateRoute path={'/shoppingCart'} requiredRole="user">
-          <ShoppingCartComponent />
-        </PrivateRoute>
-        <PrivateRoute path={'/checkout/success'} requiredRole="user">
-          <CheckoutSuccess />
-        </PrivateRoute>
+
         <Route path={'/products'} exact component={ProductsPage} />
         <Route path={'/products/:id'} exact component={SingleProductPage} />
         {/* <Route path={'/checkOut'} component={checkoutcomponent} /> */}
         <Route path={'/subCategory/:id'} exact component={SubCategoryPage} />
         <Route path={'/FAQ'} exact component={FaqComponent} />
-        <Route path={'/search/:id'} component={Search} /> 
+        <Route path={'/search/:id'} component={Search} />
         <Route path={'/addProudct'} exact component={AddProductForm} />
-        <Route path={'/editProduct'} exact component={EditProductForm} />
-        <PrivateRoute path={'/profile/:id'} requiredRole="userById">
-          <UserProfilePage />
-        </PrivateRoute>
-        {/* <Route path={'/logout'} component={Logout} /> */}
         <Route path={'/wishlist'} exact component={WishListComponent} />
         <Route path={'*'} component={NotFound} />
       </Switch>
