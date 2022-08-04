@@ -33,7 +33,12 @@ import NavBar from './components/NavBar/NewNav/NewNav';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
 import AddProductForm from './components/productForm/addProductForm';
+import ForgetUserPasswordPage from './components/forgetpasswordComponent/ForgetUserpasswordComponent';
+import ForgetAdminPassworPage from './components/forgetpasswordComponent/ForgetAdminPassword';
 import UserProfilePage from "./pages/userProfilePage";
+import EditUserProfileForm from './components/userProfileComponent/editUserProfile';
+import AdminProfile from './components/adminProfileComponent/adminProfilePage';
+import EditAdminProfileForm from './components/adminProfileComponent/editAdminProfile';
 import EditProductForm from './components/productForm/editProductForm';
 import Logout from "./components/logoutComponent/LogoutComponent";
 
@@ -111,9 +116,15 @@ function App() {
           <Search />
         </Route>
         <Route path={'/editProduct'} exact component={EditProductForm} />
+        <Route path={'/useredit/:id'} exact component={EditUserProfileForm} />
+        <Route path={'/adminedit/:id'} exact component={EditAdminProfileForm} />
+        <Route path={'/forgetAdminPassword'} exact component={ForgetAdminPassworPage} />
         <PrivateRoute path={'/profile/:id'} requiredRole="userById">
           <UserProfilePage />
         </PrivateRoute>
+        {/* <PrivateRoute path={'/useredit/:id'} requiredRole="userById">
+          <EditUserProfileForm />
+        </PrivateRoute> */}
         <Route path={'/logout'} component={Logout} />
         <Route path={'/wishlist'} exact component={WishListComponent} />
         <Route path={'*'} component={NotFound} />

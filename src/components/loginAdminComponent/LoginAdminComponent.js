@@ -77,7 +77,7 @@ export default function LoginAdminForm() {
         history.push(location.state.from.pathname);
       })
       .catch(error => {
-        console.log(error.response.data.message);
+        // console.log(error.response.data.message);
         serIsAuthenticated(false);
       });
   }

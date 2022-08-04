@@ -1,18 +1,18 @@
 import { useState } from 'react';
-function Form(props) {
+function ForgetUserPasswordPage(props) {
     const [formDetails, setFormDetails] = useState({
         firstName: "",
         lastName: "",
-        street: "",
-        city: "",
-        phone:""
+        userEmail:"",
+        userPassword: "",
+        userPhon:""
     });
     const [formError, setFormerror] = useState({
         firstNameError: '',
         lastNameError: '',
-        streetError: '',
-        cityError: '',
-        phoneError:''
+        userEmailError: '',
+        userPasswordError: '',
+        userPhonError:''
         
     });
     function handelFormchange(e) {
@@ -32,7 +32,9 @@ function Form(props) {
     const ErrorHandling = (input, value) => {
 
         let phonPatern = new RegExp("[0-9]");
-        let namePatern =new RegExp(/^[A-Z]+$/i);
+        let namePatern = new RegExp(/^[A-Z]+$/i);
+        let emailPatern = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i);
+        let passwordPattern = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/im)
         switch (input) {
             //regex = new Regex("[0-9]");
             case 'firstName':
@@ -47,22 +49,22 @@ function Form(props) {
                         lastNameError: value.length === 0 ? "This field is required" : namePatern.test(value) ? "":"LastName must be Characters",
                     });
                 break;
-            case 'street':
+            case 'userEmail':
                     setFormerror({
                         ...formError,
-                        streetError: value.length === 0 ? "This field is required": "" ,
+                        userEmailError: value.length === 0 ? "This field is required": emailPatern.test(value) ?  "" : "Email must be in form (example@gmail.com)"  ,
                     });
                 break;
-            case 'city':
+            case 'userPassword':
                     setFormerror({
                         ...formError,
-                        cityError: value.length === 0 ? "This field is required" : "",
+                        userPasswordError: value.length === 0 ? "This field is required" :  passwordPattern.test(value) ? " ":" Password must be strong in form (Test25!)",
                     });
                 break;
-                case 'phone':
+                case 'userPhon':
                     setFormerror({
                         ...formError, 
-                        phoneError: value.length === 0 ? "This field is required" : !phonPatern.test(value) ? "Phone Number must be Numbers" : value.length > 11 ? "Phone Number Should not be greater than 11 number": "",
+                        userPhonError: value.length === 0 ? "This field is required" : !phonPatern.test(value) ? "Phone Number must be Numbers" : value.length > 11 ? "Phone Number Should not be greater than 11 number": "",
                     });
                 break;
             default:
@@ -74,36 +76,35 @@ function Form(props) {
     ////////////////////////////////////////////////
     return (
         <>
-            <form className={`co-12  row m-auto ${props.hide? "d-none":""} ${props.hide2? "d-none":""}` }  onSubmit={(e)=> handleSubmit(e)}>
+            <div className='p-5 border m-auto row container-fluid'>
+               
+                <form className={`col-12 col-sm-10 col-md-8 col-lg-5 p-5  row m-auto border shadow rounded `} onSubmit={(e) => handleSubmit(e)}>
+                <h4 className='border text-center shadow rounded p-2 mb-3'> Creat New password</h4>
                                   <label  htmlFor='firstName' className="form-label mt-2"> First Name</label >
                 <input type='text' id={'firstName'} name={'firstName'} className={`form-control ${formError.firstNameError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
                 <div id="nameHelp" className="form-text text-danger">{formError.firstNameError}</div>
                                   <label  htmlFor='lastName' className="form-label   mt-2 mb-2"> Last Name</label >
                 <input type='text' id={'lastName'} name={'lastName'} className={`form-control ${formError.lastNameError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
                 <div id="nameHelp" className="form-text text-danger">{formError.lastNameError}</div>
-                                  <label  htmlFor='street' className="form-label  mt-2 mb-2"> Street Address</label >
-                <input type='text' id={'street'} name={'street'} className={`form-control ${formError.streetError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
-                <div id="nameHelp" className="form-text text-danger">{formError.streetError}</div>
-                                  <label  htmlFor='city' className="form-label  mt-2 mb-2"> City </label >
-                                  <select className={ `form-select ${formError.cityError && "border-danger" } `} id={'city'} name={'city'}   onChange={ (e)=> handelFormchange(e)}>
-                                         <option value="Cairo">Open this select menu</option>
-                                         <option value="Dammietta">Dammietta</option>
-                                         <option value="Mansaura">Mansaura</option>
-                                          <option value="Cairo">Cairo</option>
-                                          <option value="Alexandria">Alexandria</option>
-                                          <option value="Aswan">Aswan</option>
-                                          <option value="Minia">Minia</option>
-                </select>
-                <div id="nameHelp" className="form-text text-danger">{formError.cityError}</div>
+                                  <label  htmlFor='userEmail' className="form-label  mt-2 mb-2"> User Email</label >
+                    <input type='email' id={'userEmail'} name={'userEmail'} className={`form-control ${formError.userEmailError && "border-danger"} `} onChange={(e) => handelFormchange(e)} />
+                    <div id="nameHelp" className="form-text text-danger">{formError.userEmailError}</div>
+                                  <label  htmlFor='userPassword' className="form-label  mt-2 mb-2"> New Password</label >
+                <input type='password' id={'userPassword'} name={'userPassword'} className={`form-control `} onChange={(e) => handelFormchange(e)} />
+                <div id="nameHelp" className="form-text text-danger">{formError.userPasswordError}</div>
 
-                                  <label  htmlFor='phone' className="form-label  mt-2 "> Phone Number</label >
-                <input type='text' id='phone' name='phone' className={`form-control mb-2 ${formError.phoneError && "border-danger"} `} placeholder="01000000000" onChange={(e) => handelFormchange(e)} />
-                <div id="nameHelp" className="form-text text-danger">{formError.phoneError}</div>
+                                  <label  htmlFor='userPhon' className="form-label  mt-2 "> Phone Number</label >
+                <input type='text' id='userPhon' name='userPhon' className={`form-control mb-2 ${formError.userPhonError && "border-danger"} `} placeholder="01000000000" onChange={(e) => handelFormchange(e)} />
+                    <div id="nameHelp" className="form-text text-danger">{formError.userPhonError}</div>
+                    <button className='btn btn-success col-4 m-auto fw-bolder mt-4'> Creat </button>
                               </form>
+
+            </div>
+            
         
         </>
     );
     
 };
 
-export default Form;
+export default ForgetUserPasswordPage;
