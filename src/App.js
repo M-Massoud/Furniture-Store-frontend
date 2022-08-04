@@ -27,7 +27,12 @@ import NavBar from './components/NavBar/NewNav/NewNav';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
 import AddProductForm from './components/productForm/addProductForm';
+import ForgetUserPasswordPage from './components/forgetpasswordComponent/ForgetUserpasswordComponent';
+import ForgetAdminPassworPage from './components/forgetpasswordComponent/ForgetAdminPassword';
 import UserProfilePage from "./pages/userProfilePage";
+import EditUserProfileForm from './components/userProfileComponent/editUserProfile';
+import AdminProfile from './components/adminProfileComponent/adminProfilePage';
+import EditAdminProfileForm from './components/adminProfileComponent/editAdminProfile';
 import EditProductForm from './components/productForm/editProductForm';
 // import Logout from "./components/logoutComponent/LogoutComponent";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
@@ -59,6 +64,13 @@ function App() {
 
         <Route path={'/login-user'} component={LoginUserComponent} />
         <Route path={'/login-admin'} component={LoginAdminComponent} />
+
+
+        <Route path={'/admin/:id'} component={AdminProfile} requiredRole="userById" />
+        <Route path={'/useredit/:id'} exact component={EditUserProfileForm} />
+        <Route path={'/adminedit/:id'} exact component={EditAdminProfileForm} />
+        <Route path={'/forgetAdminPassword'} exact component={ForgetAdminPassworPage} />
+        <Route path={'/forgetUserPassword'} exact component={ForgetUserPasswordPage} />
 
         <Route path={'/products'} exact component={ProductsPage} />
         <Route path={'/products/:id'} exact component={SingleProductPage} />

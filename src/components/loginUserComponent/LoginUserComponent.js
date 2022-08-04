@@ -151,7 +151,7 @@ export default function LoginForm() {
                 {loginDataErrors.userPasswordError}
               </div>
             </div>
-            <Link to={'/forgetPassword'} className="btn mb-2 text-hover-red">
+            <Link to={'/forgetUserPassword'} className="btn mb-2 text-hover-red">
               Forgot Your Password?
             </Link>
             <button type="submit" className="btn bg-secondary-1 white col-12">
