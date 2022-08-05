@@ -1,9 +1,17 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import axiosInstance from '../../network/Config';
 function EditProductForm(props) {
   // console.log(props.location.state);
 
+  // redirect to the home page if there is no chosen product to edit
+  const history = useHistory();
+  if(!props.location.state)  history.push('/');
+
+
   const [productImg,setProductImg]=useState(props.location.state.image)
+  const [subCategoriesData, setSubCategoriesData] = useState([])
+
   let formData=new FormData();
 
   const [formDetails, setFormDetails] = useState({
@@ -26,14 +34,34 @@ function EditProductForm(props) {
     productDiscountError: '',
   });
 
-  function handelFormchange(e) {
-    // console.log(e.target.id, e.target.value,formDetails);
-    setFormDetails({
-      ...formDetails,
-      [e.target.id]: e.target.value,
-    });
-    ErrorHandling(e.target.id, e.target.value);
-  } // handelFormchange function
+
+  // get subcategories data 
+  useEffect(() => {
+    axiosInstance
+        .get(`/subCategory`)
+        .then(res => {
+            setSubCategoriesData(res.data.resData.subCategories);
+        })
+        .catch(err => console.log(err));
+}, []);
+
+
+function handelFormchange(e) {
+  if (e.target.id === 'subCategory') {
+      setFormDetails({
+          ...formDetails,
+          subCategoryId: subCategoriesData[e.target.value]._id,
+          productSubcategoryTitle: subCategoriesData[e.target.value].title,
+      });
+  }
+  else {
+      setFormDetails({
+          ...formDetails,
+          [e.target.id]: e.target.value
+      });
+  }
+  ErrorHandling(e.target.id, e.target.value);
+};// handelFormchange function
 
   // handle the img change
   const handleImgChange = (e) => {
@@ -45,6 +73,11 @@ function EditProductForm(props) {
 
   const handleSubmit = e => {
     e.preventDefault();
+    
+      // return if there's any errors
+      for (let index = 0; index <  Object.values(formError).length; index++) {
+        if( Object.values(formError)[index] ) return          
+     }
     axiosInstance
       .put(
         '/products',formData,
@@ -71,15 +104,20 @@ function EditProductForm(props) {
     formData.append("image",productImg);
   }; // Editing func
   /////////////////////////////////////////////
+
+  // regex to check if it only contains numbers 
+  const onlyNumbersRegex= new RegExp(/^\d+$/)
+
+
   const ErrorHandling = (input, value) => {
-    // let imgURl = new RegExp(/^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/);
     switch (input) {
-      //regex = new Regex("[0-9]");
 
       case 'productName':
         setFormerror({
           ...formError,
-          productNameError: value.length === 0 ? 'This field is required' : '',
+          productNameError: value.length === 0 ? 'This field is required' : ''
+          ||  onlyNumbersRegex.test(value) === true ?
+          "product name can't only be numbers":""
         });
         break;
       case 'subCategoryId':
@@ -97,33 +135,18 @@ function EditProductForm(props) {
       case 'productDescription':
         setFormerror({
           ...formError,
-          productDescriptionError: value.length === 0 ? 'This field is required' : '',
+          productDescriptionError: value.length === 0 ? 'This field is required' : '' ||  onlyNumbersRegex.test(value) === true ?
+          "product name can't only be numbers":""
         });
         break;
-      case 'productImage':
-        setFormerror({
-          ...formError,
-          productImageError: value.length === 0 ? 'This field is required' : '',
-        });
-        break;
-      case 'productAmount':
-        setFormerror({
-          ...formError,
-          productAmountError: value.length === 0 ? 'This field is required' : '',
-        });
-        break;
+    
       case 'productPrice':
         setFormerror({
           ...formError,
           productPriceError: value.length === 0 ? 'This field is required' : '',
         });
         break;
-      case 'productDiscount':
-        setFormerror({
-          ...formError,
-          productDiscountError: value.length === 0 ? 'This field is required' : '',
-        });
-        break;
+     
       default:
         setFormerror({
           ...formError,
@@ -133,30 +156,24 @@ function EditProductForm(props) {
   ////////////////////////////////////////////////
   return (
     <>
-      <div className="col-10 offset-1 col-md-8 offset-md-2 border p-3 rounded shadow">
+      <div className="col-10 offset-1 col-md-8 offset-md-2 border p-3 rounded shadow my-5">
         <h3 className="text-center mt-2"> Product Control </h3>
         <form
-          className={`co-12  row m-auto `}
+          className="co-12  row m-auto"
           onSubmit={e => handleSubmit(e)}
           encType="multipart/form-data" >
           {/* //// */}
-          <label htmlFor="Pid" className="form-label mt-2">
+          <label htmlFor="productId" className="form-label mt-2">
             Product id
           </label>
           <input
             type="text"
             value={props.location.state._id}
             disabled
-            id={'Pid'}
-            name={'Pid'}
-            className={`form-control ${
-              formError.productNameError && 'border-danger'
-            } `}
-            onChange={e => handelFormchange(e)}/>
-          <div id="nameHelp" className="form-text text-danger">
-            {formError.productNameError}
-          </div>
-          {/* //// */}
+            id='productId'
+            name='productId'
+            className="form-control" />
+            {/* //// */}
           <label htmlFor="productName" className="form-label mt-2">
             Product Name
           </label>
@@ -173,7 +190,27 @@ function EditProductForm(props) {
             {formError.productNameError}
           </div>
           {/* //// */}
-          <label htmlFor="subCategoryId" className="form-label  mt-2 ">
+
+          <label htmlFor='productSubcategory' className="form-label mt-2"> Product subCategory</label >
+                    <br />
+                    <select className={`form-control form-select ${formError.productSubcategoryError && "border-danger"} `} id={'subCategory'} name={'subCategory'} onChange={(e) => handelFormchange(e)}>
+                        
+                        <option value={formDetails.subCategoryId}  >{formDetails.productSubcategoryTitle} </option>
+                        {subCategoriesData.map((subCategory, index) => {
+                            return (
+                                <option 
+                                key={subCategory._id} value={index}>
+                                {subCategory.title} 
+                                </option>
+                            );
+                        })}
+               
+                    </select>
+                    <div id="nameHelp" className="form-text text-danger">{formError.productSubcategoryError}</div>
+
+
+
+          {/* <label htmlFor="subCategoryId" className="form-label  mt-2 ">
             subCategory ID
           </label>
           <input
@@ -190,7 +227,7 @@ function EditProductForm(props) {
             {formError.subCategoryIdError}
           </div>
           {/* //// */}
-          <label htmlFor="productSubcategoryTitle" className="form-label mt-2">
+          {/* <label htmlFor="productSubcategoryTitle" className="form-label mt-2">
             Product subCategory
           </label>
           <input
@@ -204,7 +241,7 @@ function EditProductForm(props) {
             onChange={e => handelFormchange(e)}/>
           <div id="nameHelp" className="form-text text-danger">
             {formError.productSubcategoryTitleError}
-          </div>
+          </div>  */}
           {/* //// */}
           <label htmlFor="productDescription" className="form-label   mt-2 mb-2">
             Product Description
@@ -286,12 +323,11 @@ function EditProductForm(props) {
           <div id="nameHelp" className="form-text text-danger">
             {formError.productDiscountError}
           </div>
-          <div className="border col-10 offset-1 d-flex justify-content-evenly p-3 rounded shadow flex-wrap">
+    
             <button
-              className="btn btn-success col-8 mt-2 col-sm-5 col-md-3"
-              onClick={() => editProduct()} >  Edit Product
+              className="btn btn-success w-50 m-auto"
+              onClick={() => editProduct()}>  Edit Product
             </button>
-          </div>
         </form>
       </div>
     </>
