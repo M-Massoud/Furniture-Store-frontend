@@ -7,6 +7,7 @@ export default function AdminDashBoardCategoriesPage() {
     const [categoriesData, setCategoriesData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPagesNumber, setMaxPagesNumber] = useState(1);
+    const [itemCount, setItemCount] = useState(10);
     const [deletingError, setDeletingError] = useState('');
 
     useEffect(() => {
@@ -14,7 +15,7 @@ export default function AdminDashBoardCategoriesPage() {
             .get(`/category`, {
                 params: {
                     page: currentPage,
-                    itemCount: 10,
+                    itemCount: itemCount,
                 }
             })
             .then(res => {
@@ -23,23 +24,25 @@ export default function AdminDashBoardCategoriesPage() {
                 console.log(res.data.resData.categories);
             })
             .catch(err => console.log(err));
-    }, [currentPage]);
+    }, [currentPage, itemCount]);
 
     function previousPage() {
+        scrollToTop();
         currentPage > 1
             ? setCurrentPage(currentPage - 1)
             : setCurrentPage(currentPage);
     }
 
     function nextPage() {
+        scrollToTop();
         currentPage < maxPagesNumber
             ? setCurrentPage(currentPage + 1)
             : setCurrentPage(currentPage);
     }
 
     function deletecategory(id) {
-        if (window.confirm("Are You Sure") == true) {
-            axiosInstance.delete(`/category/${id}`,{
+        if (window.confirm("Are You Sure") === true) {
+            axiosInstance.delete(`/category/${id}`, {
                 headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
             })
                 .then(res => {
@@ -84,12 +87,29 @@ export default function AdminDashBoardCategoriesPage() {
         setTimeout(() => { setDeletingError(''); }, 2000);
     }
 
+    function changeItemPerPage(event) {
+        setItemCount(event.target.value);
+    }
+
+    function scrollToTop() {
+        document.documentElement.scrollTop = 0;
+    }
+
     return (
         <>
             <div className='container'>
                 <div className='row m-5 col-12'>
                     <AdminDashBoardPage />
                     <div className='col-9'>
+                        <div className='col-3'>
+                            <select onChange={(event) => changeItemPerPage(event)} defaultValue="10" className="form-select form-select-lg mb-3" aria-label=".form-select-lg">
+                                <option checked disabled>Products Per Page</option>
+                                <option value="5" >5</option>
+                                <option value="10" >10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
                         <table className="table table-striped">
                             <thead>
                                 <tr>
@@ -112,29 +132,29 @@ export default function AdminDashBoardCategoriesPage() {
                             </tbody>
                         </table>
                         {allertMessage()}
-                        <nav className='my-5 mx-5' aria-label="...">
-                            <ul class="pagination">
-                                <li class={currentPage === 1 ? "page-item  disabled" : "page-item "}>
-                                    <span class="page-link" onClick={() => previousPage()}>Previous</span>
+                        <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
+                            <ul className="pagination">
+                                <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>
+                                    <span className="page-link" role="button" onClick={() => previousPage()}>Previous</span>
                                 </li>
-                                {currentPage === 1 ? <li class="page-item active" aria-current="page">
-                                    <span class="page-link" onClick={() => setCurrentPage(1)}>{currentPage}</span>
-                                </li> : <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(1)}>1</a></li>}
-                                {maxPagesNumber >= 2 ? currentPage === 2 ? <li class="page-item active" aria-current="page">
-                                    <span class="page-link">{currentPage}</span>
-                                </li> : <li class="page-item" onClick={() => setCurrentPage(2)}><a class="page-link" href='#' onClick={() => setCurrentPage(2)}>2</a></li> : ''}
-                                {maxPagesNumber >= 3 ? currentPage === 3 ? <li class="page-item active" aria-current="page">
-                                    <span class="page-link" onClick={() => setCurrentPage(3)}>{currentPage}</span>
-                                </li> : <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(3)}>3</a></li> : ''}
-                                {currentPage > 3 ? <li class="page-item"><a class="page-link disabled" href='#'>...</a></li> : ''}
-                                {currentPage > 3 ? <li class="page-item active" aria-current="page">
-                                    <span class="page-link">{currentPage}</span>
+                                {currentPage === 1 ? <li className="page-item active" aria-current="page">
+                                    <span className="page-link" onClick={() => setCurrentPage(1)}>{currentPage}</span>
+                                </li> : <li className="page-item"><button className="page-link" onClick={() => { setCurrentPage(1); scrollToTop(); }}>1</button></li>}
+                                {maxPagesNumber >= 2 ? currentPage === 2 ? <li className="page-item active" aria-current="page">
+                                    <span className="page-link">{currentPage}</span>
+                                </li> : <li className="page-item" onClick={() => setCurrentPage(2)}><button className="page-link" onClick={() => { setCurrentPage(2); scrollToTop(); }}>2</button></li> : ''}
+                                {maxPagesNumber >= 3 ? currentPage === 3 ? <li className="page-item active" aria-current="page">
+                                    <span className="page-link" onClick={() => setCurrentPage(3)}>{currentPage}</span>
+                                </li> : <li className="page-item"><button className="page-link" onClick={() => { setCurrentPage(3); scrollToTop(); }}>3</button></li> : ''}
+                                {((maxPagesNumber !== 4) && (currentPage > 3)) ? <li className="page-item"><button className="page-link disabled">...</button></li> : ''}
+                                {currentPage > 3 ? <li className="page-item active" aria-current="page">
+                                    <span className="page-link">{currentPage}</span>
                                 </li> : ''}
-                                {maxPagesNumber > 5 ? currentPage < maxPagesNumber - 2 ? <li class="page-item"><a class="page-link disabled" href=''>...</a></li> : '' : ''}
-                                {maxPagesNumber > 4 ? currentPage < maxPagesNumber - 1 ? <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber - 1)}>{maxPagesNumber - 1}</a></li> : '' : ''}
-                                {maxPagesNumber > 3 ? currentPage < maxPagesNumber ? <li class="page-item"><a class="page-link" href='#' onClick={() => setCurrentPage(maxPagesNumber)}>{maxPagesNumber}</a></li> : '' : ''}
-                                <li class={currentPage === maxPagesNumber ? "page-item  disabled" : "page-item"}>
-                                    <a class="page-link" href='#' onClick={() => nextPage()}>Next</a>
+                                {maxPagesNumber > 5 ? currentPage < maxPagesNumber - 2 ? <li className="page-item"><button className="page-link disabled">...</button></li> : '' : ''}
+                                {maxPagesNumber > 4 ? currentPage < maxPagesNumber - 1 ? <li className="page-item"><button className="page-link" onClick={() => { setCurrentPage(maxPagesNumber - 1); scrollToTop(); }}>{maxPagesNumber - 1}</button></li> : '' : ''}
+                                {maxPagesNumber > 3 ? currentPage < maxPagesNumber ? <li className="page-item"><button className="page-link" onClick={() => { setCurrentPage(maxPagesNumber); scrollToTop(); }}>{maxPagesNumber}</button></li> : '' : ''}
+                                <li className={currentPage === maxPagesNumber ? "page-item  disabled" : "page-item"}>
+                                    <button className="page-link" onClick={() => nextPage()}>Next</button>
                                 </li>
                             </ul>
                         </nav>

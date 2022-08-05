@@ -111,7 +111,8 @@ export default function CardComponent({ product }) {
       <div className="card shadow-lg product-card h-100">
         {/* <img src={product.image} className="card-img-top" alt="..." /> */}
         <Link to={`/products/${product._id}`}>
-          <img src={img} className="card-img-top" alt="..." />
+          <img src={`${axiosInstance.getUri()}/uploads/products-imgs/${product.image}`} 
+          className="card-img-top" alt="..." />
         </Link>
         <div className="card-body  d-flex flex-column">
           <h5 className="card-title">{product.name}</h5>
@@ -130,12 +131,13 @@ export default function CardComponent({ product }) {
                 <h6 className="final-price">EGP {product.price.toFixed(2)}</h6>
               </div>
             )}
-
+            <h6>Stock Amount: {product.stockAmount}</h6>
             <div className="product-card-footer ">
               <button className="btn add-to-cart" onClick={handleAddToCart}>
-                add to card
+                add to cart
               </button>
 
+              <input type="number" defaultValue={1} min={1} max={product.stockAmount} className="col-2 mx-2 rounded border-danger text-center" />
               <span className="wishlist-icon">
                 {favProductIcon ? (
                   <FaHeart

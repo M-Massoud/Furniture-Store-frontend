@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { loggedInSuccessfully } from '../../redux/isLoggedInRedux';
+import { emptyCart, refreshCart } from "../../redux/cartRedux";
 import './LoginUserComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../../network/Config';
@@ -14,6 +17,7 @@ export default function LoginForm() {
 
   const [resData, setResData] = useState({});
   const [isAuthenticated, serIsAuthenticated] = useState(false);
+  const dispatch = useDispatch();
 
   const [loginDataErrors, setLoginDataErrors] = useState({
     userEmailError: '',
@@ -76,10 +80,12 @@ export default function LoginForm() {
         console.log(resData)
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
-        history.push(location.state.from.pathname);
+        history.push((location.state?.from.pathname) || '/');
+        dispatch(refreshCart());
+        dispatch(loggedInSuccessfully("user"))
       })
       .catch(error => {
-        // console.log(error.response.message);
+        console.log(error);
         serIsAuthenticated(false);
       });
   }
@@ -151,13 +157,16 @@ export default function LoginForm() {
             <button type="submit" className="btn bg-secondary-1 white col-12">
               Login
             </button>
-          </form>
+            <Link to={'/login-admin'} className="btn mt-2 text-hover-primary">
+                you're an admin ?
+              </Link>
+            </form>
         </div>
 
         <div className="bg-main m-3 p-5 col-10 col-xl-5 border-custom shadow-lg">
           <h3>Create Your HUB Furniture Account</h3>
           <Link
-            to={'/register'}
+            to={'/register-user'}
             className="btn bg-secondary-1 white mt-3 col-12"
           >
             Sign up

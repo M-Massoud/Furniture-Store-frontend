@@ -1,12 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect, useHistory, useLocation
-} from 'react-router-dom';
-import jwt from 'jwt-decode';
+import { BrowserRouter as Router, Switch, Route, } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
@@ -18,10 +12,10 @@ import RegisterationAdminComponent from './components/registerationAdminComponen
 import WishListComponent from './components/wishListComponent/WishListComponent';
 import ShoppingCartComponent from './components/shoppingCartComponent/ShoppingCartComponent';
 import checkoutcomponent from './components/checkoutcomponent/CheckoutComponent';
+// import CheckoutPage from "./pages/checkoutPage";
 import ProductsPage from './pages/productsPage';
 import SingleProductPage from './pages/singleProductPage';
 import SubCategoryPage from './pages/subCategoryPage';
-import AdminDashBoardPage from './pages/adminDashBoardPage';
 import AdminDashBoardUsersPage from "./components/adminDashBordUsersComponent/adminDashBordUsersComponent";
 import AdminDashBoardCategoriesPage from "./components/adminDashBordCategoriesComponent/adminDashBordCategoriesComponent";
 import AdminDashBoardSubCategoriesPage from "./components/adminDashBordSubCategoriesComponent/adminDashBordSubCategoriesComponent";
@@ -40,78 +34,43 @@ import EditUserProfileForm from './components/userProfileComponent/editUserProfi
 import AdminProfile from './components/adminProfileComponent/adminProfilePage';
 import EditAdminProfileForm from './components/adminProfileComponent/editAdminProfile';
 import EditProductForm from './components/productForm/editProductForm';
-import Logout from "./components/logoutComponent/LogoutComponent";
+// import Logout from "./components/logoutComponent/LogoutComponent";
+import PrivateRoute from "./components/privateRoute/PrivateRoute";
+import CheckoutSuccess from "./pages/checkoutSuccessPage";
 
-function PrivateRoute({ children, requiredRole, ...rest }) {
-
-  const location = useLocation();
-  const history = useHistory();
-
-  // search for tokent in local storage.
-  let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
-  // check if token expired.
-  if (Date.now() >= token.exp * 1000) {
-    let tokenRole = token.role;
-    token = 'unAuthenticated';
-    localStorage.removeItem('token');
-    tokenRole === 'user' ? history.push('/login-user') : history.push('/login-admin');
-  }
-  // get id from url
-  const requestedId = location.pathname.split('/')[2];
-  console.log(requestedId)
-  return (
-    <Route
-      {...rest}
-      render={({ location }) => {
-        return (
-          (token !== "unAuthenticated") &&
-          (requiredRole === 'userById' ?
-            ((token?.role === 'user') && (token?.id == requestedId)) :
-            (token?.role === requiredRole))) ?
-          children :
-          ((token?.role === 'user') && (token?.id !== requestedId)) ?
-            <h1>Un Authorized</h1> :
-            <Redirect to={{ pathname: requiredRole !== 'admin' ? '/login-user' : '/login-admin', state: { from: location } }} />
-          ;
-      }}
-    />
-  );
-}
 
 function App() {
   return (
     <Router>
-      <NavBar/>
+      <NavBar />
       <Switch>
         <Route path={'/'} exact component={Main} />
-        <PrivateRoute path={'/admin-dashBoard/users'} requiredRole="admin">
-          <AdminDashBoardUsersPage />
-        </PrivateRoute>
-        <PrivateRoute path={'/admin-dashBoard/categories'} requiredRole="admin">
-          <AdminDashBoardCategoriesPage />
-        </PrivateRoute>
-        <PrivateRoute path={'/admin-dashBoard/subCategories'} requiredRole="admin">
-          <AdminDashBoardSubCategoriesPage />
-        </PrivateRoute>
-        <PrivateRoute path={'/admin-dashBoard/products'} requiredRole="admin">
-          <AdminDashBoardProductsPage />
-        </PrivateRoute>
-        <PrivateRoute path={'/admin-dashBoard/orders'} requiredRole="admin">
-          <AdminDashBoardOrdersPage />
-        </PrivateRoute>
-        <PrivateRoute path={'/register-admin'} requiredRole="admin">
-          <RegisterationAdminComponent />
-        </PrivateRoute>
-        <Route path={'/products'} exact component={ProductsPage} />
-        <Route path={'/products/:id'} exact component={SingleProductPage} />
+        <PrivateRoute path={'/admin-dashBoard'} component={AdminDashBoardUsersPage} exact requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/categories'} component={AdminDashBoardCategoriesPage} requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/subCategories'} component={AdminDashBoardSubCategoriesPage} requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/products'} component={AdminDashBoardProductsPage} requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/orders'} component={AdminDashBoardOrdersPage} requiredRole="admin" />
+        <PrivateRoute path={'/addProduct'} component={AddProductForm} requiredRole="admin" />
+        <PrivateRoute path={'/editProduct'} component={EditProductForm} requiredRole="admin" />
+        {/* <PrivateRoute path={'/login-admin'} component={LoginAdminComponent} requiredRole="unAuthenticated"/> */}
+        <PrivateRoute path={'/register-admin'} component={RegisterationAdminComponent} requiredRole="admin" />
+        {/* <PrivateRoute path={'/login-user'} component={LoginUserComponent} requiredRole="unAuthenticated"/>
+        <PrivateRoute path={'/register-user'} component={RegisterationUserComponent} requiredRole="unAuthenticated"/> */}
+        <PrivateRoute path={'/shoppingCart'} component={ShoppingCartComponent} requiredRole="user" />
+        {/* <PrivateRoute path={'/checkout'} component={CheckoutPage} requiredRole="user" /> */}
+        <PrivateRoute path={'/checkout/success'} component={CheckoutSuccess} requiredRole="user" />
+        <PrivateRoute path={'/profile/:id'} component={UserProfilePage} requiredRole="userById" />
+        <PrivateRoute path={'/wishList'} component={WishListComponent} requiredRole="userById" />
+
         <Route path={'/login-user'} component={LoginUserComponent} />
         <Route path={'/login-admin'} component={LoginAdminComponent} />
-        <Route path={'/register-user'} component={RegisterationUserComponent} />
-        <Route path={'/wishList'} component={WishListComponent} />
-        <Route path={'/shoppingCart'} component={ShoppingCartComponent} />
-        <Route path={'/checkOut'} component={checkoutcomponent} />
+
+        <Route path={'/products'} exact component={ProductsPage} />
+        <Route path={'/products/:id'} exact component={SingleProductPage} />
+        {/* <Route path={'/checkOut'} component={checkoutcomponent} /> */}
         <Route path={'/subCategory/:id'} exact component={SubCategoryPage} />
         <Route path={'/FAQ'} exact component={FaqComponent} />
+<<<<<<< HEAD
         <Route path={'/search/:id'}>
           <Search />
         </Route>
@@ -126,6 +85,10 @@ function App() {
           <EditUserProfileForm />
         </PrivateRoute> */}
         <Route path={'/logout'} component={Logout} />
+=======
+        <Route path={'/search/:id'} component={Search} />
+        <Route path={'/addProudct'} exact component={AddProductForm} />
+>>>>>>> f5f14b787f3429e36db309d4699d0698917f028f
         <Route path={'/wishlist'} exact component={WishListComponent} />
         <Route path={'*'} component={NotFound} />
       </Switch>
