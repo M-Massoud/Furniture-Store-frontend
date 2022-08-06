@@ -65,8 +65,9 @@ function App() {
         <Route path={'/login-user'} component={LoginUserComponent} />
         <Route path={'/login-admin'} component={LoginAdminComponent} />
 
+        <PrivateRoute path={'/admin/:id'} component={AdminProfile} requiredRole="admin"/>
 
-        <Route path={'/admin/:id'} component={AdminProfile} requiredRole="userById" />
+
         <Route path={'/useredit/:id'} exact component={EditUserProfileForm} />
         <Route path={'/adminedit/:id'} exact component={EditAdminProfileForm} />
         <Route path={'/forgetAdminPassword'} exact component={ForgetAdminPassworPage} />

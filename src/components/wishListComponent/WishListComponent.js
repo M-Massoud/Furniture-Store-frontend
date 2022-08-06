@@ -1,20 +1,19 @@
 import './WishListComponentStyle.css';
 import axiosInstance from './../../network/Config';
 import { Link, NavLink } from "react-router-dom";
-import CardComponent from './cardComponent';
+import CardComponent from '../cardComponent/cardComponent';
 import { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
 
 
-
 export default function WishList() {
-    const [keyword, setKeword] = useState('wishList');
     const [currentPage, setCurrentPage] = useState(1);
   const [userWishList, setuserWishList] = useState([]);
+
   let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
     useEffect(() => {
         axiosInstance
-          .get(`/user/${token.id}/${keyword}`, {
+          .get(`/user/${token.id}/wishList`, {
             params: {
               page: currentPage,
               },
@@ -28,8 +27,8 @@ export default function WishList() {
                 setuserWishList(res.data[0].wishList);
           })
           .catch(err => console.log(err));
-      }, [keyword,currentPage]);
-   console.log(userWishList,token._d)
+      }, [currentPage]);
+  //  console.log(userWishList,token._d)
     return (
         <>
             <div className='border row m-2 '>

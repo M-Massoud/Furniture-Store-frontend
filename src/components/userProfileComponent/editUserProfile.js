@@ -11,10 +11,10 @@ function EditUserProfileForm(props) {
       userID:props.location.state._id,
     firstName: props.location.state.firstName ,
     lastName: props.location.state.lastName ,
-    userPhone:  props.location.state.mobile, //props.location.state.subCategory.title,
+    userPhone:  props.location.state.mobile,
     street: props.location.state.address.street,
-    city: props.location.state.city,
-    building: props.location.state.address.building ,// props.location.state.description,
+    city: props.location.state.address.city,
+    building: props.location.state.address.building ,
     cardType: props.location.state.payment.cardType,
     cardNumber: props.location.state.payment.cardNumber
     
@@ -24,7 +24,7 @@ function EditUserProfileForm(props) {
     lastNameError: '',
     userPhoneError: '',
     streetError: '',
-    cityError: " ",
+    cityError: "",
     buildingError: "",
     cardTypeError: "",
     cardNumberError: "",
@@ -36,6 +36,7 @@ function EditUserProfileForm(props) {
       [e.target.id]: e.target.value,
     });
     ErrorHandling(e.target.id, e.target.value);
+    // console.log(formDetails);
   } // handelFormchange function
   const handleSubmit = e => {
     console.log(e)
@@ -53,6 +54,12 @@ function EditUserProfileForm(props) {
   }; //handleSubmit function
   // console.log(formError.firstNameError)
   const editUserData = () => {
+
+    // return if there's any errors
+    for (let index = 0; index <  Object.values(formError).length; index++) {
+      if( Object.values(formError)[index] ) return          
+     }
+
     axiosInstance
       .put(
         `/user/${token.id}`,
@@ -80,7 +87,6 @@ function EditUserProfileForm(props) {
   }; // Editing func
   /////////////////////////////////////////////
   const ErrorHandling = (input, value) => {
-    // let imgURl = new RegExp(/^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/);
     let phonPatern = new RegExp("[0-9]");
     let namePatern =new RegExp(/^[A-Z]+$/i);
     switch (input) {
@@ -89,19 +95,19 @@ function EditUserProfileForm(props) {
       case 'firstName':
         setFormerror({
           ...formError,
-          firstNameError: value.length === 0 ? 'This field is required' : !namePatern.test(value) ? "FirstName must be Characters with no spacing": value.length < 3 ? "FirstName should not be less than (3) characters" : "",
+          firstNameError: value.length === 0 ? 'This field is required' : !namePatern.test(value) ? "FirstName must be Characters with no spacing": value.length < 3 ? "FirstName should not be less than (3) characters" : value.length > 12 ?  "FirstName should not be less than (12) characters" :""
         });
         break;
       case 'lastName':
         setFormerror({
           ...formError,
-          lastNameError: value.length === 0 ? 'This field is required' : !namePatern.test(value) ? "FirstName must be Characters with no spacing" :value.length < 3 ? "lastName should not be less than (3) characters" : "",
+          lastNameError: value.length === 0 ? 'This field is required' : !namePatern.test(value) ? "FirstName must be Characters with no spacing" :value.length < 3 ? "lastName should not be less than (3) characters" : value.length > 12 ?  "last name should not be less than (12) characters" :"",
         });
         break;
       case 'userPhone':
         setFormerror({
           ...formError,
-          userPhoneError: value.length === 0 ? 'This field is required' : !phonPatern.test(value) ? "Phone Number must be Numbers" : value.length > 11 ? "Phone Number Should not be greater than 11 number": value.length < 11 ? "Phone Number Should not be less than 11 number":"",
+          userPhoneError: value.length === 0 ? 'This field is required' : !phonPatern.test(value) ? "Phone Number must be Numbers" : value.length < 10 || value.length > 14 ? "Phone Number Should be between 10 and 14 length" : "",
         });
         break;
       case 'street':
@@ -226,15 +232,15 @@ function EditUserProfileForm(props) {
           </div>
           {/* //// */}
           <label  htmlFor='city' className="form-label  mt-2 mb-2" value={formDetails.city}> City Name </label >
-                                  <select className={ `form-select  `} id={'city'} name={'city'}   onChange={ (e)=> handelFormchange(e)}>
-                                         <option value="Cairo">Cairo</option>
-                                         <option value="Dammietta">Dammietta</option>
-                                         <option value="Mansaura">Mansaura</option>
-                                          <option value="Cairo">Cairo</option>
-                                          <option value="Alexandria">Alexandria</option>
-                                          <option value="Aswan">Aswan</option>
-                                          <option value="Minia">Minia</option>
-                </select>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            value={formDetails.city}
+            className={`form-control mb-2 ${
+              formError.cityError && 'border-danger'
+            } `}
+            onChange={e => handelFormchange(e)}  />
           {/* //// */}
           <label htmlFor="building" className="form-label  mt-2 ">
             Building Number

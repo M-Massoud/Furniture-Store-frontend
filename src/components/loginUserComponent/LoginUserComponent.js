@@ -81,8 +81,8 @@ export default function LoginForm() {
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
         history.push((location.state?.from.pathname) || '/');
-        dispatch(refreshCart());
         dispatch(loggedInSuccessfully("user"))
+        dispatch(refreshCart());
       })
       .catch(error => {
         console.log(error);

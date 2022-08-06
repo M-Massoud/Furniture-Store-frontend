@@ -87,14 +87,14 @@ function EditAdminProfileForm(props) {
   return (
     <>
       <div className="col-10 offset-1 col-md-8 offset-md-2 border p-3 rounded shadow my-4 col-lg-6 m-lg-auto my-lg-4">
-        <h3 className="text-center mt-2"> User Profile Edit form </h3>
+        <h3 className="text-center mt-2"> Admin Profile Edit form </h3>
         <form
           className={`co-12  row m-auto `}
           onSubmit={e => handleSubmit(e)}
           encType="multipart/form-data" >
           {/* //// */}
           <label htmlFor="userId" className="form-label mt-2">
-            User ID
+            admin ID
           </label>
           <input
             type="text"
