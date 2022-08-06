@@ -16,19 +16,19 @@ export default function CheckoutSuccess() {
     function getCartProductsIdArray(array) {
         let newArray = [];
         for (let item = 0; item < array.length; item++) {
-            newArray.push(array[item]._id);
+            newArray.push({ product: array[item].product._id, quantity: array[item].quantity });
         }
         return newArray;
     }
 
     async function displayOrderData() {
         try {
+            // storing order data in DB
             await axiosInstance.post("/orders", {
                 userId: token.id,
-                product: getCartProductsIdArray(cart.products),
+                products: getCartProductsIdArray(cart.products),
                 totalPrice: cart.totalPrice,
-                quantity: cart.quantity,
-                Status: "fullfilled",
+                status: "fullfilled",
             },
                 {
                     headers: {
@@ -40,11 +40,12 @@ export default function CheckoutSuccess() {
             for (let product of cart.products) {
                 userOrder.push(
                     {
-                        productId: product._id,
-                        productName: product.name
+                        productId: product.product._id,
+                        productName: product.product.name
                     }
                 )
             }
+            // saving subset of order data embeded into user schema
             await axiosInstance.put(`/user/${token.id}`, {
                 orders: userOrder,
             },
@@ -54,8 +55,22 @@ export default function CheckoutSuccess() {
                     },
                 },
             );
+            // updating the available product stock amount
+            for (let product of cart.products) {
+                await axiosInstance.put("/products//editStockAmount", {
+                    id: product.product._id,
+                    stockAmount: product.product.stockAmount - product.quantity
+                },
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                    },
+                );
+            }
+            // remove the cart from local storage and redirect the user to home page
             setTimeout(() => {
-                localStorage.removeItem('cart');
+                localStorage.removeItem(`cartForUid-${token.id}`);
                 history.push('/');
             }, 10000)
         }
@@ -92,14 +107,14 @@ export default function CheckoutSuccess() {
                                 </thead>
                                 <tbody>
                                     {
-                                        cart['products'].map((product,index) => {
+                                        cart['products'].map((product, index) => {
                                             return (
-                                                < tr key={product._id}>
-                                                    <td className="center">{index+1}</td>
-                                                    <td className="left strong">{product.name}</td>
-                                                    <td className="left">{product.description}</td>
-                                                    <td className="center">1</td>
-                                                    <td className="right">{product.price} EGP</td>
+                                                < tr key={product.product._id}>
+                                                    <td className="center">{index + 1}</td>
+                                                    <td className="left strong">{product.product.name}</td>
+                                                    <td className="left">{product.product.description}</td>
+                                                    <td className="center">{product.quantity}</td>
+                                                    <td className="right">{(product.product.price - product.product.discount)} EGP</td>
                                                 </tr>
                                             );
                                         })

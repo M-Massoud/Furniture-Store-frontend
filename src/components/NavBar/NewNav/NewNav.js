@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux/es/exports';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import { loggedOutSuccessfully } from '../../../redux/isLoggedInRedux';
 import { clearCartState } from "../../../redux/cartRedux";
+import { Store } from 'react-notifications-component';
 import { Link, useHistory } from "react-router-dom";
 import DropDowen from './DropDowen';
 import "./NewNav.css"
@@ -28,6 +29,15 @@ function NewNav() {
   function Logout() {
     localStorage.removeItem('token');
     dispatch(clearCartState());
+    Store.addNotification({
+      title: "Status",
+      message: "Successfully Logged Out",
+      type: "success",
+      container: "top-center",
+      dismiss: {
+        duration: 2000,
+      },
+    });
     history.push('/');
     dispatch(loggedOutSuccessfully());
   }

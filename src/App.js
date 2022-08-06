@@ -1,8 +1,10 @@
 // import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, } from 'react-router-dom';
+import { ReactNotifications } from 'react-notifications-component'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
+import 'react-notifications-component/dist/theme.css'
 
 import Main from './components/itemsComponent/Mainpage';
 import LoginUserComponent from './components/loginUserComponent/LoginUserComponent';
@@ -36,12 +38,14 @@ import EditAdminProfileForm from './components/adminProfileComponent/editAdminPr
 import EditProductForm from './components/productForm/editProductForm';
 // import Logout from "./components/logoutComponent/LogoutComponent";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
+import LoggedInAccessRestrictRoute from "./components/privateRoute/LoggedInAccessRestrictRoute";
 import CheckoutSuccess from "./pages/checkoutSuccessPage";
 
 
 function App() {
   return (
     <Router>
+      <ReactNotifications />
       <NavBar />
       <Switch>
         <Route path={'/'} exact component={Main} />
@@ -52,21 +56,17 @@ function App() {
         <PrivateRoute path={'/admin-dashBoard/orders'} component={AdminDashBoardOrdersPage} requiredRole="admin" />
         <PrivateRoute path={'/addProduct'} component={AddProductForm} requiredRole="admin" />
         <PrivateRoute path={'/editProduct'} component={EditProductForm} requiredRole="admin" />
-        {/* <PrivateRoute path={'/login-admin'} component={LoginAdminComponent} requiredRole="unAuthenticated"/> */}
+        <LoggedInAccessRestrictRoute path={'/login-admin'} component={LoginAdminComponent} />
         <PrivateRoute path={'/register-admin'} component={RegisterationAdminComponent} requiredRole="admin" />
-        {/* <PrivateRoute path={'/login-user'} component={LoginUserComponent} requiredRole="unAuthenticated"/>
-        <PrivateRoute path={'/register-user'} component={RegisterationUserComponent} requiredRole="unAuthenticated"/> */}
+        <LoggedInAccessRestrictRoute path={'/login-user'} component={LoginUserComponent} />
+        <LoggedInAccessRestrictRoute path={'/register-user'} component={RegisterationUserComponent} />
         <PrivateRoute path={'/shoppingCart'} component={ShoppingCartComponent} requiredRole="user" />
         {/* <PrivateRoute path={'/checkout'} component={CheckoutPage} requiredRole="user" /> */}
         <PrivateRoute path={'/checkout/success'} component={CheckoutSuccess} requiredRole="user" />
+        <PrivateRoute path={'/wishlist'} component={WishListComponent} requiredRole="user" />
         <PrivateRoute path={'/profile/:id'} component={UserProfilePage} requiredRole="userById" />
-        <PrivateRoute path={'/wishList'} component={WishListComponent} requiredRole="userById" />
-
-        <Route path={'/login-user'} component={LoginUserComponent} />
-        <Route path={'/login-admin'} component={LoginAdminComponent} />
 
         <PrivateRoute path={'/admin/:id'} component={AdminProfile} requiredRole="admin"/>
-
 
         <Route path={'/useredit/:id'} exact component={EditUserProfileForm} />
         <Route path={'/adminedit/:id'} exact component={EditAdminProfileForm} />
@@ -80,7 +80,6 @@ function App() {
         <Route path={'/FAQ'} exact component={FaqComponent} />
         <Route path={'/search/:id'} component={Search} />
         <Route path={'/addProudct'} exact component={AddProductForm} />
-        <Route path={'/wishlist'} exact component={WishListComponent} />
         <Route path={'*'} component={NotFound} />
       </Switch>
       <Footer />

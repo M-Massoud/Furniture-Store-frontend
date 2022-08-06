@@ -26,7 +26,6 @@ export default function AdminDashBoardOrdersPage() {
             .then(res => {
                 setOrdersData(res.data.resData.orders);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
-                console.log(res.data.resData.orders);
             })
             .catch(err => console.log(err));
     }, [currentPage, itemCount]);
@@ -45,13 +44,13 @@ export default function AdminDashBoardOrdersPage() {
             : setCurrentPage(currentPage);
     }
 
-    function deleteorder(id) {
+    function deleteorder(index, id) {
         if (window.confirm("Are You Sure") === true) {
             axiosInstance.delete(`/orders/${id}`, {
                 headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
             })
                 .then(res => {
-                    console.log(res.data);
+                    setOrdersData((ordersData) => ordersData.filter((_, i) => i !== index));
                     setDeletingError('successful');
                     clearAlertMessage();
                 })
@@ -78,6 +77,22 @@ export default function AdminDashBoardOrdersPage() {
             default:
                 return '';
         }
+    }
+
+    const productNameToString = function (array) {
+        let result = '';
+        for (let item in array) {
+            result += array[item].product.name + ', ';
+        }
+        return result;
+    }
+
+    const qunatityToString = function (array) {
+        let result = '';
+        for (let item in array) {
+            result += array[item].quantity + ', ';
+        }
+        return result;
     }
 
     function clearAlertMessage() {
@@ -110,9 +125,10 @@ export default function AdminDashBoardOrdersPage() {
                         <table className="table table-striped">
                             <thead>
                                 <tr>
+                                    <th scope="col">#</th>
                                     <th scope="col">ID</th>
                                     <th scope="col">User ID</th>
-                                    <th scope="col">Product</th>
+                                    <th scope="col">Products</th>
                                     <th scope="col">Created At</th>
                                     <th scope="col">Total Price</th>
                                     <th scope="col">quantity</th>
@@ -120,17 +136,18 @@ export default function AdminDashBoardOrdersPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {ordersData.map(order => {
+                                {ordersData.map((order, index) => {
                                     return (
                                         <tr key={order._id}>
+                                            <td>{(currentPage - 1) * itemCount + index + 1}</td>
                                             <td>{order._id}</td>
                                             <td>{order.userId != null ? `${order.userId.firstName} ${order.userId.lastName}` : ''}</td>
-                                            <td>{customToString(order.product)}</td>
+                                            <td>{productNameToString(order.products,'product',"name")}</td>
                                             <td>{order.created_at}</td>
                                             <td>{order.totalPrice}</td>
-                                            <td>{order.quantity}</td>
+                                            <td>{qunatityToString(order.products,'quantity')}</td>
                                             <td>{order.status}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteorder(order._id) }} /></td>
+                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteorder(index, order._id) }} /></td>
                                         </tr>
                                     );
                                 })}

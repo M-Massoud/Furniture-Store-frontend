@@ -26,11 +26,9 @@ export default function AdminDashBoardSubCategoriesPage() {
                     itemCount: itemCount,
                 }
             })
-
             .then(res => {
                 setSubCategoriesData(res.data.resData.subCategories);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
-                console.log(res.data.resData.subCategories);
             })
             .catch(err => console.log(err));
     }, [currentPage, itemCount]);
@@ -49,13 +47,13 @@ export default function AdminDashBoardSubCategoriesPage() {
             : setCurrentPage(currentPage);
     }
 
-    function deletesubCategory(id) {
+    function deletesubCategory(index, id) {
         if (window.confirm("Are You Sure") === true) {
             axiosInstance.delete(`/subCategory/${id}`, {
                 headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
             })
                 .then(res => {
-                    console.log(res.data);
+                    setSubCategoriesData((subCategoriesData) => subCategoriesData.filter((_, i) => i !== index));
                     setDeletingError('successful');
                     clearAlertMessage();
                 })
@@ -115,19 +113,21 @@ export default function AdminDashBoardSubCategoriesPage() {
                         <table className="table table-striped">
                             <thead>
                                 <tr>
+                                    <th scope="col">#</th>
                                     <th scope="col">ID</th>
                                     <th scope="col">Title</th>
                                     <th scope="col">Products</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {subCategoriesData.map(subCategory => {
+                                {subCategoriesData.map((subCategory, index) => {
                                     return (
                                         <tr key={subCategory._id}>
+                                            <td>{(currentPage - 1) * itemCount + index + 1}</td>
                                             <td>{subCategory._id}</td>
                                             <td>{subCategory.title}</td>
                                             <td>{customToString(subCategory.products)}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deletesubCategory(subCategory._id) }} /></td>
+                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deletesubCategory(index, subCategory._id) }} /></td>
                                         </tr>
                                     );
                                 })}

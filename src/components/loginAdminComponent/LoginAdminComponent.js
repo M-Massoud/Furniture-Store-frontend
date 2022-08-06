@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import { loggedInSuccessfully } from '../../redux/isLoggedInRedux';
+import { Store } from 'react-notifications-component';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import './LoginAdminComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -76,6 +77,15 @@ export default function LoginAdminForm() {
         password: loginData.adminPassword,
       })
       .then(response => {
+        Store.addNotification({
+          title: "Status",
+          message: "Successfully Logged In Admin",
+          type: "success",
+          container: "top-center",
+          dismiss: {
+            duration: 2000,
+          },
+        });
         setResData(response.data);
         serIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
@@ -83,6 +93,15 @@ export default function LoginAdminForm() {
         dispatch(loggedInSuccessfully("admin"))
       })
       .catch(error => {
+        Store.addNotification({
+          title: "Status",
+          message: "Sorry, Unexpected Logged In Error",
+          type: "danger",
+          container: "top-center",
+          dismiss: {
+            duration: 2000,
+          },
+        });
         console.log(error);
         serIsAuthenticated(false);
       });

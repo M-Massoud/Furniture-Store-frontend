@@ -1,6 +1,8 @@
 footer {
   background: var(--secondary-color);
   color: #fff;
+  /* position: fixed;
+  bottom: 0px; */
 }
 
 footer h5 {

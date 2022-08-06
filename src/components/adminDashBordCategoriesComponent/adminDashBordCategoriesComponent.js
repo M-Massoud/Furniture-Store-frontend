@@ -21,7 +21,6 @@ export default function AdminDashBoardCategoriesPage() {
             .then(res => {
                 setCategoriesData(res.data.resData.categories);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
-                console.log(res.data.resData.categories);
             })
             .catch(err => console.log(err));
     }, [currentPage, itemCount]);
@@ -40,13 +39,13 @@ export default function AdminDashBoardCategoriesPage() {
             : setCurrentPage(currentPage);
     }
 
-    function deletecategory(id) {
+    function deletecategory(index, id) {
         if (window.confirm("Are You Sure") === true) {
             axiosInstance.delete(`/category/${id}`, {
                 headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
             })
                 .then(res => {
-                    console.log(res.data);
+                    setCategoriesData((categoriesData) => categoriesData.filter((_, i) => i !== index));
                     setDeletingError('successful');
                     clearAlertMessage();
                 })
@@ -119,13 +118,13 @@ export default function AdminDashBoardCategoriesPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {categoriesData.map(category => {
+                                {categoriesData.map((category, index) => {
                                     return (
                                         <tr key={category._id}>
                                             <td>{category._id}</td>
                                             <td>{category.title}</td>
                                             <td>{customToString(category.subCategory)}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deletecategory(category._id) }} /></td>
+                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deletecategory(index, category._id); }} /></td>
                                         </tr>
                                     );
                                 })}
