@@ -24,10 +24,10 @@ export default function PrivateRoute({ component: Component, requiredRole, ...re
                 (requiredRole === 'userById' ?
                     ((token?.role === 'user') && (token?.id === Number(requestedId))) :
                     (token?.role === requiredRole))) ?
-                <Component {...props} /> :
+                    <Component from = {location} {...props} /> :
                 ((token?.role === 'user') && (token?.id !== requestedId)) ?
                     <h1>Un Authorized Access</h1> :
-                    <Redirect to={{ pathname: requiredRole !== 'admin' ? '/login-user' : '/login-admin' }} />
+                    <Redirect to={{ pathname: requiredRole !== 'admin' ? '/login-user' : '/login-admin', state: { from: location } }} />
                 ;
         }}
         />

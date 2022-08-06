@@ -22,7 +22,6 @@ export default function AdminDashBoardProductsPage() {
             .then(res => {
                 setProductsData(res.data.resData.products);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
-                // console.log(res.data.resData.products);
             })
             .catch(err => console.log(err));
     }, [currentPage, itemCount]);
@@ -41,13 +40,13 @@ export default function AdminDashBoardProductsPage() {
             : setCurrentPage(currentPage);
     }
 
-    function deleteproduct(id) {
+    function deleteproduct(index, id) {
         if (window.confirm("Are You Sure") === true) {
             axiosInstance.delete(`/products/${id}`, {
                 headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
             })
                 .then(res => {
-                    console.log(res.data);
+                    setProductsData((productsData) => productsData.filter((_, i) => i !== index));
                     setDeletingError('successful');
                     clearAlertMessage();
                 })
@@ -107,6 +106,7 @@ export default function AdminDashBoardProductsPage() {
                             <table className="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th scope="col">#</th>
                                         <th scope="col">ID</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Description</th>
@@ -118,10 +118,11 @@ export default function AdminDashBoardProductsPage() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {productsData.map(product => {
+                                    {productsData.map((product, index) => {
                                         console.log(product);
                                         return (
                                             <tr key={product._id}>
+                                                <td>{(currentPage - 1) * itemCount + index + 1}</td>
                                                 <td>{product._id}</td>
                                                 <td>{product.name}</td>
                                                 <td>{product.description}</td>
@@ -141,7 +142,7 @@ export default function AdminDashBoardProductsPage() {
                                                     </Link>
                                                 </td>
 
-                                                <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteproduct(product._id) }} /></td>
+                                                <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteproduct(index, product._id) }} /></td>
                                             </tr>
                                         );
                                     })}

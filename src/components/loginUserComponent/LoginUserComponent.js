@@ -3,6 +3,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import { loggedInSuccessfully } from '../../redux/isLoggedInRedux';
 import { emptyCart, refreshCart } from "../../redux/cartRedux";
+import { Store } from 'react-notifications-component';
 import './LoginUserComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../../network/Config';
@@ -76,6 +77,15 @@ export default function LoginForm() {
         password: loginData.userPassword,
       })
       .then(response => {
+        Store.addNotification({
+          title: "Status",
+          message: "Successfully Logged In",
+          type: "success",
+          container: "top-center",
+          dismiss: {
+            duration: 2000,
+          },
+        });
         setResData(response.data);
         console.log(resData)
         serIsAuthenticated(true);
@@ -85,6 +95,15 @@ export default function LoginForm() {
         dispatch(refreshCart());
       })
       .catch(error => {
+        Store.addNotification({
+          title: "Status",
+          message: "Sorry, Unexpected Logged In Error",
+          type: "danger",
+          container: "top-center",
+          dismiss: {
+            duration: 2000,
+          },
+        });
         console.log(error);
         serIsAuthenticated(false);
       });
@@ -158,9 +177,9 @@ export default function LoginForm() {
               Login
             </button>
             <Link to={'/login-admin'} className="btn mt-2 text-hover-primary">
-                you're an admin ?
-              </Link>
-            </form>
+              you're an admin ?
+            </Link>
+          </form>
         </div>
 
         <div className="bg-main m-3 p-5 col-10 col-xl-5 border-custom shadow-lg">

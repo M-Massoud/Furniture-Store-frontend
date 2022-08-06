@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import './ShoppingCartComponentStyle.css';
 import { Link, NavLink } from 'react-router-dom';
 import { FaPlusCircle, FaMinusCircle, FaTrashAlt } from 'react-icons/fa';
-import { removeProduct,emptyCart } from '../../redux/cartRedux';
+import { removeProduct, emptyCart } from '../../redux/cartRedux';
 import axiosInstance from "../../network/Config";
 
 export default function ShoppingCart() {
@@ -14,7 +14,7 @@ export default function ShoppingCart() {
     dispatch(removeProduct(product));
   };
 
-  function handleEmptyCart(){
+  function handleEmptyCart() {
     dispatch(emptyCart())
   }
 
@@ -23,11 +23,8 @@ export default function ShoppingCart() {
     let checkoutProducts = [];
 
     for (let product of cart.products) {
-      checkoutProducts.push({ productId: product._id, quantity: 1 });
+      checkoutProducts.push({ productId: product.product._id, quantity: product.quantity });
     }
-
-    // localStorage.setItem('checkoutProducts', JSON.stringify(checkoutProducts));
-    // console.log(JSON.parse(localStorage.getItem('checkoutProducts')));
 
     axiosInstance.post('/create-checkout-session', {
       shoppingCart: checkoutProducts,
@@ -39,8 +36,6 @@ export default function ShoppingCart() {
       },
     )
       .then(response => {
-        console.log("pushed");
-        console.log(response.data);
         window.location.href = response.data.url || '/';
       })
       .catch(error => console.log(error));
@@ -55,10 +50,10 @@ export default function ShoppingCart() {
               <thead>
                 <tr>
                   <th scope="col">Item</th>
-                  {/* <th scope="col" style={{ textAlign: 'center' }}>
-                    Qty
-                  </th> */}
                   <th scope="col">Price</th>
+                  <th scope="col">
+                    Qty
+                  </th>
                   {/* <th scope="col">Subtotal</th> */}
                 </tr>
               </thead>
@@ -66,8 +61,9 @@ export default function ShoppingCart() {
                 {cart.products.map((item, index) => {
                   return (
                     <tr key={index}>
-                      <td>{item.name}</td>
-                      <td>{item.price - item.discount}</td>
+                      <td>{item.product.name}</td>
+                      <td>{item.product.price - item.product.discount}</td>
+                      <td>{item.quantity}</td>
                       <td>
                         <span
                           onClick={() => handleRemoveProduct(item)}
@@ -104,8 +100,8 @@ export default function ShoppingCart() {
                   </td> */}
               </tbody>
             </table>
-              <button className='btn btn-dark' onClick={handleEmptyCart} >
-                empty the cart </button>
+            <button className='btn btn-dark' onClick={handleEmptyCart} >
+              empty the cart </button>
           </div>
 
           <div className="col-lg-3  shadow-lg rounded py-4">

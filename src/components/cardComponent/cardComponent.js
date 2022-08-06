@@ -19,11 +19,16 @@ export default function CardComponent({ product }) {
   const [userWishList, setuserWishList] = useState([]);
   const [favProductIcon, setfavProductIcon] = useState();
   const [unfavProduct, setunfavProduct] = useState(true);
+  const [requiredQuantity, setRequiredQuantity] = useState(1);
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
-    dispatch(addProduct({ product, price: product.price - product.discount }));
+    dispatch(addProduct({ product, price: product.price - product.discount, quantity: Number(requiredQuantity), maxQuantity: product.stockAmount }));
   };
+
+  function handleQuantity(event) {
+    setRequiredQuantity(event.target.value);
+  }
 
   const addTowishList = () => {
     console.log(userWishList);
@@ -111,8 +116,8 @@ export default function CardComponent({ product }) {
       <div className="card shadow-lg product-card h-100">
         {/* <img src={product.image} className="card-img-top" alt="..." /> */}
         <Link to={`/products/${product._id}`}>
-          <img src={`${axiosInstance.getUri()}/uploads/products-imgs/${product.image}`} 
-          className="card-img-top" alt="..." />
+          <img src={`${axiosInstance.getUri()}/uploads/products-imgs/${product.image}`}
+            className="card-img-top" alt="..." />
         </Link>
         <div className="card-body  d-flex flex-column">
           <h5 className="card-title">{product.name}</h5>
@@ -137,7 +142,7 @@ export default function CardComponent({ product }) {
                 add to cart
               </button>
 
-              <input type="number" defaultValue={1} min={1} max={product.stockAmount} className="col-2 mx-2 rounded border-danger text-center" />
+              <input type="number" defaultValue={1} min={1} max={product.stockAmount} className="col-2 mx-2 rounded border-danger text-center" onChange={(event) => handleQuantity(event)} />
               <span className="wishlist-icon">
                 {favProductIcon ? (
                   <FaHeart

@@ -22,11 +22,9 @@ export default function AdminDashBoardUsersPage() {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
             })
-
             .then(res => {
                 setUsersData(res.data.resData.users);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
-                console.log(res.data.resData.users);
             })
             .catch(err => console.log(err));
     }, [currentPage, itemCount]);
@@ -45,13 +43,13 @@ export default function AdminDashBoardUsersPage() {
             : setCurrentPage(currentPage);
     }
 
-    function deleteUser(id) {
+    function deleteUser(index, id) {
         if (window.confirm("Are You Sure") === true) {
             axiosInstance.delete(`/user/${id}`, {
                 headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` },
             })
                 .then(res => {
-                    console.log(res.data);
+                    setUsersData((usersData) => usersData.filter((_, i) => i !== index));
                     setDeletingError('successful');
                     clearAlertMessage();
                 })
@@ -110,6 +108,7 @@ export default function AdminDashBoardUsersPage() {
                         <table className="table table-striped">
                             <thead>
                                 <tr>
+                                    <th scope="col">#</th>
                                     <th scope="col">ID</th>
                                     <th scope="col">First Name</th>
                                     <th scope="col">Last Name</th>
@@ -118,15 +117,16 @@ export default function AdminDashBoardUsersPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {usersData.map(user => {
+                                {usersData.map((user, index) => {
                                     return (
                                         <tr key={user._id}>
+                                            <td>{(currentPage - 1) * itemCount + index + 1}</td>
                                             <td>{user._id}</td>
                                             <td>{user.firstName}</td>
                                             <td>{user.lastName}</td>
                                             <td>{user.email}</td>
                                             <td>{user.mobile}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteUser(user._id) }} /></td>
+                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteUser(index, user._id) }} /></td>
                                         </tr>
                                     );
                                 })}
