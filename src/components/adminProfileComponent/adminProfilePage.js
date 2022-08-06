@@ -9,7 +9,6 @@ let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) :
 function AdminProfile() {
     console.log(token.id);
     const [adminData, setAdminData] = useState({});
-    const [keyword, setKeword] = useState('admin');
 
 
     useEffect(() => {
@@ -31,7 +30,7 @@ function AdminProfile() {
                 <div className="col-11 m-auto col-md-4 mt-2 mt-md-3 mb-2 mb-md-3  p-5 shadow rounded ">
                    
               
-                    <h6 className="text-center p-2">Wellcome Back </h6> 
+                    <h6 className="text-center p-2">Wellcome Back, </h6> 
                 
                     <h3 className="text-center border p-2 col-12 shadow bg-white rounded">{adminData.firstName} </h3>
 
