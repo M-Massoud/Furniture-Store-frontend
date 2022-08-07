@@ -1,6 +1,6 @@
 import './WishListComponentStyle.css';
 import axiosInstance from './../../network/Config';
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CardComponent from '../cardComponent/cardComponent';
 import { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
@@ -27,7 +27,7 @@ export default function WishList() {
                 setuserWishList(res.data[0].wishList);
           })
           .catch(err => console.log(err));
-      }, [currentPage]);
+      }, [token.id,currentPage]);
   //  console.log(userWishList,token._d)
     return (
         <>
