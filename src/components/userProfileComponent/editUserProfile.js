@@ -1,14 +1,18 @@
 import { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import axiosInstance from '../../network/Config';
 import jwt from 'jwt-decode';
+import { Store } from 'react-notifications-component';
 
 let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
 
 // props
 function EditUserProfileForm(props) {
    
+   let history = useHistory();
+
     const [formDetails, setFormDetails] = useState({
-      userID:props.location.state._id,
+    userID:props.location.state._id,
     firstName: props.location.state.firstName ,
     lastName: props.location.state.lastName ,
     userPhone:  props.location.state.mobile,
@@ -44,7 +48,7 @@ function EditUserProfileForm(props) {
     for (let item in formError) {
       message.push(formError[item])
     }
-    console.log(message.length);
+    // console.log(message.length);
     for (let i of message ){
       if (message[i] !== "" ) {
         e.preventDefault();
@@ -82,8 +86,31 @@ function EditUserProfileForm(props) {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         }
       )
-      .then(res => console.log('Done'))
-      .catch(error => console.log(error, formDetails));
+      .then(res => {
+      // show success notification 
+      Store.addNotification({
+        title: "success",
+        message: "updated your data successfully",
+        type: "success",
+        container: "top-right",
+        dismiss: {
+          duration: 2000,
+        }
+      });
+      history.push(`/profile/${token.id}`);
+    })
+      .catch(error => {console.log(error, formDetails)
+       // show error notification
+       Store.addNotification({
+        title: "error",
+        message: "error! couldn't update your data",
+        type: "danger",
+        container: "top-right",
+        dismiss: {
+          duration: 2000,
+        }
+       });
+      });
   }; // Editing func
   /////////////////////////////////////////////
   const ErrorHandling = (input, value) => {
@@ -95,7 +122,7 @@ function EditUserProfileForm(props) {
       case 'firstName':
         setFormerror({
           ...formError,
-          firstNameError: value.length === 0 ? 'This field is required' : !namePatern.test(value) ? "FirstName must be Characters with no spacing": value.length < 3 ? "FirstName should not be less than (3) characters" : value.length > 12 ?  "FirstName should not be less than (12) characters" :""
+          firstNameError: value.length === 0 ? 'This field is required' : !namePatern.test(value) ? "FirstName must be Characters with no spacing": value.length < 3 ? "FirstName should not be less than (3) characters" : value.length > 12 ?  "FirstName should not be more than (12) characters" :""
         });
         break;
       case 'lastName':

@@ -1,18 +1,20 @@
 import { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import axiosInstance from '../../network/Config';
 import jwt from 'jwt-decode';
+import { Store } from 'react-notifications-component';
 
 let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
 
 // props
 function EditAdminProfileForm(props) {
-   
+   const history = useHistory();
+
     const [formDetails, setFormDetails] = useState({
     firstName: props.location.state.firstName ,
     lastName: props.location.state.lastName ,
-   
-    
   });
+
   const [formError, setFormerror] = useState({
     firstNameError: '',
     lastNameError: '',
@@ -41,6 +43,11 @@ function EditAdminProfileForm(props) {
     
   }; //handleSubmit function
   const editAdminData = () => {
+    // return if there's any errors
+    for (let index = 0; index <  Object.values(formError).length; index++) {
+      if( Object.values(formError)[index] ) return          
+     }
+
     axiosInstance
       .put(
         `/admin`,
@@ -54,13 +61,34 @@ function EditAdminProfileForm(props) {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         }
       )
-      .then(res => console.log('Done'))
-      .catch(error => console.log(error, formDetails));
+      .then(res =>{
+        console.log(res);
+           // show success notification 
+        Store.addNotification({
+          title: "success",
+          message: "updated your data successfully",
+          type: "success",
+          container: "top-right",
+          dismiss: {
+            duration: 2000,
+          }
+        });
+        history.push(`/admin/${token.id}`);
+      })
+      .catch(error => {console.log(error, formDetails)
+          // show error notification
+          Store.addNotification({
+            title: "error",
+            message: "error! couldn't update your data",
+            type: "danger",
+            container: "top-right",
+            dismiss: {
+            duration: 2000}
+            });
+      });
   }; // Editing func
   /////////////////////////////////////////////
   const ErrorHandling = (input, value) => {
-    // let imgURl = new RegExp(/^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/);
-    // let phonPatern = new RegExp("[0-9]");
     let namePatern =new RegExp(/^[A-Z]+$/i);
     switch (input) {
       //regex = new Regex("[0-9]");
@@ -68,13 +96,13 @@ function EditAdminProfileForm(props) {
       case 'firstName':
         setFormerror({
           ...formError,
-          firstNameError: value.length === 0 ? 'This field is required' : !namePatern.test(value) ? "FirstName must be Characters with no spacing": value.length < 3 ? "FirstName should not be less than (3) characters" : "",
+          firstNameError: value.length === 0 ? 'This field is required' : !namePatern.test(value) ? "FirstName must be Characters with no spacing": value.length < 3 ? "FirstName should not be less than (3) characters" : value.length > 12 ?  "FirstName should not be more than (12) characters" :""
         });
         break;
       case 'lastName':
         setFormerror({
           ...formError,
-          lastNameError: value.length === 0 ? 'This field is required' : !namePatern.test(value) ? "FirstName must be Characters with no spacing" :value.length < 3 ? "lastName should not be less than (3) characters" : "",
+          lastNameError: value.length === 0 ? 'This field is required' : !namePatern.test(value) ? "FirstName must be Characters with no spacing" :value.length < 3 ? "lastName should not be less than (3) characters" : value.length > 12 ?  "FirstName should not be more than (12) characters" :""
         });
         break;
       default:
