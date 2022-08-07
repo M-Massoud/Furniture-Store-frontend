@@ -36,11 +36,13 @@ import EditUserProfileForm from './components/userProfileComponent/editUserProfi
 import AdminProfile from './components/adminProfileComponent/adminProfilePage';
 import EditAdminProfileForm from './components/adminProfileComponent/editAdminProfile';
 import EditProductForm from './components/productForm/editProductForm';
-// import Logout from "./components/logoutComponent/LogoutComponent";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import LoggedInAccessRestrictRoute from "./components/privateRoute/LoggedInAccessRestrictRoute";
 import CheckoutSuccess from "./pages/checkoutSuccessPage";
-
+import AddCategoryForm from "./components/categoryForm/addCategoryForm";
+// import EditCategoryForm from "./components/categoryForm/editCategoryForm";
+import AddSubCategoryForm from "./components/subCategoryForm/addSubCategoryForm";
+// import EditSubCategoryForm from "./components/subCategoryForm/editSubCategoryForm";
 
 function App() {
   return (
@@ -56,6 +58,10 @@ function App() {
         <PrivateRoute path={'/admin-dashBoard/orders'} component={AdminDashBoardOrdersPage} requiredRole="admin" />
         <PrivateRoute path={'/addProduct'} component={AddProductForm} requiredRole="admin" />
         <PrivateRoute path={'/editProduct'} component={EditProductForm} requiredRole="admin" />
+        <PrivateRoute path={'/addCategory'} component={AddCategoryForm} requiredRole="admin" />
+        {/* <PrivateRoute path={'/editCategory'} component={EditCategoryForm} requiredRole="admin" /> */}
+        <PrivateRoute path={'/addSubCategory'} component={AddSubCategoryForm} requiredRole="admin" />
+        {/* <PrivateRoute path={'/editSubCategory'} component={EditSubCategoryForm} requiredRole="admin" /> */}
         <LoggedInAccessRestrictRoute path={'/login-admin'} component={LoginAdminComponent} />
         <PrivateRoute path={'/register-admin'} component={RegisterationAdminComponent} requiredRole="admin" />
         <LoggedInAccessRestrictRoute path={'/login-user'} component={LoginUserComponent} />
