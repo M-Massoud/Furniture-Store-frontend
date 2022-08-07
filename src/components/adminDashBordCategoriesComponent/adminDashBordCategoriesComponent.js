@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AdminDashBoardPage from "../../pages/adminDashBoardPage";
 import axiosInstance from '../../network/Config';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 
 export default function AdminDashBoardCategoriesPage() {
     const [categoriesData, setCategoriesData] = useState([]);
@@ -115,6 +116,8 @@ export default function AdminDashBoardCategoriesPage() {
                                     <th scope="col">ID</th>
                                     <th scope="col">Title</th>
                                     <th scope="col">SubCategory</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -124,10 +127,14 @@ export default function AdminDashBoardCategoriesPage() {
                                             <td>{category._id}</td>
                                             <td>{category.title}</td>
                                             <td>{customToString(category.subCategory)}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deletecategory(index, category._id); }} /></td>
+                                            <td><FaEdit className='text-hover-red mx-3' onClick={() => { deletecategory(index, category._id); }} /></td>
+                                            <td><FaTrashAlt className='text-hover-red mx-3' onClick={() => { deletecategory(index, category._id); }} /></td>
                                         </tr>
                                     );
                                 })}
+                                <tr>
+                                    <td colSpan='5'><Link to={'/addCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New Category</Link></td>
+                                </tr>
                             </tbody>
                         </table>
                         {allertMessage()}

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AdminDashBoardPage from "../../pages/adminDashBoardPage";
 import axiosInstance from '../../network/Config';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 
 export const customToString = function (array) {
     let result = '';
@@ -117,6 +118,8 @@ export default function AdminDashBoardSubCategoriesPage() {
                                     <th scope="col">ID</th>
                                     <th scope="col">Title</th>
                                     <th scope="col">Products</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -127,10 +130,14 @@ export default function AdminDashBoardSubCategoriesPage() {
                                             <td>{subCategory._id}</td>
                                             <td>{subCategory.title}</td>
                                             <td>{customToString(subCategory.products)}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deletesubCategory(index, subCategory._id) }} /></td>
+                                            <td><FaEdit className='text-hover-red mx-3' onClick={() => { deletesubCategory(index, subCategory._id); }} /></td>
+                                            <td><FaTrashAlt className='text-hover-red mx-3' onClick={() => { deletesubCategory(index, subCategory._id) }} /></td>
                                         </tr>
                                     );
                                 })}
+                                <tr>
+                                    <td colSpan='6'><Link to={'/addSubCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New SubCategory</Link></td>
+                                </tr>
                             </tbody>
                         </table>
                         {allertMessage()}
