@@ -127,8 +127,14 @@ export default function AdminDashBoardCategoriesPage() {
                                             <td>{category._id}</td>
                                             <td>{category.title}</td>
                                             <td>{customToString(category.subCategory)}</td>
-                                            <td><FaEdit className='text-hover-red mx-3' onClick={() => { deletecategory(index, category._id); }} /></td>
-                                            <td><FaTrashAlt className='text-hover-red mx-3' onClick={() => { deletecategory(index, category._id); }} /></td>
+                                            <td>
+                                                <Link to={{
+                                                    pathname: "/editCategory", state: category
+                                                }} className='text-warning'  >
+                                                    <FaEdit className='text-hover-red mx-3' />
+                                                </Link>
+                                            </td>
+                                            <td><FaTrashAlt className='text-danger mx-3' role='button' onClick={() => { deletecategory(index, category._id); }} /></td>
                                         </tr>
                                     );
                                 })}
