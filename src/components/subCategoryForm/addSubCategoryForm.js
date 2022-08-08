@@ -20,16 +20,16 @@ export default function AddCategoryForm() {
     useEffect(() => {
         axiosInstance
             .get(`/products`)
-            .then(res => {
-                setProductsData(res.data.resData.products);
+            .then(response => {
+                setProductsData(response.data.resData.products);
             })
-            .catch(err => console.log(err));
+            .catch(error => console.log(error));
     }, []);
 
     function handelFormchange(event) {
         if (event.target.name === "subCategoryProduct") {
-            let dublicateIndicator = subCategoryProductData.some(function (subCategory) {
-                return subCategory.id === productsData[event.target.value]._id;
+            let dublicateIndicator = subCategoryProductData.some(function (product) {
+                return product.id === productsData[event.target.value]._id;
             });
             if (!dublicateIndicator) {
                 setSubCategoryProductData([...subCategoryProductData, {
@@ -57,7 +57,7 @@ export default function AddCategoryForm() {
                 setFormerror({
                     ...formError,
                     subCategoryTitleError: value.length === 0 ? "This field is required" : "" || /^\d+$/.test(value) === true ?
-                        "category Title can't only be numbers" : ""
+                        "SubCategory Title can't only be numbers" : ""
                 });
                 break;
 
@@ -123,15 +123,16 @@ export default function AddCategoryForm() {
     return (
         <>
             <div className='col-10 offset-1 col-md-8 offset-md-2 border p-3 rounded shadow my-5'>
-                <h3 className='text-center mt-2'>SubCategory Control </h3>
+                <h3 className='text-center mt-2'>SubCategory Control</h3>
 
                 <form className={`co-12  row m-auto `} onSubmit={(e) => handleSubmit(e)}>
-                    <label htmlFor='subCategoryTitle' className="form-label mt-2"> SubCategory Title</label >
+                    <label htmlFor='subCategoryTitle' className="form-label mt-2">SubCategory Title</label >
                     <input type='text' id={'subCategoryTitle'} name={'subCategoryTitle'} className={`form-control ${formError.subCategoryTitleError && "border-danger"} `} value={formDetails.subCategoryTitle} onChange={(event) => handelFormchange(event)} required />
                     <div id="subCategoryTitleHelp" className="form-text text-danger">{formError.subCategoryTitleError}</div>
 
-                    <label htmlFor='productSubcategory' className="form-label mt-2"> SubCategory Products</label >
-                    <select className={`form-control form-select ${formError.productSubcategoryError && "border-danger"} `} id={'subCategoryProduct'} name={'subCategoryProduct'} onChange={(event) => handelFormchange(event)} required>
+                    <label htmlFor='subCategoryProduct' className="form-label mt-2">SubCategory Products</label >
+                    <select className={`form-control form-select ${formError.productSubcategoryError && "border-danger"} `} id={'subCategoryProduct'} name={'subCategoryProduct'} onChange={(event) => event.target.value ? handelFormchange(event) : ''} required>
+                        <option value="">Select Product</option>
                         {productsData.map((product, index) => {
                             return (
                                 <option key={product._id} value={index}>{product.name}</option>
@@ -150,11 +151,11 @@ export default function AddCategoryForm() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {subCategoryProductData.map((subCategory, index) => {
+                                {subCategoryProductData.map((product, index) => {
                                     return (
-                                        <tr key={subCategory.id}>
-                                            <td>{subCategory.id}</td>
-                                            <td>{subCategory.name}</td>
+                                        <tr key={product.id}>
+                                            <td>{product.id}</td>
+                                            <td>{product.name}</td>
                                             <td><FaTrashAlt className='text-hover-red' onClick={() => { handelDeleteCategorySubCategories(index) }} /></td>
                                         </tr>
                                     );
