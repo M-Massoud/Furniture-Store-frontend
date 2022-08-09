@@ -44,6 +44,8 @@ import EditCategoryForm from "./components/categoryForm/editCategoryForm";
 import AddSubCategoryForm from "./components/subCategoryForm/addSubCategoryForm";
 import EditSubCategoryForm from "./components/subCategoryForm/editSubCategoryForm";
 
+import ChangePasswordComponent from './components/changePasswordComponent/changePasswordComponent';
+
 function App() {
   return (
     <Router>
@@ -74,8 +76,12 @@ function App() {
 
         <PrivateRoute path={'/admin/:id'} component={AdminProfile} requiredRole="admin"/>
 
-        <Route path={'/useredit/:id'} exact component={EditUserProfileForm} />
-        <Route path={'/adminedit/:id'} exact component={EditAdminProfileForm} />
+        <PrivateRoute path={'/useredit/:id'} exact component={EditUserProfileForm} requiredRole="userById" />
+        <PrivateRoute path={'/adminedit/:id'} exact component={EditAdminProfileForm} requiredRole="admin"/>
+
+        <PrivateRoute path={'/useredit/:id/changePassword'} exact component={ChangePasswordComponent}  requiredRole="userById" />
+        <PrivateRoute path={'/adminedit/:id/changePassword'} exact component={ChangePasswordComponent}  requiredRole="admin"/>
+
         <Route path={'/forgetAdminPassword'} exact component={ForgetAdminPassworPage} />
         <Route path={'/forgetUserPassword'} exact component={ForgetUserPasswordPage} />
 

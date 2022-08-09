@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axiosInstance from '../../network/Config';
 import jwt from 'jwt-decode';
 import { Store } from 'react-notifications-component';
@@ -169,8 +169,10 @@ function EditAdminProfileForm(props) {
               type="submit"
               value={'Edit'}
               className="btn btn-success col-8 mt-2 col-sm-5 col-md-3"
-              onClick={() => editAdminData()} />  
-           
+              onClick={() => editAdminData()} />
+            <Link to={`./${token.id}/changePassword`} >
+             <button className="btn btn-success mt-2 ">change password </button>
+            </Link>
           </div>
         </form>
       </div>
