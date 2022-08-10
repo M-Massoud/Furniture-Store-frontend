@@ -3,6 +3,7 @@ import Rightimg from './Rightimg';
 import NavBar from './ItemsNav';
 import ItemImg from './ItemImg';
 import React, { useState, useEffect } from 'react';
+import CarouselComponent from '../carouselComponent/carouselComponent';
 
 function Main() {
   const [itemDisplay, setItemdisplay]= useState('d-none');
@@ -12,6 +13,7 @@ function Main() {
 
     return (
         <>
+        <CarouselComponent />
             <div className="col-sm-11 m-auto  row">
           <h2 className=" mt-3 py-3 hgi "> Shop our sets</h2>
           <div className="col-md-4   p-2 d-flex align-items-md-center justify-content-center  ">
