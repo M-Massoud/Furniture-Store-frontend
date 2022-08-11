@@ -4,8 +4,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axiosInstance from "../../network/Config";
 import './RegisterationAdminComponentStyle.css';
 
-export default function RegisterationAdminForm() {
-
+export default function RegisterationAdminForm({ title }) {
+    document.title = title;
     const history = useHistory();
 
     const [registerData, setRegisterData] = useState({
@@ -82,8 +82,42 @@ export default function RegisterationAdminForm() {
         }
     }
 
+    // validate the required values on submit
+    const valdiateForm = () => {
+        if (!registerData.firstName)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                firstNameError: "This field is required"
+            });
+        if (!registerData.lastName)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                lastNameError: "This field is required"
+            });
+        if (!registerData.adminEmail)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                adminEmailError: "This field is required"
+            });
+        if (!registerData.adminPassword)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                adminPasswordError: "This field is required"
+            });
+        if (!registerData.adminPasswordConfirm)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                adminPasswordConfirmError: "This field is required"
+            });
+    }
+
     function handleSubmit(event) {
         event.preventDefault();
+        valdiateForm();
+        valdiateForm();
+        for (let index = 0; index < Object.values(registerDataErrors).length; index++) {
+            if (Object.values(registerDataErrors)[index]) return
+        }
         axiosInstance.post("/admin", {
             firstName: registerData.firstName,
             lastName: registerData.lastName,

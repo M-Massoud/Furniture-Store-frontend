@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../network/Config';
 import { useParams } from 'react-router-dom';
-
+import Spinner from "../components/spinner";
 import CardComponent from '../components/cardComponent/cardComponent';
 import SidebarComponent from '../components/sidebarComponent/sidebarComponent';
-export default function SubCategoryPage() {
+
+export default function SubCategoryPage({ title }) {
   const [subCategoryData, setsubCategoryData] = useState([]);
   const [keyword, setKeword] = useState('products');
 
@@ -15,6 +16,7 @@ export default function SubCategoryPage() {
     useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPagesNumber, setMaxPagesNumber] = useState(1);
+  const [isLoded, setIsLoded] = useState(false);
 
   useEffect(() => {
     axiosInstance
@@ -23,6 +25,8 @@ export default function SubCategoryPage() {
       .then(res => {
         // setProductsData(res.data.data.products);
         setsubCategoryData(res.data.products);
+        setIsLoded(true);
+        document.title = `${title} | ${res.data.title}`;
         const maxItemsNumberInPage = 2;
         const numberOfProductsInSubCategories = res.data.products.length;
         setMaxPagesNumber(
@@ -36,7 +40,7 @@ export default function SubCategoryPage() {
           newArr.slice(startFromSelectedItemId, endToSelectedItemId)
         );
       })
-      .catch(err => console.log(err));
+      .catch(err => { console.log(err); document.title = `Furniture Store`; });
   }, [currentPage, keyword]);
   // console.log('productsData', subCategoryData);
 
@@ -72,17 +76,21 @@ export default function SubCategoryPage() {
           <div className="col-12 col-sm-4 col-md-3 col-lg-3">
             <SidebarComponent handleSubCategoryLink={handleSubCategoryLink} />
           </div>
-          <div className="col col-sm-8 col-md-9 col-lg-9">
-            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3  g-4 ">
-              {subCategoryProductsPageData.map(product => {
-                return (
-                  <div className="col" key={product._id}>
-                    <CardComponent product={product} />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          {isLoded ?
+            subCategoryData.length > 0 ?
+              <div className="col col-sm-8 col-md-9 col-lg-9">
+                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3  g-4 ">
+                  {subCategoryProductsPageData.map(product => {
+                    return (
+                      <div className="col" key={product._id}>
+                        <CardComponent product={product} />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div> :
+              <h1 className='my-5 text-center'>No Products To Show</h1> :
+            <Spinner />}
         </div>
         <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
           <ul className="pagination">

@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux/es/hooks/useSelector';
 import axiosInstance from "../network/Config";
 import jwt from 'jwt-decode';
 
-export default function CheckoutSuccess() {
-
+export default function CheckoutSuccess({ title }) {
+    document.title = title;
     const history = useHistory();
     let token = jwt(localStorage.getItem('token'));
     const cart = useSelector(state => state.cart);

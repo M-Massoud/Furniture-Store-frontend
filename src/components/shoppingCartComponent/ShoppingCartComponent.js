@@ -1,14 +1,17 @@
+import { useState, useEffect } from "react";
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import './ShoppingCartComponentStyle.css';
 import { Link, NavLink } from 'react-router-dom';
 import { FaPlusCircle, FaMinusCircle, FaTrashAlt } from 'react-icons/fa';
-import { removeProduct, emptyCart } from '../../redux/cartRedux';
+import { removeProduct, emptyCart, updateProduct } from '../../redux/cartRedux';
 import axiosInstance from "../../network/Config";
 
-export default function ShoppingCart() {
+export default function ShoppingCart({ title }) {
+  document.title = title;
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
+  const [requiredQuantity, setRequiredQuantity] = useState(1);
 
   const handleRemoveProduct = product => {
     dispatch(removeProduct(product));
@@ -41,6 +44,11 @@ export default function ShoppingCart() {
       .catch(error => console.log(error));
   }
 
+  function handleQuantity(event, index) {
+    setRequiredQuantity(event.target.value);
+    dispatch(updateProduct({ quantity: event.target.value, index: index }));
+  }
+
   return (
     <>
       <div className="container py-5 px-5 px-sm-0">
@@ -54,7 +62,7 @@ export default function ShoppingCart() {
                   <th scope="col">
                     Qty
                   </th>
-                  {/* <th scope="col">Subtotal</th> */}
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -64,6 +72,7 @@ export default function ShoppingCart() {
                       <td>{item.product.name}</td>
                       <td>{item.product.price - item.product.discount}</td>
                       <td>{item.quantity}</td>
+                      <td><input type="number" defaultValue={item.quantity} min={1} max={item.product.stockAmount} className="rounded border-danger text-center" onChange={(event) => handleQuantity(event, index)} /></td>
                       <td>
                         <span
                           onClick={() => handleRemoveProduct(item)}

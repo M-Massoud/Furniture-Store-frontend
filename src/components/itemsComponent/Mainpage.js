@@ -5,9 +5,10 @@ import ItemImg from './ItemImg';
 import React, { useState, useEffect } from 'react';
 import CarouselComponent from '../carouselComponent/carouselComponent';
 
-function Main() {
+function Main({ title }) {
   const [itemDisplay, setItemdisplay]= useState('d-none');
   useEffect(() => {
+    document.title = title;
     setItemdisplay('')
   }, []);
 

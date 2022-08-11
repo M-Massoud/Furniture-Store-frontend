@@ -8,7 +8,8 @@ import './LoginUserComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../../network/Config';
 
-export default function LoginForm() {
+export default function LoginForm({ title }) {
+  document.title = title;
   const location = useLocation();
   const history = useHistory();
   const [loginData, setLoginData] = useState({
@@ -69,8 +70,26 @@ export default function LoginForm() {
     }
   }
 
+  // validate the required values on submit
+  const valdiateForm = () => {
+    if (!loginData.userEmail)
+      setLoginDataErrors({
+        ...loginDataErrors,
+        userEmailError: "This field is required"
+      });
+    if (!loginData.userPassword)
+      setLoginDataErrors({
+        ...loginDataErrors,
+        userPasswordError: "This field is required"
+      });
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
+    valdiateForm();
+    for (let index = 0; index < Object.values(loginDataErrors).length; index++) {
+      if (Object.values(loginDataErrors)[index]) return
+    }
     axiosInstance
       .post('/login-user', {
         email: loginData.userEmail,

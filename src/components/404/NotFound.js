@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import './NotFound.css';
 
-function NotFound() {
+function NotFound({ title }) {
+  document.title = title;
   return (
     <div className="not-found-page">
       <h1>Whoops!</h1>

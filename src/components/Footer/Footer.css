@@ -25,3 +25,7 @@ footer a {
   color: white;
   text-decoration: none;
 }
+
+.text-hover:hover{
+  color:  var(--main-color);
+}

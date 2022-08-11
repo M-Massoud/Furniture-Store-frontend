@@ -37,6 +37,7 @@ function EditProductForm(props) {
 
   // get subcategories data 
   useEffect(() => {
+    document.title = 'DashBoard | Edit product';
     axiosInstance
         .get(`/subCategory`)
         .then(res => {

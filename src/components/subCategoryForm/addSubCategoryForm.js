@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import axiosInstance from '../../network/Config';
 import { Store } from 'react-notifications-component';
 import { FaTrashAlt } from 'react-icons/fa';
 
-export default function AddCategoryForm() {
+export default function AddSubCategoryForm({ title }) {
+
+    const history = useHistory();
+
     const [productsData, setProductsData] = useState([]);
-    const [subCategoryProductData, setSubCategoryProductData] = useState([]);
 
     const [formDetails, setFormDetails] = useState({
         subCategoryTitle: "",
@@ -18,6 +21,7 @@ export default function AddCategoryForm() {
     });
 
     useEffect(() => {
+        document.title = title;
         axiosInstance
             .get(`/products`)
             .then(response => {
@@ -28,17 +32,16 @@ export default function AddCategoryForm() {
 
     function handelFormchange(event) {
         if (event.target.name === "subCategoryProduct") {
-            let dublicateIndicator = subCategoryProductData.some(function (product) {
-                return product.id === productsData[event.target.value]._id;
+            let dublicateIndicator = formDetails.subCategoryProduct.some(function (product) {
+                return product._id === productsData[event.target.value]._id;
             });
             if (!dublicateIndicator) {
-                setSubCategoryProductData([...subCategoryProductData, {
-                    id: productsData[event.target.value]._id,
-                    name: productsData[event.target.value].name,
-                }]);
                 setFormDetails({
                     ...formDetails,
-                    [event.target.name]: [...formDetails.subCategoryProduct, productsData[event.target.value]._id],
+                    [event.target.name]: [
+                        ...formDetails.subCategoryProduct,
+                        { _id: productsData[event.target.value]._id, name: productsData[event.target.value].name }
+                    ],
                 });
             }
         }
@@ -48,7 +51,10 @@ export default function AddCategoryForm() {
                 [event.target.name]: event.target.value
             });
         }
-        ErrorHandling(event.target.name, event.target.value);
+        if (event.target.name === 'subCategoryProduct')
+            ErrorHandling(event.target.name, formDetails.subCategoryProduct.length + 1);
+        else
+            ErrorHandling(event.target.name, event.target.value);
     };
 
     const ErrorHandling = (name, value) => {
@@ -64,7 +70,7 @@ export default function AddCategoryForm() {
             case 'subCategoryProduct':
                 setFormerror({
                     ...formError,
-                    subCategoryProductError: value.length === 0 ? "This field is required" : "",
+                    subCategoryProductError: value === 0 ? "Select At Least One SubCategory Product" : "",
                 });
                 break;
 
@@ -75,12 +81,36 @@ export default function AddCategoryForm() {
         }
     }
 
+    function handelDeleteCategorySubCategories(index) {
+        setFormDetails({ ...formDetails, subCategoryProduct: [...formDetails.subCategoryProduct.filter((t, i) => i !== index)] });
+        ErrorHandling('subCategoryProduct', formDetails.subCategoryProduct.length - 1);
+    }
+
+    // validate the required values on submit
+    const valdiateForm = () => {
+
+        if (!formDetails.subCategoryTitle)
+            setFormerror({
+                ...formError,
+                subCategoryTitleError: "This field is required"
+            });
+        if (!formDetails.subCategoryProduct)
+            setFormerror({
+                ...formError,
+                subCategoryProductError: "Select At Least One SubCategory Product"
+            });
+    }
+
     function handleSubmit(event) {
         event.preventDefault();
+        valdiateForm();
+        for (let index = 0; index < Object.values(formError).length; index++) {
+            if (Object.values(formError)[index]) return
+        }
         axiosInstance
             .post('/subCategory', {
                 title: formDetails.subCategoryTitle,
-                products: formDetails.subCategoryProduct,
+                products: formDetails.subCategoryProduct.map((product) => product._id),
             },
                 {
                     headers: {
@@ -98,7 +128,8 @@ export default function AddCategoryForm() {
                         duration: 2000,
                     },
                 });
-                console.log(response.data)
+                console.log(response.data);
+                history.push('/admin-dashBoard/subCategories');
             })
             .catch(error => {
                 Store.addNotification({
@@ -114,16 +145,11 @@ export default function AddCategoryForm() {
             });
     }
 
-    function handelDeleteCategorySubCategories(index) {
-        setSubCategoryProductData([...subCategoryProductData.filter((t, i) => i !== index)]);
-        setFormDetails({ ...formDetails, subCategoryProduct: [...formDetails.subCategoryProduct.filter((t, i) => i !== index)] });
-
-    }
-
     return (
         <>
             <div className='col-10 offset-1 col-md-8 offset-md-2 border p-3 rounded shadow my-5'>
                 <h3 className='text-center mt-2'>SubCategory Control</h3>
+                <h6 className='text-center mt-2'>Add SubCategory</h6>
 
                 <form className={`co-12  row m-auto `} onSubmit={(e) => handleSubmit(e)}>
                     <label htmlFor='subCategoryTitle' className="form-label mt-2">SubCategory Title</label >
@@ -131,7 +157,7 @@ export default function AddCategoryForm() {
                     <div id="subCategoryTitleHelp" className="form-text text-danger">{formError.subCategoryTitleError}</div>
 
                     <label htmlFor='subCategoryProduct' className="form-label mt-2">SubCategory Products</label >
-                    <select className={`form-control form-select ${formError.productSubcategoryError && "border-danger"} `} id={'subCategoryProduct'} name={'subCategoryProduct'} onChange={(event) => event.target.value ? handelFormchange(event) : ''} required>
+                    <select className={`form-control form-select ${formError.subCategoryProductError && "border-danger"} `} id={'subCategoryProduct'} name={'subCategoryProduct'} onChange={(event) => event.target.value ? handelFormchange(event) : ''} required>
                         <option value="">Select Product</option>
                         {productsData.map((product, index) => {
                             return (
@@ -139,8 +165,8 @@ export default function AddCategoryForm() {
                             );
                         })}
                     </select>
-                    <div id="subCategoryProductHelp" className="form-text text-danger">{formError.productSubcategoryError}</div>
-                    {subCategoryProductData.length > 0 ?
+                    <div id="subCategoryProductHelp" className="form-text text-danger">{formError.subCategoryProductError}</div>
+                    {formDetails.subCategoryProduct.length > 0 ?
                         <table className="table table-striped">
                             <caption>Products</caption>
                             <thead>
@@ -151,12 +177,12 @@ export default function AddCategoryForm() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {subCategoryProductData.map((product, index) => {
+                                {formDetails.subCategoryProduct.map((product, index) => {
                                     return (
-                                        <tr key={product.id}>
-                                            <td>{product.id}</td>
+                                        <tr key={product._id}>
+                                            <td>{product._id}</td>
                                             <td>{product.name}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { handelDeleteCategorySubCategories(index) }} /></td>
+                                            <td><FaTrashAlt className='text-hover-red' title='Delete' onClick={() => { handelDeleteCategorySubCategories(index) }} /></td>
                                         </tr>
                                     );
                                 })}
@@ -164,7 +190,7 @@ export default function AddCategoryForm() {
                         </table>
                         : ''
                     }
-                    <button type="submit" className="btn bg-secondary-1 white my-4 w-50 m-auto"> Add SubCategory </button>
+                    <button type="submit" className="btn bg-secondary-1 white my-4 w-50 m-auto">Add SubCategory</button>
                 </form>
             </div>
         </>

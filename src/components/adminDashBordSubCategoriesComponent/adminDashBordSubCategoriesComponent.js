@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Spinner from "../spinner";
 import AdminDashBoardPage from "../../pages/adminDashBoardPage";
 import axiosInstance from '../../network/Config';
+import { Store } from 'react-notifications-component';
 import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 
 export const customToString = function (array) {
@@ -12,14 +14,15 @@ export const customToString = function (array) {
     return result;
 }
 
-export default function AdminDashBoardSubCategoriesPage() {
+export default function AdminDashBoardSubCategoriesPage({ title }) {
     const [subCategoriesData, setSubCategoriesData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPagesNumber, setMaxPagesNumber] = useState(1);
     const [itemCount, setItemCount] = useState(10);
-    const [deletingError, setDeletingError] = useState('');
+    const [isLoded, setIsLoded] = useState(false);
 
     useEffect(() => {
+        document.title = title;
         axiosInstance
             .get(`/subCategory`, {
                 params: {
@@ -30,6 +33,7 @@ export default function AdminDashBoardSubCategoriesPage() {
             .then(res => {
                 setSubCategoriesData(res.data.resData.subCategories);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
+                setIsLoded(true);
             })
             .catch(err => console.log(err));
     }, [currentPage, itemCount]);
@@ -55,38 +59,31 @@ export default function AdminDashBoardSubCategoriesPage() {
             })
                 .then(res => {
                     setSubCategoriesData((subCategoriesData) => subCategoriesData.filter((_, i) => i !== index));
-                    setDeletingError('successful');
-                    clearAlertMessage();
+                    Store.addNotification({
+                        title: "Status",
+                        message: "Successfully Removed",
+                        type: "success",
+                        container: "top-center",
+                        dismiss: {
+                            duration: 2000,
+                        },
+                    });
                 })
-                .catch(err => { console.log(err); setDeletingError('failed'); clearAlertMessage(); });
+                .catch(error => {
+                    Store.addNotification({
+                        title: "Status",
+                        message: "Sorry, Unexpected Error",
+                        type: "danger",
+                        container: "top-center",
+                        dismiss: {
+                            duration: 2000,
+                        },
+                    });
+                    console.log(error);
+                });
         }
     }
 
-
-    function allertMessage() {
-        switch (deletingError) {
-            case 'successful':
-                return <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Successfully Deleted</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>;
-                break;
-
-            case 'failed':
-                return <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Unexpected Error</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>;
-                break;
-
-            default:
-                return '';
-        }
-    }
-
-    function clearAlertMessage() {
-        setTimeout(() => { setDeletingError(''); }, 2000);
-    }
 
     function changeItemPerPage(event) {
         setItemCount(event.target.value);
@@ -111,42 +108,43 @@ export default function AdminDashBoardSubCategoriesPage() {
                                 <option value="20">20</option>
                             </select>
                         </div>
-                        <table className="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Products</th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {subCategoriesData.map((subCategory, index) => {
-                                    return (
-                                        <tr key={subCategory._id}>
-                                            <td>{(currentPage - 1) * itemCount + index + 1}</td>
-                                            <td>{subCategory._id}</td>
-                                            <td>{subCategory.title}</td>
-                                            <td>{customToString(subCategory.products)}</td>
-                                            <td>
-                                                <Link to={{
-                                                    pathname: "/editSubCategory", state: subCategory
-                                                }} className='text-warning'  >
-                                                    <FaEdit className='text-hover-red mx-3' />
-                                                </Link>
-                                            </td>
-                                            <td><FaTrashAlt className='text-danger mx-3' role='button' onClick={() => { deletesubCategory(index, subCategory._id); }} /></td>
+                        {isLoded ?
+                            subCategoriesData.length > 0 ?
+                                <table className="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Products</th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
                                         </tr>
-                                    );
-                                })}
-                                <tr>
-                                    <td colSpan='6'><Link to={'/addSubCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New SubCategory</Link></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        {allertMessage()}
+                                    </thead>
+                                    <tbody>
+                                        {subCategoriesData.map((subCategory, index) => {
+                                            return (
+                                                <tr key={subCategory._id}>
+                                                    <td>{subCategory._id}</td>
+                                                    <td>{subCategory.title}</td>
+                                                    <td>{customToString(subCategory.products)}</td>
+                                                    <td>
+                                                        <Link to={{
+                                                            pathname: "/editSubCategory", state: subCategory
+                                                        }} className='text-warning'  >
+                                                            <FaEdit className='text-hover-red mx-3' title='Edit' />
+                                                        </Link>
+                                                    </td>
+                                                    <td><FaTrashAlt className='text-danger mx-3' title='Delete' role='button' onClick={() => { deletesubCategory(index, subCategory._id); }} /></td>
+                                                </tr>
+                                            );
+                                        })}
+                                        <tr>
+                                            <td colSpan='6'><Link to={'/addSubCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New SubCategory</Link></td>
+                                        </tr>
+                                    </tbody>
+                                </table> :
+                                <h1 className='my-5 text-center'>No Available Data To Show</h1> :
+                            <Spinner />}
                         <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
                             <ul className="pagination">
                                 <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>

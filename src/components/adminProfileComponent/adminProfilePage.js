@@ -4,14 +4,14 @@ import axiosInstance from './../../network/Config';
 
 import jwt from 'jwt-decode';
 
-let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
-//{ userData }
-function AdminProfile() {
+function AdminProfile({ title }) {
+    let token = jwt(localStorage.getItem('token'));
     console.log(token.id);
     const [adminData, setAdminData] = useState({});
 
 
     useEffect(() => {
+        document.title = title;
         axiosInstance
           .get(`/admin/${token.id}`, {
             headers: {
@@ -46,7 +46,7 @@ function AdminProfile() {
                    
                     
                     <div className="mt-4 p-3 shadow rounded bg-white text-center">
-                        <Link to={{pathname:`/adminedit/${token.id}`,state:adminData}}>
+                        <Link to={{pathname:`/adminedit`,state:adminData}}>
                         <button
                         className="btn btn-success col-8 mt-2 col-sm-5 col-md-3" >  Edit </button>
                         </Link> 
