@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { useDispatch } from 'react-redux';
 import { addProduct } from '../../redux/cartRedux';
 import axiosInstance from '../../network/Config';
 
@@ -11,7 +11,7 @@ import img from '../../images/product1-img.jpg';
 export default function SingleProductComponent({ title }) {
   const params = useParams();
   //   console.log(params.id);
-
+  const [requiredQuantity, setRequiredQuantity] = useState(1);
   const [productDetails, setProductDetails] = useState({});
   const dispatch = useDispatch();
 
@@ -25,11 +25,10 @@ export default function SingleProductComponent({ title }) {
   // console.log(productDetails);
 
   const handleAddToCart = () => {
-    dispatch(
-      addProduct({ product: productDetails, price: productDetails.price })
-    );
+    dispatch(addProduct({ productDetails, price: productDetails.price - productDetails.discount, quantity: Number(requiredQuantity), maxQuantity: productDetails.stockAmount }));
   };
 
+console.log(productDetails);
   return (
     <>
       {
@@ -48,6 +47,7 @@ export default function SingleProductComponent({ title }) {
                 <h1 className="single-product-title">{productDetails.name}</h1>
                 <p className="single-product-title">{productDetails.description}</p>
                 <h6>sub category: {productDetails.subCategory?.title}</h6>
+                <h6>stock amount: {productDetails.stockAmount}</h6>
                 {productDetails.discount > 0 ? (
                   <div className="product-price my-3">
                     <h6 className="old-price">EGP {productDetails.price}</h6>

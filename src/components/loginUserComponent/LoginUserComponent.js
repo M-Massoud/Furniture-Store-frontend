@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { useDispatch } from 'react-redux'
 import { loggedInSuccessfully } from '../../redux/isLoggedInRedux';
 import { emptyCart, refreshCart } from "../../redux/cartRedux";
 import { Store } from 'react-notifications-component';

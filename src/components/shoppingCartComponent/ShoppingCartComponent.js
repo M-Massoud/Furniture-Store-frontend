@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useSelector } from 'react-redux/es/hooks/useSelector';
-import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+
+import { useSelector,useDispatch } from 'react-redux';
 import './ShoppingCartComponentStyle.css';
 import { Link, NavLink } from 'react-router-dom';
 import { FaPlusCircle, FaMinusCircle, FaTrashAlt } from 'react-icons/fa';

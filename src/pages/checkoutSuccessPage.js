@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useSelector } from 'react-redux';
 import axiosInstance from "../network/Config";
 import jwt from 'jwt-decode';
 

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux/es/exports';
-import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { useSelector , useDispatch } from 'react-redux';
 import jwt from 'jwt-decode';
 import { FaGithub } from 'react-icons/fa';
 import './Footer.css';
@@ -41,11 +40,12 @@ const Footer = () => {
           {
             isLoggedIn ?
               < div className="col">
-                <h5>Personal Profile</h5>
+                <h5>Personal pages</h5>
                 {
                   role === "admin" ?
-                    <Link to={'/profile/admin'} className="text-hover">My Profile</Link> :
-                    role === 'user' ? <Link to={`/profile/${token.id}`} className="text-hover">My Profile</Link> : ''
+                  <h6>
+                    <Link to={'/profile/admin'} className="text-hover">My Profile</Link>  </h6> :
+                    role === 'user' ?  <h6> <Link to={`/profile/${token.id}`} className="text-hover">My Profile</Link> </h6> : '' 
                 }
               </div>
               : ''

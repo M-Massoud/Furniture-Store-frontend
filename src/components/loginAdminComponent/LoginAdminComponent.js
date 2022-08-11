@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux/es/hooks/useSelector';
-import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { useDispatch } from 'react-redux';
 import { loggedInSuccessfully } from '../../redux/isLoggedInRedux';
 import { Store } from 'react-notifications-component';
 import { Link, useHistory, useLocation } from 'react-router-dom';
