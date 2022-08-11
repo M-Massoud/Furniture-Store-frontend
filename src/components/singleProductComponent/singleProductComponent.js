@@ -25,10 +25,14 @@ export default function SingleProductComponent({ title }) {
   // console.log(productDetails);
 
   const handleAddToCart = () => {
-    dispatch(addProduct({ productDetails, price: productDetails.price - productDetails.discount, quantity: Number(requiredQuantity), maxQuantity: productDetails.stockAmount }));
+    dispatch(addProduct({ product: productDetails, price: productDetails.price - productDetails.discount, quantity: Number(requiredQuantity), maxQuantity: productDetails.stockAmount }));
   };
 
-console.log(productDetails);
+  function handleQuantity(event) {
+    setRequiredQuantity(event.target.value);
+  }
+
+  // console.log(productDetails);
   return (
     <>
       {
@@ -60,13 +64,15 @@ console.log(productDetails);
                     <h6 className="final-price">EGP {productDetails.price}</h6>
                   </div>
                 )}
-
-                <button
-                  className="btn add-to-cart"
-                  onClick={handleAddToCart}
-                  style={{ width: '100%' }} >
-                  Add to Cart
-                </button>
+                <div className='d-flex col-8'>
+                  <input type="number" defaultValue={1} min={1} max={productDetails.stockAmount} className="col-2 mx-2 rounded border-danger text-center" onChange={(event) => handleQuantity(event)} />
+                  <button
+                    className="btn add-to-cart col-5"
+                    onClick={handleAddToCart}
+                    style={{ width: '100%' }} >
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             </div>
           </div> :
