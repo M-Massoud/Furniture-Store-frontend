@@ -4,13 +4,24 @@ import { Link } from "react-router-dom";
 import CardComponent from '../cardComponent/cardComponent';
 import { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
+import { ReactReduxContext } from 'react-redux';
 
 
 export default function WishList() {
     const [currentPage, setCurrentPage] = useState(1);
   const [userWishList, setuserWishList] = useState([]);
+  const [isCardDisplay, setisCardDisplay] = useState(true);
+
+  function cardDisplay(){
+    if (isCardDisplay === true) {
+      setisCardDisplay(false)
+    } else {
+      setisCardDisplay(true)
+    }
+  };
 
   let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
+  
     useEffect(() => {
         axiosInstance
           .get(`/user/${token.id}/wishList`, {
@@ -24,11 +35,11 @@ export default function WishList() {
           })
             .then(res => {
                 console.log(res.data[0].wishList)
-                setuserWishList(res.data[0].wishList);
+              setuserWishList(res.data[0].wishList);  
           })
           .catch(err => console.log(err));
-      }, [token.id,currentPage]);
-  //  console.log(userWishList,token._d)
+      }, [token.id,currentPage,isCardDisplay]);
+   console.log(userWishList,token._d)
     return (
         <>
             <div className='border row m-2 '>
@@ -45,12 +56,13 @@ export default function WishList() {
                 <Link to={'/'} className="col-10 text-decoration-none text-main  mb-2 text-hover-red">Stored Payment Methods</Link>
             </div>
             <div className=" col-11 m-auto col-md-9 my-md-5 p-3 my-3 ">
-            <div className="col col-sm-8 col-md-11 m-auto border p-2">
+            <div className="col col-sm-8 col-md-11 m-auto border rounded shadow p-3">
+              <h2 className={`text-center p-2 m-auto border rounded shadow mb-4 ${!userWishList.length == 0 ? "d-none":""}`}>Sorry, You have (0) item in your wishList..!</h2>
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3  g-4 ">
               {userWishList.map(product => {
                 return (
                   <div className="col" key={product._id}>
-                    <CardComponent product={product} />
+                    <CardComponent product={product} data={cardDisplay} />
                   </div>
                 );
               })}

@@ -7,7 +7,7 @@ import { Store } from 'react-notifications-component';
 import { Link, useHistory } from "react-router-dom";
 import DropDowen from './DropDowen';
 import "./NewNav.css"
-import { FaCartPlus } from 'react-icons/fa';
+import { FaCartPlus, FaRegHeart, FaHeart } from 'react-icons/fa';
 
 
 function NewNav() {
@@ -71,6 +71,18 @@ function NewNav() {
             <Link to={"/shoppingCart"} >
               <span className='header-cart' >
                 <FaCartPlus /> <span className='header-cart-qty'>{quantity}</span>
+              </span>
+            </Link> 
+            <Link to={"/wishList"} >
+              <span className='header-cart' >
+              <FaHeart
+                    className="hover white"
+                    style={{
+                      color: `red`,
+                      fontSize: "22px",
+                      marginLeft:"20px"
+                    }}
+                  />
               </span>
             </Link> 
 
