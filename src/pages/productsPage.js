@@ -4,7 +4,7 @@ import Spinner from "../components/spinner";
 import CardComponent from '../components/cardComponent/cardComponent';
 import SidebarComponent from '../components/sidebarComponent/sidebarComponent';
 
-export default function ProductsPage() {
+export default function ProductsPage({ title }) {
   const [productsData, setProductsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPagesNumber, setMaxPagesNumber] = useState(1);
@@ -13,9 +13,9 @@ export default function ProductsPage() {
   const [keyword, setKeword] = useState('products');
   const [sort, setSort] = useState("");
   const [isLoded, setIsLoded] = useState(false);
-  // console.log(keyword)
 
   useEffect(() => {
+    document.title = title;
     axiosInstance
       .get(`/${keyword}`, {
         params: {
@@ -34,7 +34,7 @@ export default function ProductsPage() {
         setIsLoded(true);
       })
       .catch(err => console.log(err));
-    }, [currentPage, itemCount, filterNumber, keyword]);
+  }, [currentPage, itemCount, filterNumber, keyword]);
 
   function handleSubCategoryLink(e) {
     const clickedLi = e.target.closest('li');
@@ -71,8 +71,11 @@ export default function ProductsPage() {
 
   const handleReset = (e) => {
     setKeword("products");
-    setSort('')
-    }
+    setSort('');
+    setFilterNumber(0);
+    let slider = document.getElementsByClassName('slider');
+    slider.value = filterNumber;
+  }
 
   function changeItemPerPage(event) {
     setItemCount(event.target.value);
@@ -96,7 +99,7 @@ export default function ProductsPage() {
           </div>
           <div className="col col-sm-8 col-md-9 col-lg-9">
             <div className='sort-selectors d-flex' >
-            <div className="pb-4 w-50">
+              <div className="pb-4 w-50">
                 <select onChange={handleSorting} value={sort} className="form-select form-select-lg" aria-label=".form-select-lg">
                   <option checked value="products">Sort Products</option>
                   <option value="atoz" >Sort By Name (A-Z)</option>
@@ -116,11 +119,11 @@ export default function ProductsPage() {
                 </select>
               </div>
             </div>
-              
+
             <div className='row mb-3 me-1'>
               <div className='col-9'>
                 <label htmlFor="customRange2" className="form-label text-secondary">Filter By Price:</label>
-                <input type="range" className="form-range slider" min="0" max="10000" step="100" title={filterNumber} onChange={(event) => { handleSlider(event) }}></input>
+                <input type="range" className="form-range slider" value={filterNumber} min="0" max="10000" step="100" title={filterNumber} onChange={(event) => { handleSlider(event) }}></input>
               </div>
               <div className='col-3 ms-auto mt-4 bg-dark rounded d-flex flex-column align-items-center justify-content-center text-light'>More Than : {filterNumber} EGP</div>
             </div>

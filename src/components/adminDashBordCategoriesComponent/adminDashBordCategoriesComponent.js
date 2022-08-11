@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Spinner from "../spinner";
 import AdminDashBoardPage from "../../pages/adminDashBoardPage";
 import axiosInstance from '../../network/Config';
+import { Store } from 'react-notifications-component';
 import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 
-export default function AdminDashBoardCategoriesPage() {
+export default function AdminDashBoardCategoriesPage({ title }) {
     const [categoriesData, setCategoriesData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPagesNumber, setMaxPagesNumber] = useState(1);
     const [itemCount, setItemCount] = useState(10);
-    const [deletingError, setDeletingError] = useState('');
+    const [isLoded, setIsLoded] = useState(false);
 
     useEffect(() => {
+        document.title = title;
         axiosInstance
             .get(`/category`, {
                 params: {
@@ -22,6 +25,7 @@ export default function AdminDashBoardCategoriesPage() {
             .then(res => {
                 setCategoriesData(res.data.resData.categories);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
+                setIsLoded(true);
             })
             .catch(err => console.log(err));
     }, [currentPage, itemCount]);
@@ -47,10 +51,28 @@ export default function AdminDashBoardCategoriesPage() {
             })
                 .then(res => {
                     setCategoriesData((categoriesData) => categoriesData.filter((_, i) => i !== index));
-                    setDeletingError('successful');
-                    clearAlertMessage();
+                    Store.addNotification({
+                        title: "Status",
+                        message: "Successfully Removed",
+                        type: "success",
+                        container: "top-center",
+                        dismiss: {
+                            duration: 2000,
+                        },
+                    });
                 })
-                .catch(err => { console.log(err); setDeletingError('failed'); clearAlertMessage(); });
+                .catch(error => {
+                    Store.addNotification({
+                        title: "Status",
+                        message: "Sorry, Unexpected Error",
+                        type: "danger",
+                        container: "top-center",
+                        dismiss: {
+                            duration: 2000,
+                        },
+                    });
+                    console.log(error);
+                });
         }
     }
 
@@ -60,31 +82,6 @@ export default function AdminDashBoardCategoriesPage() {
             result += array[item].title + ', ';
         }
         return result;
-    }
-
-    function allertMessage() {
-        switch (deletingError) {
-            case 'successful':
-                return <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Successfully Deleted</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>;
-                break;
-
-            case 'failed':
-                return <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Unexpected Error</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>;
-                break;
-
-            default:
-                return '';
-        }
-    }
-
-    function clearAlertMessage() {
-        setTimeout(() => { setDeletingError(''); }, 2000);
     }
 
     function changeItemPerPage(event) {
@@ -110,40 +107,43 @@ export default function AdminDashBoardCategoriesPage() {
                                 <option value="20">20</option>
                             </select>
                         </div>
-                        <table className="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">SubCategory</th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {categoriesData.map((category, index) => {
-                                    return (
-                                        <tr key={category._id}>
-                                            <td>{category._id}</td>
-                                            <td>{category.title}</td>
-                                            <td>{customToString(category.subCategory)}</td>
-                                            <td>
-                                                <Link to={{
-                                                    pathname: "/editCategory", state: category
-                                                }} className='text-warning'  >
-                                                    <FaEdit className='text-hover-red mx-3' />
-                                                </Link>
-                                            </td>
-                                            <td><FaTrashAlt className='text-danger mx-3' role='button' onClick={() => { deletecategory(index, category._id); }} /></td>
+                        {isLoded ?
+                            categoriesData.length > 0 ?
+                                <table className="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">SubCategory</th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
                                         </tr>
-                                    );
-                                })}
-                                <tr>
-                                    <td colSpan='5'><Link to={'/addCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New Category</Link></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        {allertMessage()}
+                                    </thead>
+                                    <tbody>
+                                        {categoriesData.map((category, index) => {
+                                            return (
+                                                <tr key={category._id}>
+                                                    <td>{category._id}</td>
+                                                    <td>{category.title}</td>
+                                                    <td>{customToString(category.subCategory)}</td>
+                                                    <td>
+                                                        <Link to={{
+                                                            pathname: "/editCategory", state: category
+                                                        }} className='text-warning'  >
+                                                            <FaEdit className='text-hover-red mx-3' title='Edit' />
+                                                        </Link>
+                                                    </td>
+                                                    <td><FaTrashAlt className='text-danger mx-3' role='button' title='Delete' onClick={() => { deletecategory(index, category._id); }} /></td>
+                                                </tr>
+                                            );
+                                        })}
+                                        <tr>
+                                            <td colSpan='5'><Link to={'/addCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New Category</Link></td>
+                                        </tr>
+                                    </tbody>
+                                </table> :
+                                <h1 className='my-5 text-center'>No Available Data To Show</h1> :
+                            <Spinner />}
                         <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
                             <ul className="pagination">
                                 <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>

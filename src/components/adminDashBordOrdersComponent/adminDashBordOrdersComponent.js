@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
+import Spinner from "../spinner";
 import AdminDashBoardPage from "../../pages/adminDashBoardPage";
 import axiosInstance from '../../network/Config';
+import { Store } from 'react-notifications-component';
 import { FaTrashAlt } from 'react-icons/fa';
-import { customToString } from "../adminDashBordSubCategoriesComponent/adminDashBordSubCategoriesComponent";
 
-
-export default function AdminDashBoardOrdersPage() {
+export default function AdminDashBoardOrdersPage({ title }) {
     const [ordersData, setOrdersData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPagesNumber, setMaxPagesNumber] = useState(1);
     const [itemCount, setItemCount] = useState(10);
-    const [deletingError, setDeletingError] = useState('');
+    const [isLoded, setIsLoded] = useState(false);
 
     useEffect(() => {
+        document.title = title;
         axiosInstance
             .get(`/orders`, {
                 params: {
@@ -26,6 +27,7 @@ export default function AdminDashBoardOrdersPage() {
             .then(res => {
                 setOrdersData(res.data.resData.orders);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
+                setIsLoded(true);
             })
             .catch(err => console.log(err));
     }, [currentPage, itemCount]);
@@ -51,31 +53,28 @@ export default function AdminDashBoardOrdersPage() {
             })
                 .then(res => {
                     setOrdersData((ordersData) => ordersData.filter((_, i) => i !== index));
-                    setDeletingError('successful');
-                    clearAlertMessage();
+                    Store.addNotification({
+                        title: "Status",
+                        message: "Successfully Removed",
+                        type: "success",
+                        container: "top-center",
+                        dismiss: {
+                            duration: 2000,
+                        },
+                    });
                 })
-                .catch(err => { console.log(err); setDeletingError('failed'); clearAlertMessage(); });
-        }
-    }
-
-    function allertMessage() {
-        switch (deletingError) {
-            case 'successful':
-                return <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Successfully Deleted</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>;
-                break;
-
-            case 'failed':
-                return <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Unexpected Error</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>;
-                break;
-
-            default:
-                return '';
+                .catch(error => {
+                    Store.addNotification({
+                        title: "Status",
+                        message: "Sorry, Unexpected Error",
+                        type: "danger",
+                        container: "top-center",
+                        dismiss: {
+                            duration: 2000,
+                        },
+                    });
+                    console.log(error);
+                });
         }
     }
 
@@ -93,10 +92,6 @@ export default function AdminDashBoardOrdersPage() {
             result += array[item].quantity + ', ';
         }
         return result;
-    }
-
-    function clearAlertMessage() {
-        setTimeout(() => { setDeletingError(''); }, 2000);
     }
 
     function changeItemPerPage(event) {
@@ -122,38 +117,40 @@ export default function AdminDashBoardOrdersPage() {
                                 <option value="20">20</option>
                             </select>
                         </div>
-                        <table className="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">User ID</th>
-                                    <th scope="col">Products</th>
-                                    <th scope="col">Created At</th>
-                                    <th scope="col">Total Price</th>
-                                    <th scope="col">quantity</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {ordersData.map((order, index) => {
-                                    return (
-                                        <tr key={order._id}>
-                                            <td>{(currentPage - 1) * itemCount + index + 1}</td>
-                                            <td>{order._id}</td>
-                                            <td>{order.userId != null ? `${order.userId.firstName} ${order.userId.lastName}` : ''}</td>
-                                            <td>{productNameToString(order.products,'product',"name")}</td>
-                                            <td>{order.created_at}</td>
-                                            <td>{order.totalPrice}</td>
-                                            <td>{qunatityToString(order.products,'quantity')}</td>
-                                            <td>{order.status}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteorder(index, order._id) }} /></td>
+                        {isLoded ?
+                            ordersData.length > 0 ?
+                                <table className="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">User ID</th>
+                                            <th scope="col">Products</th>
+                                            <th scope="col">Created At</th>
+                                            <th scope="col">Total Price</th>
+                                            <th scope="col">quantity</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col"></th>
                                         </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                        {allertMessage()}
+                                    </thead>
+                                    <tbody>
+                                        {ordersData.map((order, index) => {
+                                            return (
+                                                <tr key={order._id}>
+                                                    <td>{order._id}</td>
+                                                    <td>{order.userId != null ? `${order.userId.firstName} ${order.userId.lastName}` : ''}</td>
+                                                    <td>{productNameToString(order.products, 'product', "name")}</td>
+                                                    <td>{order.created_at}</td>
+                                                    <td>{order.totalPrice}</td>
+                                                    <td>{qunatityToString(order.products, 'quantity')}</td>
+                                                    <td>{order.status}</td>
+                                                    <td><FaTrashAlt className='text-danger' role='button' title='Delete' onClick={() => { deleteorder(index, order._id) }} /></td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table> :
+                                <h1 className='my-5 text-center'>No Available Data To Show</h1> :
+                            <Spinner />}
                         <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
                             <ul className="pagination">
                                 <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>

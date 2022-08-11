@@ -11,7 +11,12 @@ export default function LoggedInAccessRestrictRoute({ component: Component, ...r
         <Route {...rest} render={(props) => {
             return (
                 (token?.role === "user") || (token?.role === "admin") || (Date.now() <= token.exp * 1000) ?
-                    <h1>Un Authorized Access</h1> :
+                    <div className='d-flex justify-content-center align-items-center m-5' style={{ height: '294px' }}>
+                        <div className='text-center'>
+                            <h1>Un Authorized Access</h1>
+                            <h4>You Are Aleady Logged In</h4>
+                        </div>
+                    </div> :
                     <Component from={location} {...props} />
             )
         }}

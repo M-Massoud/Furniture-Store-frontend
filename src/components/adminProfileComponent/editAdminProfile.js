@@ -8,6 +8,7 @@ let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) :
 
 // props
 function EditAdminProfileForm(props) {
+  document.title = 'Furniture Store | Edit Admin Profile';
    const history = useHistory();
 
     const [formDetails, setFormDetails] = useState({

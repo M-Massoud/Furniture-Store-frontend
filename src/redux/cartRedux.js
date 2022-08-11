@@ -54,6 +54,13 @@ const cartSlice = createSlice({
       }
     },
 
+    updateProduct: (state, action) => {
+      let addedQuantity = action.payload.quantity - state.products[action.payload.index].quantity;
+      state.products[action.payload.index].quantity = action.payload.quantity;
+      state.totalPrice += ((state.products[action.payload.index].product.price - state.products[action.payload.index].product.discount) * addedQuantity);
+      token?.role === 'user' ? localStorage.setItem(`cartForUid-${token.id}`, JSON.stringify(state)) : console.log('not user');
+    },
+
     refreshCart: (state, action) => {
       let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : { role: 'visitor' };
       let userInitialSatate = token.role === 'user' ? JSON.parse(localStorage.getItem(`cartForUid-${token.id}`)) : null;
@@ -78,6 +85,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addProduct, removeProduct, emptyCart, clearCartState, refreshCart } = cartSlice.actions;
+export const { addProduct, removeProduct, emptyCart, clearCartState, refreshCart, updateProduct } = cartSlice.actions;
 
 export default cartSlice.reducer;

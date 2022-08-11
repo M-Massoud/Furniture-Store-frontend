@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../network/Config';
 import CardComponent from '../cardComponent/cardComponent';
 import { useLocation } from 'react-router-dom';
-function Search() {
+
+function Search({title}) {
     const location = useLocation();
     const [searchData, setSearchData] = useState("");
     const { searchWord } = location.state;
     // console.log(searchWord)
     // console.log(searchData)
     useEffect(() => {
+        document.title = `${title} | ${searchWord}`;
         axiosInstance
             .get(`/search/${searchWord}`)
             .then(res => {

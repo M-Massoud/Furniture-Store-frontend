@@ -4,8 +4,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axiosInstance from "../../network/Config";
 import './RegisterationUserComponentStyle.css';
 
-export default function LoginForm() {
-
+export default function RegisterationUserForm({ title }) {
+    document.title = title;
     const history = useHistory();
 
     const [registerData, setRegisterData] = useState({
@@ -130,9 +130,72 @@ export default function LoginForm() {
         }
     }
 
+    // validate the required values on submit
+    const valdiateForm = () => {
+
+        if (!registerData.firstName)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                firstNameError: "This field is required"
+            });
+        if (!registerData.lastName)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                lastNameError: "This field is required"
+            });
+        if (!registerData.mobile)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                mobileError: "This field is required"
+            });
+        if (!registerData.city)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                cityError: "This field is required"
+            });
+        if (!registerData.street)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                streetError: "This field is required"
+            });
+        if (!registerData.building)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                buildingError: "This field is required"
+            });
+        if (!registerData.cardType)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                cardTypeError: "This field is required"
+            });
+        if (!registerData.cardNumber)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                cardNumberError: "This field is required"
+            });
+        if (!registerData.userEmail)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                userEmailError: "This field is required"
+            });
+        if (!registerData.userPassword)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                userPasswordError: "This field is required"
+            });
+        if (!registerData.userPasswordConfirm)
+            setRegisterDataErrors({
+                ...registerDataErrors,
+                userPasswordConfirmError: "This field is required"
+            });
+    }
+
     function handleSubmit(event) {
         event.preventDefault();
-        console.log(registerData);
+        valdiateForm();
+        for (let index = 0; index < Object.values(registerDataErrors).length; index++) {
+            if (Object.values(registerDataErrors)[index]) return
+        }
         axiosInstance.post("/users", {
             firstName: registerData.firstName,
             lastName: registerData.lastName,

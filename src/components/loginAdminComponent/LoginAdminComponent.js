@@ -8,7 +8,8 @@ import './LoginAdminComponentStyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../../network/Config';
 
-export default function LoginAdminForm() {
+export default function LoginAdminForm({ title }) {
+  document.title = title;
   const location = useLocation();
   const history = useHistory();
   const [loginData, setLoginData] = useState({
@@ -69,8 +70,26 @@ export default function LoginAdminForm() {
     }
   }
 
+  // validate the required values on submit
+  const valdiateForm = () => {
+    if (!loginData.adminEmail)
+      setLoginDataErrors({
+        ...loginDataErrors,
+        adminEmailError: "This field is required"
+      });
+    if (!loginData.adminPassword)
+      setLoginDataErrors({
+        ...loginDataErrors,
+        adminPasswordError: "This field is required"
+      });
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
+    valdiateForm();
+    for (let index = 0; index < Object.values(loginDataErrors).length; index++) {
+      if (Object.values(loginDataErrors)[index]) return
+    }
     axiosInstance
       .post('/login-admin', {
         email: loginData.adminEmail,

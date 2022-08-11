@@ -6,45 +6,44 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import 'react-notifications-component/dist/theme.css'
 
+import PrivateRoute from "./components/privateRoute/PrivateRoute";
+import LoggedInAccessRestrictRoute from "./components/privateRoute/LoggedInAccessRestrictRoute";
+import NavBar from './components/NavBar/NewNav/NewNav';
 import Main from './components/itemsComponent/Mainpage';
-import LoginUserComponent from './components/loginUserComponent/LoginUserComponent';
-import LoginAdminComponent from './components/loginAdminComponent/LoginAdminComponent';
-import RegisterationUserComponent from './components/registerationUserComponent/RegisterationUserComponent';
-import RegisterationAdminComponent from './components/registerationAdminComponent/RegisterationAdminComponent';
-import WishListComponent from './components/wishListComponent/WishListComponent';
-import ShoppingCartComponent from './components/shoppingCartComponent/ShoppingCartComponent';
-import checkoutcomponent from './components/checkoutcomponent/CheckoutComponent';
-// import CheckoutPage from "./pages/checkoutPage";
-import ProductsPage from './pages/productsPage';
-import SingleProductPage from './pages/singleProductPage';
-import SubCategoryPage from './pages/subCategoryPage';
 import AdminDashBoardUsersPage from "./components/adminDashBordUsersComponent/adminDashBordUsersComponent";
 import AdminDashBoardCategoriesPage from "./components/adminDashBordCategoriesComponent/adminDashBordCategoriesComponent";
 import AdminDashBoardSubCategoriesPage from "./components/adminDashBordSubCategoriesComponent/adminDashBordSubCategoriesComponent";
 import AdminDashBoardProductsPage from "./components/adminDashBordProductsComponent/adminDashBordProductsComponent";
 import AdminDashBoardOrdersPage from "./components/adminDashBordOrdersComponent/adminDashBordOrdersComponent";
-import NotFound from './components/404/NotFound';
-import FaqComponent from './components/faqComponent/FaQComponent';
-import NavBar from './components/NavBar/NewNav/NewNav';
-import Footer from './components/Footer/Footer';
-import Search from './components/Search/Search';
 import AddProductForm from './components/productForm/addProductForm';
-import ForgetUserPasswordPage from './components/forgetpasswordComponent/ForgetUserpasswordComponent';
-import ForgetAdminPassworPage from './components/forgetpasswordComponent/ForgetAdminPassword';
-import UserProfilePage from "./pages/userProfilePage";
-import EditUserProfileForm from './components/userProfileComponent/editUserProfile';
-import AdminProfile from './components/adminProfileComponent/adminProfilePage';
-import EditAdminProfileForm from './components/adminProfileComponent/editAdminProfile';
 import EditProductForm from './components/productForm/editProductForm';
-import PrivateRoute from "./components/privateRoute/PrivateRoute";
-import LoggedInAccessRestrictRoute from "./components/privateRoute/LoggedInAccessRestrictRoute";
-import CheckoutSuccess from "./pages/checkoutSuccessPage";
 import AddCategoryForm from "./components/categoryForm/addCategoryForm";
 import EditCategoryForm from "./components/categoryForm/editCategoryForm";
 import AddSubCategoryForm from "./components/subCategoryForm/addSubCategoryForm";
 import EditSubCategoryForm from "./components/subCategoryForm/editSubCategoryForm";
-
+import LoginAdminComponent from './components/loginAdminComponent/LoginAdminComponent';
+import LoginUserComponent from './components/loginUserComponent/LoginUserComponent';
+import RegisterationAdminComponent from './components/registerationAdminComponent/RegisterationAdminComponent';
+import RegisterationUserComponent from './components/registerationUserComponent/RegisterationUserComponent';
+import ForgetAdminPassworPage from './components/forgetpasswordComponent/ForgetAdminPassword';
+import ForgetUserPasswordPage from './components/forgetpasswordComponent/ForgetUserpasswordComponent';
+import AdminProfile from './components/adminProfileComponent/adminProfilePage';
+import UserProfilePage from "./pages/userProfilePage";
+import EditAdminProfileForm from './components/adminProfileComponent/editAdminProfile';
+import EditUserProfileForm from './components/userProfileComponent/editUserProfile';
 import ChangePasswordComponent from './components/changePasswordComponent/changePasswordComponent';
+import ShoppingCartComponent from './components/shoppingCartComponent/ShoppingCartComponent';
+import CheckoutSuccess from "./pages/checkoutSuccessPage";
+import WishListComponent from './components/wishListComponent/WishListComponent';
+import StoredPaymentMethods from "./components/storedPaymentMethodsComponent/StoredPaymentMethodsComponent";
+import UserOrders from "./components/userOrdersComponent/UserOrdersComponent";
+import ProductsPage from './pages/productsPage';
+import SingleProductPage from './pages/singleProductPage';
+import SubCategoryPage from './pages/subCategoryPage';
+import FaqComponent from './components/faqComponent/FaQComponent';
+import Search from './components/Search/Search';
+import Footer from './components/Footer/Footer';
+import NotFound from './components/404/NotFound';
 
 function App() {
   return (
@@ -52,47 +51,41 @@ function App() {
       <ReactNotifications />
       <NavBar />
       <Switch>
-        <Route path={'/'} exact component={Main} />
-        <PrivateRoute path={'/admin-dashBoard'} component={AdminDashBoardUsersPage} exact requiredRole="admin" />
-        <PrivateRoute path={'/admin-dashBoard/categories'} component={AdminDashBoardCategoriesPage} requiredRole="admin" />
-        <PrivateRoute path={'/admin-dashBoard/subCategories'} component={AdminDashBoardSubCategoriesPage} requiredRole="admin" />
-        <PrivateRoute path={'/admin-dashBoard/products'} component={AdminDashBoardProductsPage} requiredRole="admin" />
-        <PrivateRoute path={'/admin-dashBoard/orders'} component={AdminDashBoardOrdersPage} requiredRole="admin" />
-        <PrivateRoute path={'/addProduct'} component={AddProductForm} requiredRole="admin" />
+        <Route path={'/'} exact component={() => <Main title='Furniture Store | Home' />} />
+        <PrivateRoute path={'/admin-dashBoard'} component={() => <AdminDashBoardUsersPage title='DashBoard | Users' />} exact requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/categories'} component={() => <AdminDashBoardCategoriesPage title='DashBoard | Categories' />} requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/subCategories'} component={() => <AdminDashBoardSubCategoriesPage title='DashBoard | SubCategories' />} requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/products'} component={() => <AdminDashBoardProductsPage title='DashBoard | Products' />} requiredRole="admin" />
+        <PrivateRoute path={'/admin-dashBoard/orders'} component={() => <AdminDashBoardOrdersPage title='DashBoard | Orders' />} requiredRole="admin" />
+        <PrivateRoute path={'/addProduct'} component={() => <AddProductForm title='DashBoard | Add Product' />} requiredRole="admin" />
         <PrivateRoute path={'/editProduct'} component={EditProductForm} requiredRole="admin" />
-        <PrivateRoute path={'/addCategory'} component={AddCategoryForm} requiredRole="admin" />
+        <PrivateRoute path={'/addCategory'} component={() => <AddCategoryForm title='DashBoard | Add Category' />} requiredRole="admin" />
         <PrivateRoute path={'/editCategory'} component={EditCategoryForm} requiredRole="admin" />
-        <PrivateRoute path={'/addSubCategory'} component={AddSubCategoryForm} requiredRole="admin" />
+        <PrivateRoute path={'/addSubCategory'} component={() => <AddSubCategoryForm title='DashBoard | Add SubCategory' />} requiredRole="admin" />
         <PrivateRoute path={'/editSubCategory'} component={EditSubCategoryForm} requiredRole="admin" />
-        <LoggedInAccessRestrictRoute path={'/login-admin'} component={LoginAdminComponent} />
-        <PrivateRoute path={'/register-admin'} component={RegisterationAdminComponent} requiredRole="admin" />
-        <LoggedInAccessRestrictRoute path={'/login-user'} component={LoginUserComponent} />
-        <LoggedInAccessRestrictRoute path={'/register-user'} component={RegisterationUserComponent} />
-        <PrivateRoute path={'/shoppingCart'} component={ShoppingCartComponent} requiredRole="user" />
-        {/* <PrivateRoute path={'/checkout'} component={CheckoutPage} requiredRole="user" /> */}
-        <PrivateRoute path={'/checkout/success'} component={CheckoutSuccess} requiredRole="user" />
-        <PrivateRoute path={'/wishlist'} component={WishListComponent} requiredRole="user" />
-        <PrivateRoute path={'/profile/:id'} component={UserProfilePage} requiredRole="userById" />
-
-        <PrivateRoute path={'/admin/:id'} component={AdminProfile} requiredRole="admin"/>
-
+        <LoggedInAccessRestrictRoute path={'/login-admin'} component={() => <LoginAdminComponent title='Furniture Store | Login Admin' />} />
+        <PrivateRoute path={'/register-admin'} component={() => <RegisterationAdminComponent title='Furniture Store | Register Admin' />} requiredRole="admin" />
+        <LoggedInAccessRestrictRoute path={'/login-user'} component={() => <LoginUserComponent title='Furniture Store | Login User' />} />
+        <LoggedInAccessRestrictRoute path={'/register-user'} component={() => <RegisterationUserComponent title='Furniture Store | Register User' />} />
+        <LoggedInAccessRestrictRoute path={'/forgetAdminPassword'} component={() => <ForgetAdminPassworPage title='Furniture Store | Forgot Admin Password' />} />
+        <LoggedInAccessRestrictRoute path={'/forgetUserPassword'} component={() => <ForgetUserPasswordPage title='Furniture Store | Forgot User Password' />} />
+        <PrivateRoute path={'/profile/admin'} exact component={() => <AdminProfile title='Furniture Store | Admin Profile' />} requiredRole="admin" />
+        <PrivateRoute path={'/profile/:id'} exact component={() => <UserProfilePage title='Furniture Store | User Profile' />} requiredRole="userById" />
+        <PrivateRoute path={'/adminedit'} exact component={EditAdminProfileForm} requiredRole="admin" />
         <PrivateRoute path={'/useredit/:id'} exact component={EditUserProfileForm} requiredRole="userById" />
-        <PrivateRoute path={'/adminedit/:id'} exact component={EditAdminProfileForm} requiredRole="admin"/>
-
-        <PrivateRoute path={'/useredit/:id/changePassword'} exact component={ChangePasswordComponent}  requiredRole="userById" />
-        <PrivateRoute path={'/adminedit/:id/changePassword'} exact component={ChangePasswordComponent}  requiredRole="admin"/>
-
-        <Route path={'/forgetAdminPassword'} exact component={ForgetAdminPassworPage} />
-        <Route path={'/forgetUserPassword'} exact component={ForgetUserPasswordPage} />
-
-        <Route path={'/products'} exact component={ProductsPage} />
-        <Route path={'/products/:id'} exact component={SingleProductPage} />
-        {/* <Route path={'/checkOut'} component={checkoutcomponent} /> */}
-        <Route path={'/subCategory/:id'} exact component={SubCategoryPage} />
-        <Route path={'/FAQ'} exact component={FaqComponent} />
-        <Route path={'/search/:id'} component={Search} />
-        <Route path={'/addProudct'} exact component={AddProductForm} />
-        <Route path={'*'} component={NotFound} />
+        <PrivateRoute path={'/adminedit/:id/changePassword'} exact component={ChangePasswordComponent} requiredRole="admin" />
+        <PrivateRoute path={'/useredit/:id/changePassword'} exact component={ChangePasswordComponent} requiredRole="userById" />
+        <PrivateRoute path={'/shoppingCart'} component={() => <ShoppingCartComponent title='Furniture Store | Shopping Cart' />} requiredRole="user" />
+        <PrivateRoute path={'/checkout/success'} component={() => <CheckoutSuccess title='Furniture Store | Checkout Success' />} requiredRole="user" />
+        <PrivateRoute path={'/wishlist'} component={() => <WishListComponent title='Furniture Store | Wish List' />} requiredRole="user" />
+        <PrivateRoute path={'/storedPaymentMethods'} component={() => <StoredPaymentMethods title='Furniture Store | Stored Payment Method' />} requiredRole="user" />
+        <PrivateRoute path={'/orders'} component={() => <UserOrders title='Furniture Store | Orders' />} requiredRole="user" />
+        <Route path={'/products'} exact component={() => <ProductsPage title='Furniture Store | Products' />} />
+        <Route path={'/products/:id'} exact component={() => <SingleProductPage title='Products' />} />
+        <Route path={'/subCategory/:id'} exact component={() => <SubCategoryPage title='SubCategory' />} />
+        <Route path={'/FAQ'} exact component={() => <FaqComponent title='Furniture Store | FAQ' />} />
+        <Route path={'/search/:id'} component={() => <Search title='Search' />} />
+        <Route path={'*'} component={() => <NotFound title='Furniture Store | Page Not Found' />} />
       </Switch>
       <Footer />
     </Router>
@@ -100,3 +93,4 @@ function App() {
 }
 
 export default App;
+

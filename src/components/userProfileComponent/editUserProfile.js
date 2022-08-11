@@ -8,7 +8,7 @@ let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) :
 
 // props
 function EditUserProfileForm(props) {
-   
+  document.title = 'Furniture Store | Edit User Profile';
    let history = useHistory();
 
     const [formDetails, setFormDetails] = useState({

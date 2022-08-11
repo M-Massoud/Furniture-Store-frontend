@@ -12,7 +12,7 @@ let token = localStorage.getItem("token")
   ? jwt(localStorage.getItem("token"))
   : "unAuthenticated";
 
-export default function CardComponent({ product ,data }) {
+export default function CardComponent({ product, data }) {
   const [isProductArry, setisProductArry] = useState([]);
   const [keyword, setKeword] = useState("wishList");
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,35 +61,37 @@ export default function CardComponent({ product ,data }) {
         setfavProductIcon(true);
       } //if condition
 
-    } else { 
-        console.log('not user or admin')
+    } else {
+      console.log('not user or admin')
       return;
     }//else
-    
+
   };
 
   const removTowishList = () => {
-    console.log("remove", product._id);
-    if (isProductArry.includes(product._id)) {
-      axiosInstance
-        .delete(`/user/${token.id}/wishlist`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          data: {
-            wishList: [product._id],
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          setfavProductIcon(false);
-          setunfavProduct(true);
-          data()
-        })
-        .catch((error) => console.log(error));
-    } else {
-      setfavProductIcon(false);
-      setunfavProduct(true);
+    if (token.role === 'user') {
+      console.log("remove", product._id);
+      if (isProductArry.includes(product._id)) {
+        axiosInstance
+          .delete(`/user/${token.id}/wishlist`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            data: {
+              wishList: [product._id],
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            setfavProductIcon(false);
+            setunfavProduct(true);
+            data()
+          })
+          .catch((error) => console.log(error));
+      } else {
+        setfavProductIcon(false);
+        setunfavProduct(true);
+      }
     }
   };
   ////////
@@ -123,12 +125,12 @@ export default function CardComponent({ product ,data }) {
           }
         })
         .catch((err) => console.log(err));
-    } else { 
+    } else {
       console.log('not user or admin')
       return;
     }
-    }
-   , [ currentPage, favProductIcon]);
+  }
+    , [currentPage, favProductIcon]);
   ////////
   return (
     <>

@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
+import Spinner from "../spinner";
 import AdminDashBoardPage from "../../pages/adminDashBoardPage";
 import axiosInstance from '../../network/Config';
+import { Store } from 'react-notifications-component';
 import { FaTrashAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-export default function AdminDashBoardProductsPage() {
+export default function AdminDashBoardProductsPage({ title }) {
     const [productsData, setProductsData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPagesNumber, setMaxPagesNumber] = useState(1);
     const [itemCount, setItemCount] = useState(10);
-    const [deletingError, setDeletingError] = useState('');
+    const [isLoded, setIsLoded] = useState(false);
 
     useEffect(() => {
+        document.title = title;
         axiosInstance
             .get(`/products`, {
                 params: {
@@ -22,6 +25,7 @@ export default function AdminDashBoardProductsPage() {
             .then(res => {
                 setProductsData(res.data.resData.products);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
+                setIsLoded(true);
             })
             .catch(err => console.log(err));
     }, [currentPage, itemCount]);
@@ -47,36 +51,29 @@ export default function AdminDashBoardProductsPage() {
             })
                 .then(res => {
                     setProductsData((productsData) => productsData.filter((_, i) => i !== index));
-                    setDeletingError('successful');
-                    clearAlertMessage();
+                    Store.addNotification({
+                        title: "Status",
+                        message: "Successfully Removed",
+                        type: "success",
+                        container: "top-center",
+                        dismiss: {
+                            duration: 2000,
+                        },
+                    });
                 })
-                .catch(err => { console.log(err); setDeletingError('failed'); clearAlertMessage(); });
+                .catch(error => {
+                    Store.addNotification({
+                        title: "Status",
+                        message: "Sorry, Unexpected Error",
+                        type: "danger",
+                        container: "top-center",
+                        dismiss: {
+                            duration: 2000,
+                        },
+                    });
+                    console.log(error);
+                });
         }
-    }
-
-    function allertMessage() {
-        switch (deletingError) {
-            case 'successful':
-                return <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Successfully Deleted</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>;
-                break;
-
-            case 'failed':
-                return <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Unexpected Error</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>;
-                break;
-
-            default:
-                return '';
-        }
-    }
-
-    function clearAlertMessage() {
-        setTimeout(() => { setDeletingError(''); }, 2000);
     }
 
     function changeItemPerPage(event) {
@@ -103,52 +100,57 @@ export default function AdminDashBoardProductsPage() {
                             </select>
                         </div>
                         <div className='container-fluid' >
-                            <table className="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Stock Amount</th>
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Discount</th>
-                                        <th scope="col">Sub Category</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {productsData.map((product, index) => {
-                                        console.log(product);
-                                        return (
-                                            <tr key={product._id}>
-                                                <td>{(currentPage - 1) * itemCount + index + 1}</td>
-                                                <td>{product._id}</td>
-                                                <td>{product.name}</td>
-                                                <td>{product.description}</td>
-                                                <td>{product.stockAmount}</td>
-                                                <td>{product.image}</td>
-                                                <td>{product.price}</td>
-                                                <td>{product.discount}</td>
-                                                <td>{product.subCategory.title}</td>
-
-                                                <td>
-                                                    <Link to={{
-                                                        pathname: "/editProduct", state: product
-                                                    }}  >
-                                                        <button className='btn btn-primary' >
-                                                            Edit
-                                                        </button>
-                                                    </Link>
-                                                </td>
-
-                                                <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteproduct(index, product._id) }} /></td>
+                            {isLoded ?
+                                productsData.length > 0 ?
+                                    <table className="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col">Stock Amount</th>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Discount</th>
+                                                <th scope="col">Sub Category</th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
                                             </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
-                            {allertMessage()}
+                                        </thead>
+                                        <tbody>
+                                            {productsData.map((product, index) => {
+                                                return (
+                                                    <tr key={product._id}>
+                                                        <td>{product._id}</td>
+                                                        <td>{product.name}</td>
+                                                        <td>{product.description}</td>
+                                                        <td>{product.stockAmount}</td>
+                                                        <td>{product.image}</td>
+                                                        <td>{product.price}</td>
+                                                        <td>{product.discount}</td>
+                                                        <td>{product.subCategory.title}</td>
+
+                                                        <td>
+                                                            <Link to={{
+                                                                pathname: "/editProduct", state: product
+                                                            }}  >
+                                                                <button className='btn btn-primary' title='Edit' >
+                                                                    Edit
+                                                                </button>
+                                                            </Link>
+                                                        </td>
+
+                                                        <td><FaTrashAlt className='text-danger' role='button' title='Delete' onClick={() => { deleteproduct(index, product._id) }} /></td>
+                                                    </tr>
+                                                );
+                                            })}
+                                            <tr>
+                                                <td colSpan='10'><Link to={'/addProduct'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New Product</Link></td>
+                                            </tr>
+                                        </tbody>
+                                    </table> :
+                                    <h1 className='my-5 text-center'>No Available Data To Show</h1> :
+                                <Spinner />}
                             <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
                                 <ul className="pagination">
                                     <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>

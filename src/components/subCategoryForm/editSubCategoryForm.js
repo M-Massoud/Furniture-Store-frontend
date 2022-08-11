@@ -4,7 +4,7 @@ import axiosInstance from '../../network/Config';
 import { Store } from 'react-notifications-component';
 import { FaTrashAlt } from 'react-icons/fa';
 
-export default function EditCategoryForm(props) {
+export default function EditSubCategoryForm(props) {
 
     // redirect to the home page if there is no chosen product to edit
     const history = useHistory();
@@ -23,6 +23,7 @@ export default function EditCategoryForm(props) {
     });
 
     useEffect(() => {
+        document.title = 'DashBoard | Edit SubCategory';
         axiosInstance
             .get(`/products`)
             .then(response => {
@@ -52,7 +53,10 @@ export default function EditCategoryForm(props) {
                 [event.target.name]: event.target.value
             });
         }
-        ErrorHandling(event.target.name, event.target.value);
+        if (event.target.name === 'subCategoryProduct')
+            ErrorHandling(event.target.name, formDetails.subCategoryProduct.length + 1);
+        else
+            ErrorHandling(event.target.name, event.target.value);
     };
 
     const ErrorHandling = (name, value) => {
@@ -68,7 +72,7 @@ export default function EditCategoryForm(props) {
             case 'subCategoryProduct':
                 setFormerror({
                     ...formError,
-                    subCategoryProductError: value.length === 0 ? "This field is required" : "",
+                    subCategoryProductError: value === 0 ? "Select At Least One SubCategory Product" : "",
                 });
                 break;
 
@@ -79,8 +83,32 @@ export default function EditCategoryForm(props) {
         }
     }
 
+    function handelDeleteCategoryProducts(index) {
+        setFormDetails({ ...formDetails, subCategoryProduct: [...formDetails.subCategoryProduct.filter((t, i) => i !== index)] });
+        ErrorHandling('subCategoryProduct', formDetails.subCategoryProduct.length - 1);
+    }
+
+    // validate the required values on submit
+    const valdiateForm = () => {
+
+        if (!formDetails.subCategoryTitle)
+            setFormerror({
+                ...formError,
+                subCategoryTitleError: "This field is required"
+            });
+        if (!formDetails.subCategoryProduct)
+            setFormerror({
+                ...formError,
+                subCategoryProductError: "Select At Least One SubCategory Product"
+            });
+    }
+
     function handleSubmit(event) {
         event.preventDefault();
+        valdiateForm();
+        for (let index = 0; index < Object.values(formError).length; index++) {
+            if (Object.values(formError)[index]) return
+        }
         axiosInstance
             .put('/editSubCategory', {
                 id: props.location.state._id,
@@ -103,7 +131,8 @@ export default function EditCategoryForm(props) {
                         duration: 2000,
                     },
                 });
-                console.log(response.data)
+                console.log(response.data);
+                history.push('/admin-dashBoard/subCategories');
             })
             .catch(error => {
                 Store.addNotification({
@@ -119,10 +148,6 @@ export default function EditCategoryForm(props) {
             });
     }
 
-    function handelDeleteCategoryProducts(index) {
-        setFormDetails({ ...formDetails, subCategoryProduct: [...formDetails.subCategoryProduct.filter((t, i) => i !== index)] });
-    }
-
     return (
         <>
             <div className='col-10 offset-1 col-md-8 offset-md-2 border p-3 rounded shadow my-5'>
@@ -134,15 +159,15 @@ export default function EditCategoryForm(props) {
                     <input type='text' id={'subCategoryTitle'} name={'subCategoryTitle'} className={`form-control ${formError.subCategoryTitleError && "border-danger"} `} value={formDetails.subCategoryTitle} onChange={(event) => handelFormchange(event)} required />
                     <div id="subCategoryTitleHelp" className="form-text text-danger">{formError.subCategoryTitleError}</div>
 
-                    <label htmlFor='productSubcategory' className="form-label mt-2">SubCategory Products</label >
-                    <select className={`form-control form-select ${formError.productSubcategoryError && "border-danger"} `} id={'subCategoryProduct'} name={'subCategoryProduct'} onChange={(event) => handelFormchange(event)} required>
+                    <label htmlFor='subCategoryProduct' className="form-label mt-2">SubCategory Products</label >
+                    <select className={`form-control form-select ${formError.subCategoryProductError && "border-danger"} `} id={'subCategoryProduct'} name={'subCategoryProduct'} onChange={(event) => handelFormchange(event)} required>
                         {productsData.map((product, index) => {
                             return (
                                 <option key={product._id} value={index}>{product.name}</option>
                             );
                         })}
                     </select>
-                    <div id="subCategoryProductHelp" className="form-text text-danger">{formError.productSubcategoryError}</div>
+                    <div id="subCategoryProductHelp" className="form-text text-danger">{formError.subCategoryProductError}</div>
                     {formDetails.subCategoryProduct.length > 0 ?
                         <table className="table table-striped">
                             <caption>Products</caption>
@@ -159,7 +184,7 @@ export default function EditCategoryForm(props) {
                                         <tr key={product._id}>
                                             <td>{product._id}</td>
                                             <td>{product.name}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { handelDeleteCategoryProducts(index) }} /></td>
+                                            <td><FaTrashAlt className='text-hover-red' title='Delete' onClick={() => { handelDeleteCategoryProducts(index) }} /></td>
                                         </tr>
                                     );
                                 })}
@@ -167,7 +192,7 @@ export default function EditCategoryForm(props) {
                         </table>
                         : ''
                     }
-                    <button type="submit" className="btn bg-secondary-1 white my-4 w-50 m-auto"> Edit SubCategory </button>
+                    <button type="submit" className="btn bg-secondary-1 white my-4 w-50 m-auto">Edit SubCategory</button>
                 </form>
             </div>
         </>

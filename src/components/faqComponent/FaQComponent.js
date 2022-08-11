@@ -5,13 +5,14 @@ import { useState, useEffect } from 'react';
 import jwt from 'jwt-decode';
 
 let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
-function FaqComponent() {
+function FaqComponent({ title }) {
 
   const [keyword, setKeword] = useState('wishList');
   const [currentPage, setCurrentPage] = useState(1);
   const [userWishList, setuserWishList] = useState([]);
 
   useEffect(() => {
+    document.title = title;
     axiosInstance
       .get(`/user/${token.id}/${keyword}`, {
         params: {

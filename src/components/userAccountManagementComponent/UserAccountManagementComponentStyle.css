@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.text-main {
+  color: var(--secondary-color);
+}
+
+.text-decoration-none {
+  text-decoration: none;
+  color: black;
+}
+
+.text-hover-red:hover {
+  cursor: pointer;
+  color: var(--main-color);
+}
+
+.flex-column-start {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+

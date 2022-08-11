@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axiosInstance from '../../network/Config';
 import { Store } from 'react-notifications-component';
 
-function AddProductForm(props) {
+function AddProductForm({ title }) {
 
     const [productImg, setProductImg] = useState("default-product-img.jpg")
     const [subCategoriesData, setSubCategoriesData] = useState([])
@@ -59,6 +59,7 @@ function AddProductForm(props) {
     }
 
     useEffect(() => {
+        document.title = title;
         axiosInstance
             .get(`/subCategory`)
             .then(res => {

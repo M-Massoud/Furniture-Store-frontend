@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
+import Spinner from "../spinner";
 import AdminDashBoardPage from "../../pages/adminDashBoardPage";
 import axiosInstance from '../../network/Config';
+import { Store } from 'react-notifications-component';
 import { FaTrashAlt } from 'react-icons/fa';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
-export default function AdminDashBoardUsersPage() {
+export default function AdminDashBoardUsersPage({ title }) {
     const [usersData, setUsersData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPagesNumber, setMaxPagesNumber] = useState(1);
     const [itemCount, setItemCount] = useState(10);
-    const [deletingError, setDeletingError] = useState('');
+    const [isLoded, setIsLoded] = useState(false);
 
     useEffect(() => {
+        document.title = title;
         axiosInstance
             .get(`/users`, {
                 params: {
@@ -25,6 +28,7 @@ export default function AdminDashBoardUsersPage() {
             .then(res => {
                 setUsersData(res.data.resData.users);
                 setMaxPagesNumber(res.data.resData.maxPagesNumber);
+                setIsLoded(true);
             })
             .catch(err => console.log(err));
     }, [currentPage, itemCount]);
@@ -50,36 +54,29 @@ export default function AdminDashBoardUsersPage() {
             })
                 .then(res => {
                     setUsersData((usersData) => usersData.filter((_, i) => i !== index));
-                    setDeletingError('successful');
-                    clearAlertMessage();
+                    Store.addNotification({
+                        title: "Status",
+                        message: "Successfully Removed",
+                        type: "success",
+                        container: "top-center",
+                        dismiss: {
+                            duration: 2000,
+                        },
+                    });
                 })
-                .catch(err => { console.log(err); setDeletingError('failed'); clearAlertMessage(); });
+                .catch(error => {
+                    Store.addNotification({
+                        title: "Status",
+                        message: "Sorry, Unexpected Error",
+                        type: "danger",
+                        container: "top-center",
+                        dismiss: {
+                            duration: 2000,
+                        },
+                    });
+                    console.log(error);
+                });
         }
-    }
-
-    function allertMessage() {
-        switch (deletingError) {
-            case 'successful':
-                return <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Successfully Deleted</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>;
-                break;
-
-            case 'failed':
-                return <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Unexpected Error</strong>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>;
-                break;
-
-            default:
-                return '';
-        }
-    }
-
-    function clearAlertMessage() {
-        setTimeout(() => { setDeletingError(''); }, 2000);
     }
 
     function changeItemPerPage(event) {
@@ -105,34 +102,36 @@ export default function AdminDashBoardUsersPage() {
                                 <option value="20">20</option>
                             </select>
                         </div>
-                        <table className="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">First Name</th>
-                                    <th scope="col">Last Name</th>
-                                    <th scope="col">Email Address</th>
-                                    <th scope="col">Mobile</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {usersData.map((user, index) => {
-                                    return (
-                                        <tr key={user._id}>
-                                            <td>{(currentPage - 1) * itemCount + index + 1}</td>
-                                            <td>{user._id}</td>
-                                            <td>{user.firstName}</td>
-                                            <td>{user.lastName}</td>
-                                            <td>{user.email}</td>
-                                            <td>{user.mobile}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { deleteUser(index, user._id) }} /></td>
+                        {isLoded ?
+                            usersData.length > 0 ?
+                                <table className="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">First Name</th>
+                                            <th scope="col">Last Name</th>
+                                            <th scope="col">Email Address</th>
+                                            <th scope="col">Mobile</th>
+                                            <th scope="col"></th>
                                         </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                        {allertMessage()}
+                                    </thead>
+                                    <tbody>
+                                        {usersData.map((user, index) => {
+                                            return (
+                                                <tr key={user._id}>
+                                                    <td>{user._id}</td>
+                                                    <td>{user.firstName}</td>
+                                                    <td>{user.lastName}</td>
+                                                    <td>{user.email}</td>
+                                                    <td>{user.mobile}</td>
+                                                    <td><FaTrashAlt className='text-danger' role='button' title='Delete' onClick={() => { deleteUser(index, user._id) }} /></td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table> :
+                                <h1 className='my-5 text-center'>No Available Data To Show</h1> :
+                            <Spinner />}
                         <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
                             <ul className="pagination">
                                 <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>

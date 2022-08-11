@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import axiosInstance from '../../network/Config';
 import { Store } from 'react-notifications-component';
 import { FaTrashAlt } from 'react-icons/fa';
 
-export default function AddCategoryForm() {
+export default function AddCategoryForm({ title }) {
+
+    const history = useHistory();
+
     const [subCategoriesData, setSubCategoriesData] = useState([]);
-    const [categorySubCategoryData, setCategorySubCategoryData] = useState([]);
 
     const [formDetails, setFormDetails] = useState({
         categoryTitle: "",
@@ -18,6 +21,7 @@ export default function AddCategoryForm() {
     });
 
     useEffect(() => {
+        document.title = title;
         axiosInstance
             .get(`/subCategory`)
             .then(res => {
@@ -26,19 +30,20 @@ export default function AddCategoryForm() {
             .catch(err => console.log(err));
     }, []);
 
-    function handelFormchange(event) {
+    async function handelFormchange(event) {
+
         if (event.target.name === "categorySubCategory") {
-            let dublicateIndicator = categorySubCategoryData.some(function (subCategory) {
-                return subCategory.id === subCategoriesData[event.target.value]._id;
+            let dublicateIndicator = formDetails.categorySubCategory.some(function (subCategory) {
+                return subCategory._id === subCategoriesData[event.target.value]._id;
             });
             if (!dublicateIndicator) {
-                setCategorySubCategoryData([...categorySubCategoryData, {
-                    id: subCategoriesData[event.target.value]._id,
-                    title: subCategoriesData[event.target.value].title,
-                }]);
                 setFormDetails({
                     ...formDetails,
-                    [event.target.name]: [...formDetails.categorySubCategory, subCategoriesData[event.target.value]._id],
+                    [event.target.name]: [...formDetails.categorySubCategory,
+                    {
+                        _id: subCategoriesData[event.target.value]._id,
+                        title: subCategoriesData[event.target.value].title
+                    }],
                 });
             }
         }
@@ -48,7 +53,10 @@ export default function AddCategoryForm() {
                 [event.target.name]: event.target.value
             });
         }
-        ErrorHandling(event.target.name, event.target.value);
+        if (event.target.name === 'categorySubCategory')
+            ErrorHandling(event.target.name, formDetails.categorySubCategory.length + 1);
+        else
+            ErrorHandling(event.target.name, event.target.value);
     };
 
     const ErrorHandling = (name, value) => {
@@ -64,7 +72,7 @@ export default function AddCategoryForm() {
             case 'categorySubCategory':
                 setFormerror({
                     ...formError,
-                    categorySubCategoryError: value.length === 0 ? "This field is required" : "",
+                    categorySubCategoryError: value === 0 ? "Select At Least One Category SubCategory" : "",
                 });
                 break;
 
@@ -75,12 +83,36 @@ export default function AddCategoryForm() {
         }
     }
 
+    function handelDeleteCategorySubCategories(index) {
+        setFormDetails({ ...formDetails, categorySubCategory: [...formDetails.categorySubCategory.filter((t, i) => i !== index)] });
+        ErrorHandling('categorySubCategory', formDetails.categorySubCategory.length - 1);
+    }
+
+    // validate the required values on submit
+    const valdiateForm = () => {
+
+        if (!formDetails.categoryTitle)
+            setFormerror({
+                ...formError,
+                categoryTitleError: "This field is required"
+            });
+        if (!formDetails.categorySubCategory)
+            setFormerror({
+                ...formError,
+                categorySubCategoryError: "Select At Least One Category SubCategory"
+            });
+    }
+
     function handleSubmit(event) {
         event.preventDefault();
+        valdiateForm();
+        for (let index = 0; index < Object.values(formError).length; index++) {
+            if (Object.values(formError)[index]) return
+        }
         axiosInstance
             .post('/category', {
                 title: formDetails.categoryTitle,
-                subCategory: formDetails.categorySubCategory,
+                subCategory: formDetails.categorySubCategory.map((category) => category._id),
             },
                 {
                     headers: {
@@ -98,6 +130,7 @@ export default function AddCategoryForm() {
                         duration: 2000,
                     },
                 });
+                history.push('/admin-dashBoard/categories');
                 console.log(response.data)
             })
             .catch(error => {
@@ -114,24 +147,19 @@ export default function AddCategoryForm() {
             });
     }
 
-    function handelDeleteCategorySubCategories(index) {
-        setCategorySubCategoryData([...categorySubCategoryData.filter((t, i) => i !== index)]);
-        setFormDetails({ ...formDetails, categorySubCategory: [...formDetails.categorySubCategory.filter((t, i) => i !== index)] });
-
-    }
-
     return (
         <>
             <div className='col-10 offset-1 col-md-8 offset-md-2 border p-3 rounded shadow my-5'>
                 <h3 className='text-center mt-2'>Category Control </h3>
+                <h6 className='text-center mt-2'>Add Category</h6>
 
                 <form className={`co-12  row m-auto `} onSubmit={(e) => handleSubmit(e)}>
                     <label htmlFor='categoryTitle' className="form-label mt-2"> Category Title</label >
                     <input type='text' id={'categoryTitle'} name={'categoryTitle'} className={`form-control ${formError.categoryTitleError && "border-danger"} `} value={formDetails.categoryTitle} onChange={(event) => handelFormchange(event)} required />
                     <div id="categoryTitleHelp" className="form-text text-danger">{formError.categoryTitleError}</div>
 
-                    <label htmlFor='productSubcategory' className="form-label mt-2"> Category SubCategory</label >
-                    <select className={`form-control form-select ${formError.productSubcategoryError && "border-danger"} `} id={'categorySubCategory'} name={'categorySubCategory'} onChange={(event) => event.target.value ? handelFormchange(event) : ''} required>
+                    <label htmlFor='categorySubCategory' className="form-label mt-2"> Category SubCategory</label >
+                    <select className={`form-control form-select ${formError.categorySubCategoryError && "border-danger"} `} id={'categorySubCategory'} name={'categorySubCategory'} onChange={(event) => event.target.value ? handelFormchange(event) : ''} required>
                         <option value="">Select Category</option>
                         {subCategoriesData.map((subCategory, index) => {
                             return (
@@ -139,8 +167,8 @@ export default function AddCategoryForm() {
                             );
                         })}
                     </select>
-                    <div id="categorySubCategoryHelp" className="form-text text-danger">{formError.productSubcategoryError}</div>
-                    {categorySubCategoryData.length > 0 ?
+                    <div id="categorySubCategoryHelp" className="form-text text-danger">{formError.categorySubCategoryError}</div>
+                    {formDetails.categorySubCategory.length > 0 ?
                         <table className="table table-striped">
                             <caption>SubCategories</caption>
                             <thead>
@@ -151,12 +179,12 @@ export default function AddCategoryForm() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {categorySubCategoryData.map((subCategory, index) => {
+                                {formDetails.categorySubCategory.map((subCategory, index) => {
                                     return (
-                                        <tr key={subCategory.id}>
-                                            <td>{subCategory.id}</td>
+                                        <tr key={subCategory._id}>
+                                            <td>{subCategory._id}</td>
                                             <td>{subCategory.title}</td>
-                                            <td><FaTrashAlt className='text-hover-red' onClick={() => { handelDeleteCategorySubCategories(index) }} /></td>
+                                            <td><FaTrashAlt className='text-hover-red' title='Delete' onClick={() => { handelDeleteCategorySubCategories(index) }} /></td>
                                         </tr>
                                     );
                                 })}
@@ -164,7 +192,7 @@ export default function AddCategoryForm() {
                         </table>
                         : ''
                     }
-                    <button type="submit" className="btn bg-secondary-1 white my-4 w-50 m-auto"> Add Category </button>
+                    <button type="submit" className="btn bg-secondary-1 white my-4 w-50 m-auto">Add Category</button>
                 </form>
             </div>
         </>
