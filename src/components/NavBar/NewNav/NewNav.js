@@ -13,10 +13,10 @@ function NewNav() {
   const history = useHistory();
   const [getData, setGetData] = useState("");
   const searchWord = getData;
-  const {quantity} = useSelector(state=>state.cart);
+  const { quantity } = useSelector(state => state.cart);
   const dispatch = useDispatch();
-  const {isLoggedIn} = useSelector(state => state.isLoggedIn);
-  const {role} = useSelector(state => state.isLoggedIn);
+  const { isLoggedIn } = useSelector(state => state.isLoggedIn);
+  const { role } = useSelector(state => state.isLoggedIn);
 
   // console.log(isLoggedIn,role);
 
@@ -52,9 +52,68 @@ function NewNav() {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <DropDowen />
-              <DropDowen />
-              <DropDowen />
+              <div> <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Indoor Furniture
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <ul>
+                    <li><Link to={''} className="dropdown-item">Living Room</Link></li>
+                    <li><Link to={''} className="dropdown-item">U-Shape</Link></li>
+                    <li><Link to={''} className="dropdown-item">L-Shape</Link></li>
+                    <li><Link to={''} className="dropdown-item">Sofa Set</Link></li>
+                    <li><Link to={''} className="dropdown-item">Recliner Sofa Sets</Link></li>
+                    <li><Link to={''} className="dropdown-item">TV Tables</Link></li>
+                  </ul>
+                  <ul>
+                    <li><Link to={''} className="dropdown-item">Bed Room</Link></li>
+                    <li><Link to={''} className="dropdown-item">King Bedroom Set</Link></li>
+                    <li><Link to={''} className="dropdown-item">Queen Bedroom Set</Link></li>
+                    <li><Link to={''} className="dropdown-item">Youth Bedrooms</Link></li>
+                    <li><Link to={''} className="dropdown-item">Kids Bedrooms</Link></li>
+                  </ul>
+                </div>
+              </li></div>
+              <div> <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Dinning Furniture
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <ul>
+                    <li><Link to={''} className="dropdown-item">Dining Room Sets</Link></li>
+                    <li><Link to={''} className="dropdown-item">Complete Dining Room Sets</Link></li>
+                    <li><Link to={''} className="dropdown-item">Dining Table With 8 Chairs</Link></li>
+                    <li><Link to={''} className="dropdown-item">Dining Table With 6 Chairs</Link></li>
+                    <li><Link to={''} className="dropdown-item">Dining Table With 4 Chairs</Link></li>
+                  </ul>
+                  <ul>
+                    <li><Link to={''} className="dropdown-item">kitchen</Link></li>
+                    <li><Link to={''} className="dropdown-item">Base Cabinets</Link></li>
+                    <li><Link to={''} className="dropdown-item">Wall Cabinets</Link></li>
+                    <li><Link to={''} className="dropdown-item">Hammock</Link></li>
+                    <li><Link to={''} className="dropdown-item">Kitchen Door</Link></li>
+                  </ul>
+                </div>
+              </li></div>
+              <div> <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Garden Furniture
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <ul>
+                    <li><Link to={''} className="dropdown-item">Garden Furniture</Link></li>
+                    <li><Link to={''} className="dropdown-item">Outdoor Sofa Set</Link></li>
+                    <li><Link to={''} className="dropdown-item">Outdoor Dining Set</Link></li>
+                    <li><Link to={''} className="dropdown-item">Hammock</Link></li>
+                    <li><Link to={''} className="dropdown-item">Relax Chair</Link></li>
+                    <li><Link to={''} className="dropdown-item">Swings</Link></li>
+                  </ul>
+                </div>
+              </li>
+              </div>
             </ul>
             <form className="d-flex align-items-center ">
               <input className="form-control me-2 search-input" onChange={handleChange} value={getData} type="search" placeholder="Search" aria-label="Search" />
@@ -71,30 +130,30 @@ function NewNav() {
               <span className='header-cart' >
                 <FaCartPlus /> <span className='header-cart-qty'>{quantity}</span>
               </span>
-            </Link> 
+            </Link>
             <Link to={"/wishList"} >
               <span className='header-cart' >
-              <FaRegHeart
-                    className="hover white"
-                    style={{
-                      color: `white`,
-                      fontSize: "22px",
-                      marginLeft:"20px"
-                    }}
-                  />
+                <FaRegHeart
+                  className="hover white"
+                  style={{
+                    color: `white`,
+                    fontSize: "22px",
+                    marginLeft: "20px"
+                  }}
+                />
               </span>
-            </Link> 
+            </Link>
 
             {/* render the buttons depends on the user role */}
             {
-              isLoggedIn === false ? <Link to={"/login-user"} > <button 
-              className='btn btn-outline-light ms-4'>Login</button> </Link> : <button 
-              className='btn btn-outline-light ms-4' onClick={Logout}>Logout</button>
+              isLoggedIn === false ? <Link to={"/login-user"} > <button
+                className='btn btn-outline-light ms-4'>Login</button> </Link> : <button
+                  className='btn btn-outline-light ms-4' onClick={Logout}>Logout</button>
             }
-           
+
             {
-              role === "admin" && <Link to={"/admin-dashboard/products"}> <button 
-              className='btn btn-outline-light ms-4'>dashboard</button> </Link>
+              role === "admin" && <Link to={"/admin-dashboard/products"}> <button
+                className='btn btn-outline-light ms-4'>dashboard</button> </Link>
             }
 
           </div>
