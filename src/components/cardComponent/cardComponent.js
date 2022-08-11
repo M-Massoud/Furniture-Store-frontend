@@ -12,7 +12,7 @@ let token = localStorage.getItem("token")
   ? jwt(localStorage.getItem("token"))
   : "unAuthenticated";
 
-export default function CardComponent({ product }) {
+export default function CardComponent({ product ,data }) {
   const [isProductArry, setisProductArry] = useState([]);
   const [keyword, setKeword] = useState("wishList");
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,33 +29,43 @@ export default function CardComponent({ product }) {
   function handleQuantity(event) {
     setRequiredQuantity(event.target.value);
   }
-
+  console.log(token.role)
   const addTowishList = () => {
-    console.log(userWishList);
+    // console.log(userWishList);
     console.log("add", product._id);
-    if (!isProductArry.includes(product._id)) {
-      axiosInstance
-        .put(
-          `/user/${token.id}/wishlist`,
-          {
-            wishList: [product._id],
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+    if (token.role == "admin") {
+      console.log(token.role)
+      return;
+    } else if (token.role == "user") {
+      if (!isProductArry.includes(product._id)) {
+        axiosInstance
+          .put(
+            `/user/${token.id}/wishlist`,
+            {
+              wishList: [product._id],
             },
-          }
-        )
-        .then((res) => {
-          console.log(res);
-          setunfavProduct(false);
-          setfavProductIcon(true);
-        })
-        .catch((error) => console.log(error));
-    } else {
-      setunfavProduct(false);
-      setfavProductIcon(true);
-    } //if condition
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res);
+            setunfavProduct(false);
+            setfavProductIcon(true);
+          })
+          .catch((error) => console.log(error));
+      } else {
+        setunfavProduct(false);
+        setfavProductIcon(true);
+      } //if condition
+
+    } else { 
+        console.log('not user or admin')
+      return;
+    }//else
+    
   };
 
   const removTowishList = () => {
@@ -74,6 +84,7 @@ export default function CardComponent({ product }) {
           console.log(res);
           setfavProductIcon(false);
           setunfavProduct(true);
+          data()
         })
         .catch((error) => console.log(error));
     } else {
@@ -83,37 +94,45 @@ export default function CardComponent({ product }) {
   };
   ////////
   useEffect(() => {
-    axiosInstance
-      .get(`/user/${token.id}/${keyword}`, {
-        params: {
-          page: currentPage,
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        let wishList = res.data[0].wishList;
-        let productId = [];
-        setuserWishList(res.data[0].wishList);
-        for (let i = 0; i < wishList.length; i++) {
-          productId.push(wishList[i]._id);
-        }
-        setisProductArry(productId);
-        if (isProductArry.includes(product._id)) {
-          setfavProductIcon(true);
-          setunfavProduct(false);
-        } else {
-          setfavProductIcon(false);
-          setunfavProduct(true);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [keyword, currentPage, favProductIcon]);
+    if (token.role == "admin") {
+      console.log('admin')
+    } else if (token.role == "user") {
+      axiosInstance
+        .get(`/user/${token.id}/wishList`, {
+          params: {
+            page: currentPage,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          let wishList = res.data[0].wishList;
+          let productId = [];
+          setuserWishList(res.data[0].wishList);
+          for (let i = 0; i < wishList.length; i++) {
+            productId.push(wishList[i]._id);
+          }
+          setisProductArry(productId);
+          if (isProductArry.includes(product._id)) {
+            setfavProductIcon(true);
+            setunfavProduct(false);
+          } else {
+            setfavProductIcon(false);
+            setunfavProduct(true);
+          }
+        })
+        .catch((err) => console.log(err));
+    } else { 
+      console.log('not user or admin')
+      return;
+    }
+    }
+   , [ currentPage, favProductIcon]);
   ////////
   return (
     <>
-      <div className="card shadow-lg product-card h-100">
+      <div className={`card shadow-lg product-card h-100 `}>
         {/* <img src={product.image} className="card-img-top" alt="..." /> */}
         <Link to={`/products/${product._id}`}>
           <img src={`${axiosInstance.getUri()}/uploads/products-imgs/${product.image}`}
