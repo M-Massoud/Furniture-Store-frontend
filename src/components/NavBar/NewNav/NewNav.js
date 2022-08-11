@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux/es/exports';
-import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { useSelector, useDispatch } from 'react-redux';
 import { loggedOutSuccessfully } from '../../../redux/isLoggedInRedux';
 import { clearCartState } from "../../../redux/cartRedux";
 import { Store } from 'react-notifications-component';
@@ -75,10 +74,10 @@ function NewNav() {
             </Link> 
             <Link to={"/wishList"} >
               <span className='header-cart' >
-              <FaHeart
+              <FaRegHeart
                     className="hover white"
                     style={{
-                      color: `red`,
+                      color: `white`,
                       fontSize: "22px",
                       marginLeft:"20px"
                     }}

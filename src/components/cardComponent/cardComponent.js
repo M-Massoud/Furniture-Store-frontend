@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux/es/hooks/useDispatch";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import axiosInstance from "../../network/Config";
 import "../cardComponent/cardComponent.css";
@@ -20,6 +20,7 @@ export default function CardComponent({ product, data }) {
   const [favProductIcon, setfavProductIcon] = useState();
   const [unfavProduct, setunfavProduct] = useState(true);
   const [requiredQuantity, setRequiredQuantity] = useState(1);
+  const [removedFromWishList,setRemovedFromWishList]=useState(false)
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {

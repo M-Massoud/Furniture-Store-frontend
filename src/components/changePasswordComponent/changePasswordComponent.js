@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector } from "react-redux/es/exports";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import axiosInstance from "../../network/Config";
 import { Store } from "react-notifications-component";

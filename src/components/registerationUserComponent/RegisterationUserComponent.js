@@ -270,12 +270,12 @@ export default function RegisterationUserForm({ title }) {
             <form onSubmit={(e) => handleSubmit(e)}>
                 <div className="mb-3">
                     <label htmlFor="firstName" className="form-label font-bold">First Name</label>
-                    <input type="text" className={`form-control ${registerDataErrors.firstNameError ? "is-invalid" : ""}`} name="firstName" aria-describedby="firstNameHelp" value={registerData.firstName} onChange={(event) => { changeRegisterData(event) }} required />
+                    <input type="text" className={`form-control ${registerDataErrors.firstNameError ? "is-invalid" : ""}`} id="firstName" name="firstName" aria-describedby="firstNameHelp" value={registerData.firstName} onChange={(event) => { changeRegisterData(event) }} required />
                     <div id="firstNameHelp" className="form-text text-danger">{registerDataErrors.firstNameError}</div>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="lastName" className="form-label font-bold">Last Name</label>
-                    <input type="text" className={`form-control ${registerDataErrors.lastNameError ? "is-invalid" : ""}`} name="lastName" aria-describedby="lastNameHelp" value={registerData.lastName} onChange={(event) => { changeRegisterData(event) }} required />
+                    <input type="text" className={`form-control ${registerDataErrors.lastNameError ? "is-invalid" : ""}`} id="lastName" name="lastName" aria-describedby="lastNameHelp" value={registerData.lastName} onChange={(event) => { changeRegisterData(event) }} required />
                     <div id="lastNameHelp" className="form-text text-danger">{registerDataErrors.lastNameError}</div>
                 </div>
                 <div className="mb-3">
@@ -320,13 +320,13 @@ export default function RegisterationUserForm({ title }) {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="userEmail" className="form-label font-bold">Email Address</label>
-                    <input type="email" className={`form-control ${registerDataErrors.userEmailError ? "is-invalid" : ""}`} name="userEmail" aria-describedby="userEmailHelp" value={registerData.email} onChange={(event) => { changeRegisterData(event) }} placeholder="example@email.com" required />
+                    <input type="email" className={`form-control ${registerDataErrors.userEmailError ? "is-invalid" : ""}`} id="userEmail" name="userEmail" aria-describedby="userEmailHelp" value={registerData.email} onChange={(event) => { changeRegisterData(event) }} placeholder="example@email.com" required />
                     <div id="userEmailHelp" className="form-text text-danger">{registerDataErrors.userEmailError}</div>
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="userPassword" className="form-label font-bold">Password</label>
                     <div className="input-group relativePosition">
-                        <input type={isShownPassword ? "text" : "password"} className={`form-control ${registerDataErrors.userPasswordError ? "border-danger" : ""}`} name="userPassword" aria-describedby="userPasswordHelp" value={registerData.password} onChange={(event) => { changeRegisterData(event) }} required />
+                        <input type={isShownPassword ? "text" : "password"} className={`form-control ${registerDataErrors.userPasswordError ? "border-danger" : ""}`} id="userPassword" name="userPassword" aria-describedby="userPasswordHelp" value={registerData.password} onChange={(event) => { changeRegisterData(event) }} required />
                         {isShownPassword ? <FaEye className="overlay text-hover-red" onClick={(event) => tooglePasswordEncrypt()} /> : <FaEyeSlash className="overlay text-hover-red" onClick={(event) => tooglePasswordEncrypt()} />}
                     </div>
                     <div id="userPasswordHelp" className="form-text text-danger">{registerDataErrors.userPasswordError}</div>
@@ -334,7 +334,7 @@ export default function RegisterationUserForm({ title }) {
                 <div className="form-group mb-3">
                     <label htmlFor="userPasswordConfirm" className="form-label font-bold">Confirm Password</label>
                     <div className="input-group relativePosition">
-                        <input type={isShownConfitmPassword ? "text" : "password"} className={`form-control ${registerDataErrors.userPasswordConfirmError ? "border-danger" : ""}`} name="userPasswordConfirm" aria-describedby="userPasswordConfirmHelp" value={registerData.confirmPassword} onChange={(event) => { changeRegisterData(event) }} required />
+                        <input type={isShownConfitmPassword ? "text" : "password"} className={`form-control ${registerDataErrors.userPasswordConfirmError ? "border-danger" : ""}`} name="userPasswordConfirm" id="userPasswordConfirm" aria-describedby="userPasswordConfirmHelp" value={registerData.confirmPassword} onChange={(event) => { changeRegisterData(event) }} required />
                         {isShownConfitmPassword ? <FaEye className="overlay text-hover-red" onClick={(event) => toogleConfirmPasswordEncrypt()} /> : <FaEyeSlash className="overlay text-hover-red" onClick={(event) => toogleConfirmPasswordEncrypt()} />}
                     </div>
                     <div id="userPasswordConfirmHelp" className="form-text text-danger">{registerDataErrors.userPasswordConfirmError}</div>

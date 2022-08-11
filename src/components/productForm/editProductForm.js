@@ -1,6 +1,8 @@
 import { useState,useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import axiosInstance from '../../network/Config';
+import { Store } from "react-notifications-component";
+
 function EditProductForm(props) {
   // console.log(props.location.state);
 
@@ -72,6 +74,35 @@ function handelFormchange(e) {
     setProductImg(e.target.files[0])
  }
 
+
+  // show success message 
+  function showSuccessNotification(){
+    Store.addNotification({
+        title: "success",
+        message: "updated the product successfully",
+        type: "success",
+        container: "top-right",
+        dismiss: {
+          duration: 2500,
+        },
+      });
+  }
+
+  // show error message
+  function showErrorNotification(errorMsg){
+    Store.addNotification({
+        title: "error",
+        message: `error! couldn't update the product,${
+          errorMsg.response.data.message.split(":")[1]
+          }`,
+        type: "danger",
+        container: "top-right",
+        dismiss: {
+          duration: 2500,
+        },
+      });
+  }
+ 
   const handleSubmit = e => {
     e.preventDefault();
     
@@ -88,8 +119,16 @@ function handelFormchange(e) {
           "Content-Type": "multipart/form-data",
           }
       )
-      .then(res => console.log(res))
-      .catch(error => console.log(error, formDetails));
+      .then(res => {
+        // console.log(res)
+        showSuccessNotification()
+        history.push('/admin-dashboard/products')
+      } )
+      .catch(error =>{
+        //  console.log(error, formDetails)
+        showErrorNotification(error)
+      }
+         );
 
   }; //handleSubmit function
 
@@ -152,7 +191,7 @@ function handelFormchange(e) {
         setFormerror({
           ...formError,
         });
-    } //value.length === 0 ? "This field is required" : "",
+    }
   }; // ErrorHandling function
   ////////////////////////////////////////////////
   return (
