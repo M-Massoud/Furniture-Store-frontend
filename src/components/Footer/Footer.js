@@ -28,10 +28,13 @@ const Footer = () => {
           <div className="col">
             <h5>Know US</h5>
             <h6>
-              <Link to={'/'} className='text-hover'>Return Policy</Link>
+              <Link to={'/return-policy'} className='text-hover'>Return Policy</Link>
             </h6>
             <h6>
-              <Link to={'/products'} className='text-hover'>Our Gurantee</Link>
+              <Link to={'/our-guarantee'} className='text-hover'>Our Guarantee</Link>
+            </h6>
+            <h6>
+              <Link to={'/about-us'} className='text-hover'>About Us</Link>
             </h6>
             <h6>
               <Link to={'/faq'} className='text-hover'>FAQ</Link>

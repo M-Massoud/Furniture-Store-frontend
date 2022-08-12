@@ -1,9 +1,11 @@
 import React from 'react'
 import './AboutUs.css'
 
-function AboutUs() {
+function AboutUs({ title }) {
+    document.title = title;
+
     return (
-        <div className="AboutUs">
+        <div className="AboutUs container">
             <h1>About Us</h1>
             <p>Hub Furniture is an Egyptian Furniture company which was formed in 1017 after 18 years of experience in furniture&nbsp; production. We work with furniture experts from all over the world to produce outstanding quality products at very competitive prices for all around your home including the living room, dining room, bedroom, kitchens and outdoor furniture</p>
             <p>Our team of interior stylists draw their inspiration from the most exciting global trends within the interior design field with the aim of bringing you the most attractive and affordable furniture at a price that anyone can afford no matter your age, style and size of home and income!</p>

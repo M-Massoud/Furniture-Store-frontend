@@ -95,11 +95,13 @@ export default function AdminDashBoardSubCategoriesPage({ title }) {
 
     return (
         <>
-            <div className='container'>
-                <div className='row m-5 col-12'>
+            <div className='container-fluid'>
+                <div className='row m-5'>
+                   <div className='col col-lg-3'> 
                     <AdminDashBoardPage />
-                    <div className='col-9'>
-                        <div className='col-3'>
+                    </div>                    
+                    <div className='col col-lg-9'>
+                        <div className='col col-lg-3'>
                             <select onChange={(event) => changeItemPerPage(event)} defaultValue="10" className="form-select form-select-lg mb-3" aria-label=".form-select-lg">
                                 <option checked disabled>Products Per Page</option>
                                 <option value="5" >5</option>
@@ -108,6 +110,7 @@ export default function AdminDashBoardSubCategoriesPage({ title }) {
                                 <option value="20">20</option>
                             </select>
                         </div>
+                        <div className='col-lg-12 overflow-auto' >
                         {isLoded ?
                             subCategoriesData.length > 0 ?
                                 <table className="table table-striped">
@@ -130,7 +133,7 @@ export default function AdminDashBoardSubCategoriesPage({ title }) {
                                                     <td>
                                                         <Link to={{
                                                             pathname: "/editSubCategory", state: subCategory
-                                                        }} className='text-warning'  >
+                                                        }} className='custom-edit-icon'  >
                                                             <FaEdit className='text-hover-red mx-3' title='Edit' />
                                                         </Link>
                                                     </td>
@@ -138,13 +141,17 @@ export default function AdminDashBoardSubCategoriesPage({ title }) {
                                                 </tr>
                                             );
                                         })}
-                                        <tr>
-                                            <td colSpan='6'><Link to={'/addSubCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New SubCategory</Link></td>
-                                        </tr>
+
+
                                     </tbody>
                                 </table> :
                                 <h1 className='my-5 text-center'>No Available Data To Show</h1> :
                             <Spinner />}
+                           </div>
+
+                        <div className='mt-3' >
+                        <Link to={'/addSubCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New SubCategory</Link>
+                        </div>
                         <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
                             <ul className="pagination">
                                 <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>

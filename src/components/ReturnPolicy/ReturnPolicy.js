@@ -1,8 +1,10 @@
 import React from 'react'
 import './ReturnPolicy.css'
-function ReturnPolicy() {
+function ReturnPolicy({title}) {
+    document.title = title;
+    
     return (
-        <div className="ReturnPolicy">
+        <div className="ReturnPolicy container">
             <h1>Return and exchange:</h1>
             <ol>
                 <li>The client changed their mind due to unappealing color combination (within 14 days + expenses)</li>
