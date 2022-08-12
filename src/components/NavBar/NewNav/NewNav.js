@@ -4,9 +4,11 @@ import { loggedOutSuccessfully } from '../../../redux/isLoggedInRedux';
 import { clearCartState } from "../../../redux/cartRedux";
 import { Store } from 'react-notifications-component';
 import { Link, useHistory } from "react-router-dom";
-import DropDowen from './DropDowen';
+import jwt from 'jwt-decode';
+// import DropDowen from './DropDowen';
 import "./NewNav.css"
-import { FaCartPlus, FaRegHeart, FaHeart } from 'react-icons/fa';
+import { FaCartPlus, FaRegHeart } from 'react-icons/fa';
+let token = localStorage.getItem('token') ? jwt(localStorage.getItem('token')) : 'unAuthenticated';
 
 
 function NewNav() {
@@ -19,7 +21,10 @@ function NewNav() {
   const { role } = useSelector(state => state.isLoggedIn);
 
   // console.log(isLoggedIn,role);
-
+//  {token.role == "admin" ? "":setshowFavortIcon(true)}
+  // if (token.role === "admin") {
+  //   setshowFavortIcon(true)
+  // }
   const handleChange = event => {
     setGetData(event.target.value);
     // console.log('value is:', event.target.value);
@@ -44,8 +49,8 @@ function NewNav() {
   return (
     <header>
       <nav className=" container navbar navbar-expand-lg navbar-dark shadow">
-        <div className="container-fluid">
-          <Link className="navbar-brand" to={"/"} >Furniture Store</Link>
+        <div className="container-fluid ">
+          <Link className="navbar-brand" to={"/"} ><strong className='border  logo'><span className='font'>Furniture</span> <span className='fs-6'>Store</span></strong></Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -128,13 +133,15 @@ function NewNav() {
             </form>
             <Link to={"/shoppingCart"} >
               <span className='header-cart' >
-                <FaCartPlus /> <span className='header-cart-qty'>{quantity}</span>
+                <FaCartPlus
+                   className={`${token.role === "admin" ? "d-none":""}`}
+                /> <span className={` header-cart-qty ${token.role === "admin" ? "d-none":""}`}>{quantity}</span>
               </span>
             </Link>
             <Link to={"/wishList"} >
               <span className='header-cart' >
-                <FaRegHeart
-                  className="hover white"
+                  <FaRegHeart
+                    className={`hover white ${token.role === "admin" ? "d-none":""}`}
                   style={{
                     color: `white`,
                     fontSize: "22px",
