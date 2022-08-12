@@ -131,17 +131,18 @@ function NewNav() {
                 <button className="btn btn-outline-light" type="submit">Search</button>
               </Link>
             </form>
+            {role !== "admin" &&
             <Link to={"/shoppingCart"} >
-              <span className='header-cart' >
+              <span className='header-cart me-2' >
                 <FaCartPlus
-                   className={`${token.role === "admin" ? "d-none":""}`}
-                /> <span className={` header-cart-qty ${token.role === "admin" ? "d-none":""}`}>{quantity}</span>
+                /> <span className={` header-cart-qty `}>{quantity}</span>
               </span>
-            </Link>
+            </Link> }
+            {role === "user" &&      
             <Link to={"/wishList"} >
               <span className='header-cart' >
                   <FaRegHeart
-                    className={`hover white ${token.role === "admin" ? "d-none":""}`}
+                    className={`hover white}`}
                   style={{
                     color: `white`,
                     fontSize: "22px",
@@ -150,12 +151,12 @@ function NewNav() {
                 />
               </span>
             </Link>
-
+           }
             {/* render the buttons depends on the user role */}
             {
               isLoggedIn === false ? <Link to={"/login-user"} > <button
-                className='btn btn-outline-light ms-2'>Login</button> </Link> : <button
-                  className='btn btn-outline-light ms-2' onClick={Logout}>Logout</button>
+                className='btn btn-outline-light mx-2'>Login</button> </Link> : <button
+                  className='btn btn-outline-light mx-2' onClick={Logout}>Logout</button>
             }
 
             {
