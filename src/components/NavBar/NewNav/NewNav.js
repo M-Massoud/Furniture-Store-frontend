@@ -57,7 +57,7 @@ function NewNav() {
                   aria-expanded="false">
                   Indoor Furniture
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <ul>
                     <li><Link to={''} className="dropdown-item">Living Room</Link></li>
                     <li><Link to={''} className="dropdown-item">U-Shape</Link></li>
@@ -80,7 +80,7 @@ function NewNav() {
                   aria-expanded="false">
                   Dinning Furniture
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <ul>
                     <li><Link to={''} className="dropdown-item">Dining Room Sets</Link></li>
                     <li><Link to={''} className="dropdown-item">Complete Dining Room Sets</Link></li>
@@ -102,7 +102,7 @@ function NewNav() {
                   aria-expanded="false">
                   Garden Furniture
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <ul>
                     <li><Link to={''} className="dropdown-item">Garden Furniture</Link></li>
                     <li><Link to={''} className="dropdown-item">Outdoor Sofa Set</Link></li>

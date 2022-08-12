@@ -24,4 +24,8 @@
   align-items: flex-start;
 }
 
-
+.active-page {
+  border-left: var(--main-color) solid 3px;
+  padding-left: 10px;
+  font-weight: 500;
+}

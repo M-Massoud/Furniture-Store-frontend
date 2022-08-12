@@ -3,7 +3,7 @@ import Spinner from "../spinner";
 import AdminDashBoardPage from "../../pages/adminDashBoardPage";
 import axiosInstance from '../../network/Config';
 import { Store } from 'react-notifications-component';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt,FaEdit } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 export default function AdminDashBoardProductsPage({ title }) {
@@ -86,11 +86,13 @@ export default function AdminDashBoardProductsPage({ title }) {
 
     return (
         <>
-            <div className='container'>
-                <div className='row m-5 col-12'>
+            <div className='container-fluid'>
+                <div className='row m-5'>
+                   <div className='col col-lg-3'> 
                     <AdminDashBoardPage />
-                    <div className='col-9'>
-                        <div className='col-3'>
+                    </div>
+                    <div className='col col-lg-9'>
+                        <div className='col col-lg-3'>
                             <select onChange={(event) => changeItemPerPage(event)} defaultValue="10" className="form-select form-select-lg mb-3" aria-label=".form-select-lg">
                                 <option checked disabled>Products Per Page</option>
                                 <option value="5" >5</option>
@@ -99,10 +101,10 @@ export default function AdminDashBoardProductsPage({ title }) {
                                 <option value="20">20</option>
                             </select>
                         </div>
-                        <div className='container-fluid' >
+                        <div className='col-lg-12 overflow-auto' >
                             {isLoded ?
                                 productsData.length > 0 ?
-                                    <table className="table table-striped">
+                                    <table className="table table-striped ">
                                         <thead>
                                             <tr>
                                                 <th scope="col">ID</th>
@@ -128,15 +130,20 @@ export default function AdminDashBoardProductsPage({ title }) {
                                                         <td>{product.image}</td>
                                                         <td>{product.price}</td>
                                                         <td>{product.discount}</td>
-                                                        <td>{product.subCategory.title}</td>
+                                                        <td style={{"maxWidth":"200px",
+                                                        "overflowWrap": "breakWord"}}>
+                                                    {product.subCategory.title} </td>
 
                                                         <td>
                                                             <Link to={{
                                                                 pathname: "/editProduct", state: product
-                                                            }}  >
-                                                                <button className='btn btn-primary' title='Edit' >
+                                                            }}  
+                                                           
+                                                                className='custom-edit-icon' >
+                                                                {/* <button className='btn btn-primary' title='Edit' >
                                                                     Edit
-                                                                </button>
+                                                                </button> */}    
+                                                                <FaEdit className='text-hover-red mx-3' title='Edit' />
                                                             </Link>
                                                         </td>
 
@@ -144,13 +151,16 @@ export default function AdminDashBoardProductsPage({ title }) {
                                                     </tr>
                                                 );
                                             })}
-                                            <tr>
-                                                <td colSpan='10'><Link to={'/addProduct'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New Product</Link></td>
-                                            </tr>
+                                          
                                         </tbody>
                                     </table> :
                                     <h1 className='my-5 text-center'>No Available Data To Show</h1> :
                                 <Spinner />}
+                             </div>
+                             <div className='mt-3' >
+                            <Link to={'/addSubCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New SubCategory</Link>
+                            </div>
+
                             <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
                                 <ul className="pagination">
                                     <li className={currentPage === 1 ? "page-item  disabled" : "page-item "}>
@@ -177,7 +187,6 @@ export default function AdminDashBoardProductsPage({ title }) {
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
                     </div>
                 </div>
             </div>

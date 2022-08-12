@@ -15,10 +15,9 @@ function Main({ title }) {
     return (
         <>
         <CarouselComponent />
-            <div className="col-sm-11 m-auto  row">
+          <div className="col-sm-11 m-auto  row mb-5">
           <h2 className=" mt-3 py-3 hgi "> Shop our sets</h2>
           <div className="col-md-4   p-2 d-flex align-items-md-center justify-content-center  ">
-            {' '}
             <Leftimg
               src={
                 'https://d13r0hznkpv24o.cloudfront.net/media/amasty/webp/wysiwyg/luna-1_jpg.webp'
@@ -251,7 +250,6 @@ function Main({ title }) {
               divclass={'col-6 col-md-3  pt-4  '}
             />
           </div>
-          <hr className="mt-4"></hr>
         </div>
 
         </>
