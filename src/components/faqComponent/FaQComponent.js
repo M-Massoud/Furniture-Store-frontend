@@ -13,12 +13,11 @@ function FaqComponent({ title }) {
 
   useEffect(() => {
     document.title = title;
-    axiosInstance
+    if (token.role === 'user') {
+      axiosInstance
       .get(`/user/${token.id}/${keyword}`, {
         params: {
           page: currentPage,
-          
-        //   itemCount: itemCount,
           },
           headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -28,11 +27,12 @@ function FaqComponent({ title }) {
         .then(res => {
             console.log(res.data[0].wishList)
             setuserWishList(res.data[0].wishList)
-        // setProductsData(res.data.resData.products);
-        // setMaxPagesNumber(res.data.resData.maxPagesNumber);
       })
       .catch(err => console.log(err));
-  }, [keyword,currentPage]);
+    } else {
+      return;
+    } 
+      }, [keyword,currentPage]);
 // console.log(userWishList)
 
   return (

@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 
 import { useSelector,useDispatch } from 'react-redux';
 import './ShoppingCartComponentStyle.css';
-import { Link, NavLink } from 'react-router-dom';
-import { FaPlusCircle, FaMinusCircle, FaTrashAlt } from 'react-icons/fa';
+// import { Link, NavLink } from 'react-router-dom';
+import {  FaTrashAlt } from 'react-icons/fa';
 import { removeProduct, emptyCart, updateProduct } from '../../redux/cartRedux';
 import axiosInstance from "../../network/Config";
 

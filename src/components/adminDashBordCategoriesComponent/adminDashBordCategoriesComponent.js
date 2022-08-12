@@ -148,7 +148,7 @@ export default function AdminDashBoardCategoriesPage({ title }) {
                             <Spinner />}
                         </div>
                         <div className='mt-3' >
-                            <Link to={'/addSubCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New SubCategory</Link>
+                            <Link to={'/addCategory'} className="btn bg-secondary-1 white border-0 text-center col-12">Add New Category</Link>
                         </div>
                         <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
                             
