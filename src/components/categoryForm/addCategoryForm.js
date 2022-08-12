@@ -160,7 +160,7 @@ export default function AddCategoryForm({ title }) {
 
                     <label htmlFor='categorySubCategory' className="form-label mt-2"> Category SubCategory</label >
                     <select className={`form-control form-select ${formError.categorySubCategoryError && "border-danger"} `} id={'categorySubCategory'} name={'categorySubCategory'} onChange={(event) => event.target.value ? handelFormchange(event) : ''} required>
-                        <option value="">Select Category</option>
+                        <option value="">Select SubCategory</option>
                         {subCategoriesData.map((subCategory, index) => {
                             return (
                                 <option key={subCategory._id} value={index}>{subCategory.title}</option>

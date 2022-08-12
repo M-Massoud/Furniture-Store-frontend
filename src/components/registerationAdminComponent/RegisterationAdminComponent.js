@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axiosInstance from "../../network/Config";
+import { Store } from 'react-notifications-component';
 import './RegisterationAdminComponentStyle.css';
 
 export default function RegisterationAdminForm({ title }) {
@@ -131,9 +132,27 @@ export default function RegisterationAdminForm({ title }) {
             },
         )
             .then((response) => {
+                Store.addNotification({
+                    title: "Status",
+                    message: "Successfully Created, You Can Log In Now",
+                    type: "success",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 2000,
+                    },
+                });
                 history.push('/');
             })
             .catch((error) => {
+                Store.addNotification({
+                    title: "Status",
+                    message: "Sorry, Unexpected Error",
+                    type: "danger",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 2000,
+                    },
+                });
                 (error.response.data.message).includes('email_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, adminEmailError: 'email registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
                 switch (error.response.data.message) {
                     case "Internal ErrorError: firstName length should be between 1 and 12 numbers ":

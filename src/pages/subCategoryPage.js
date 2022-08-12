@@ -27,7 +27,7 @@ export default function SubCategoryPage({ title }) {
         setsubCategoryData(res.data.products);
         setIsLoded(true);
         document.title = `${title} | ${res.data.title}`;
-        const maxItemsNumberInPage = 2;
+        const maxItemsNumberInPage = 10;
         const numberOfProductsInSubCategories = res.data.products.length;
         setMaxPagesNumber(
           Math.ceil(numberOfProductsInSubCategories / maxItemsNumberInPage)
@@ -76,9 +76,9 @@ export default function SubCategoryPage({ title }) {
           <div className="col-12 col-sm-4 col-md-3 col-lg-3">
             <SidebarComponent handleSubCategoryLink={handleSubCategoryLink} />
           </div>
-          {isLoded ?
-            subCategoryData.length > 0 ?
-              <div className="col col-sm-8 col-md-9 col-lg-9">
+          <div className="col col-sm-8 col-md-9 col-lg-9">
+            {isLoded ?
+              subCategoryData.length > 0 ?
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3  g-4 ">
                   {subCategoryProductsPageData.map(product => {
                     return (
@@ -87,10 +87,10 @@ export default function SubCategoryPage({ title }) {
                       </div>
                     );
                   })}
-                </div>
-              </div> :
-              <h1 className='my-5 text-center'>No Products To Show</h1> :
-            <Spinner />}
+                </div> :
+                <h1 className='my-5 text-center'>No Products To Show</h1> :
+              <Spinner />}
+          </div>
         </div>
         <nav className='d-flex justify-content-center my-5 mx-5' aria-label="...">
           <ul className="pagination">

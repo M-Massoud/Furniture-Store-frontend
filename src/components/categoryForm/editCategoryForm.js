@@ -181,8 +181,7 @@ export default function EditCategoryForm(props) {
                                         <tr key={subCategory._id}>
                                             <td>{subCategory._id}</td>
                                             <td>{subCategory.title}</td>
-                                            <td className='btn btn-close'></td>
-                                            {/* <td><FaTrashAlt className='text-hover-red' title='Delete' onClick={() => { handelDeleteCategorySubCategories(index) }} /></td> */}
+                                            <td><FaTrashAlt className='text-hover-red' title='Delete' onClick={() => { handelDeleteCategorySubCategories(index) }} /></td>
                                         </tr>
                                     );
                                 })}
