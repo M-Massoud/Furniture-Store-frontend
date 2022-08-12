@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axiosInstance from "../../network/Config";
+import { Store } from 'react-notifications-component';
 import './RegisterationUserComponentStyle.css';
 
 export default function RegisterationUserForm({ title }) {
@@ -206,9 +207,27 @@ export default function RegisterationUserForm({ title }) {
             payment: { 'cardType': registerData.cardType, 'cardNumber': registerData.cardNumber },
         })
             .then((response) => {
+                Store.addNotification({
+                    title: "Status",
+                    message: "Successfully Created, You Can Log In Now",
+                    type: "success",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 2000,
+                    },
+                });
                 history.push('/login-user');
             })
             .catch((error) => {
+                Store.addNotification({
+                    title: "Status",
+                    message: "Sorry, Unexpected Error",
+                    type: "danger",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 2000,
+                    },
+                });
                 console.log(error.response.data.message);
                 (error.response.data.message).includes('email_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, userEmailError: 'email registered before' }) : setRegisterDataErrors({ ...registerDataErrors });
                 (error.response.data.message).includes('mobile_1 dup key') ? setRegisterDataErrors({ ...registerDataErrors, mobileError: 'mobile registered before' }) : setRegisterDataErrors({ ...registerDataErrors });

@@ -41,7 +41,7 @@ export default function SingleProductComponent({ title }) {
             <div className="row ">
               <div className="col-12 col-md-6 mb-5">
                 <img
-                  src={img}
+                  src={`${axiosInstance.getUri()}/uploads/products-imgs/${productDetails.image}`}
                   className="single-product-img img-fluid shadow-sm"
                   alt="..."
                 />
