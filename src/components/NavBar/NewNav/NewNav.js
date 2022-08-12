@@ -48,9 +48,9 @@ function NewNav() {
 
   return (
     <header>
-      <nav className=" container navbar navbar-expand-lg navbar-dark shadow">
+      <nav className=" container navbar navbar-expand-lg navbar-dark shadow NVM">
         <div className="container-fluid ">
-          <Link className="navbar-brand" to={"/"} ><strong className='border  logo'><span className='font'>Furniture</span> <span className='fs-6'>Store</span></strong></Link>
+          <Link className="navbar-brand" to={"/"} style={{fontWeight:"bold"}}>Furniture<span style={{color:'#c02234',fontWeight:"bold"}}>Store</span></Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -123,11 +123,11 @@ function NewNav() {
             <form className="d-flex align-items-center ">
               <input className="form-control me-2 search-input" onChange={handleChange} value={getData} type="search" placeholder="Search" aria-label="Search" />
               <Link to={{
-                pathname: `/search/${searchWord}`,
+                pathname: searchWord != '' ? `/search/${searchWord}`:'/products',
                 state: {
                   searchWord
                 }
-              }} className="btn">
+              }} className="btn border-0">
                 <button className="btn btn-outline-light" type="submit">Search</button>
               </Link>
             </form>
@@ -154,13 +154,13 @@ function NewNav() {
             {/* render the buttons depends on the user role */}
             {
               isLoggedIn === false ? <Link to={"/login-user"} > <button
-                className='btn btn-outline-light ms-4'>Login</button> </Link> : <button
-                  className='btn btn-outline-light ms-4' onClick={Logout}>Logout</button>
+                className='btn btn-outline-light ms-2'>Login</button> </Link> : <button
+                  className='btn btn-outline-light ms-2' onClick={Logout}>Logout</button>
             }
 
             {
               role === "admin" && <Link to={"/admin-dashboard/products"}> <button
-                className='btn btn-outline-light ms-4'>dashboard</button> </Link>
+                className='btn btn-outline-light ms-2'>dashboard</button> </Link>
             }
 
           </div>
