@@ -17,10 +17,10 @@ export default function SubCategoryPage({ title }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPagesNumber, setMaxPagesNumber] = useState(1);
   const [isLoded, setIsLoded] = useState(false);
-
+const subCategory_Id = params.id
   useEffect(() => {
     axiosInstance
-      .get(`/subCategory/${params.id}`)
+      .get(`/subCategory/${subCategory_Id}`)
       // .get(`/${keyword}`)
       .then(res => {
         // setProductsData(res.data.data.products);
@@ -41,7 +41,7 @@ export default function SubCategoryPage({ title }) {
         );
       })
       .catch(err => { console.log(err); document.title = `Furniture Store`; });
-  }, [currentPage, keyword]);
+  }, [currentPage, keyword,subCategory_Id]);
   // console.log('productsData', subCategoryData);
 
   function handleSubCategoryLink(e) {
