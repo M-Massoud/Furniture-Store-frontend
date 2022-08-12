@@ -25,6 +25,7 @@ export default function SingleProductComponent({ title }) {
   // console.log(productDetails);
 
   const handleAddToCart = () => {
+    if(productDetails.stockAmount > 0)
     dispatch(addProduct({ product: productDetails, price: productDetails.price - productDetails.discount, quantity: Number(requiredQuantity), maxQuantity: productDetails.stockAmount }));
   };
 

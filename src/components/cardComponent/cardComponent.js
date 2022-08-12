@@ -24,6 +24,7 @@ export default function CardComponent({ product, data }) {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
+    if(product.stockAmount > 0)
     dispatch(addProduct({ product, price: product.price - product.discount, quantity: Number(requiredQuantity), maxQuantity: product.stockAmount }));
   };
 

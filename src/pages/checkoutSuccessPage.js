@@ -57,7 +57,7 @@ export default function CheckoutSuccess({ title }) {
             );
             // updating the available product stock amount
             for (let product of cart.products) {
-                await axiosInstance.put("/products//editStockAmount", {
+                await axiosInstance.put("/products/editStockAmount", {
                     id: product.product._id,
                     stockAmount: product.product.stockAmount - product.quantity
                 },
