@@ -30,14 +30,14 @@ export default function CardComponent({ product, data }) {
   function handleQuantity(event) {
     setRequiredQuantity(event.target.value);
   }
-  console.log(token.role)
+  // console.log(token.role)
   const addTowishList = () => {
     // console.log(userWishList);
     console.log("add", product._id);
-    if (token.role == "admin") {
-      console.log(token.role)
+    if (token.role === "admin") {
+      // console.log(token.role)
       return;
-    } else if (token.role == "user") {
+    } else if (token.role === "user") {
       if (!isProductArry.includes(product._id)) {
         axiosInstance
           .put(
@@ -97,9 +97,9 @@ export default function CardComponent({ product, data }) {
   };
   ////////
   useEffect(() => {
-    if (token.role == "admin") {
-      console.log('admin')
-    } else if (token.role == "user") {
+    if (token.role === "admin") {
+      // console.log('admin')
+    } else if (token.role === "user") {
       axiosInstance
         .get(`/user/${token.id}/wishList`, {
           params: {
@@ -143,7 +143,9 @@ export default function CardComponent({ product, data }) {
         </Link>
         <div className="card-body  d-flex flex-column">
           <h5 className="card-title">{product.name}</h5>
-          <p className="card-text ">{product.description}</p>
+          <p className="card-text ">
+            {product.description.length > 70 ?  (product.description.substring(0, 70))+"..." : (product.description) }
+            </p>
 
           <div className="mt-auto">
             {product.discount > 0 ? (

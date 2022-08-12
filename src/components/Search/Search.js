@@ -24,8 +24,8 @@ function Search({title}) {
         
           {
           searchItems.length > 0 ? <h5 className='py-3'>search results for:{searchWord}</h5> :
-          <h5 className='py-5 text-center'>no search results for: {searchWord}
-          </h5>
+          <h4 className='text-center margin125px'>No search results for: {searchWord}
+          </h4>
           }
 
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">

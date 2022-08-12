@@ -94,5 +94,10 @@ body {
 }
 
 .custom-edit-icon {
-  color: #20284f;
+  color: var(--secondary-color);
+}
+
+.margin125px {
+  padding-top: 125px;
+  padding-bottom: 125px;
 }

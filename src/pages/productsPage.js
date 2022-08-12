@@ -40,7 +40,7 @@ export default function ProductsPage({ title }) {
     const clickedLi = e.target.closest('li');
     const subCategoryId = clickedLi.dataset.subcategoryid;
     setKeword(`subCategory/${subCategoryId}`);
-    console.log(clickedLi, subCategoryId, keyword);
+    // console.log(clickedLi, subCategoryId, keyword);
   }
 
   function previousPage() {

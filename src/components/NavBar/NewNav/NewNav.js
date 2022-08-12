@@ -64,7 +64,7 @@ function NewNav() {
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <ul>
-                    <li><Link to={''} className="dropdown-item">Living Room</Link></li>
+                    <li><Link to={'#'} className="dropdown-item">Living Room</Link></li>
                     <li><Link to='/subCategory/1' className="dropdown-item">U-Shape</Link></li>
                     <li><Link to='/subCategory/2' className="dropdown-item">L-Shape</Link></li>
                     <li><Link to={'/subCategory/3'} className="dropdown-item">Sofa Set</Link></li>
@@ -72,7 +72,7 @@ function NewNav() {
                     <li><Link to={'/subCategory/5'} className="dropdown-item">TV Tables</Link></li>
                   </ul>
                   <ul>
-                    <li><Link to={''} className="dropdown-item">Bed Room</Link></li>
+                    <li><Link to={'#'} className="dropdown-item">Bed Room</Link></li>
                     <li><Link to={'/subCategory/7'} className="dropdown-item">King Bedroom Set</Link></li>
                     <li><Link to={'/subCategory/8'} className="dropdown-item">Queen Bedroom Set</Link></li>
                     <li><Link to={'/subCategory/9'} className="dropdown-item">Youth Bedrooms</Link></li>
@@ -87,14 +87,14 @@ function NewNav() {
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <ul>
-                    <li><Link to={''} className="dropdown-item">Dining Room Sets</Link></li>
+                    <li><Link to={'#'} className="dropdown-item">Dining Room Sets</Link></li>
                     <li><Link to={'/subCategory/11'} className="dropdown-item">Complete Dining Room Sets</Link></li>
                     <li><Link to={'/subCategory/12'} className="dropdown-item">Dining Table With 8 Chairs</Link></li>
                     <li><Link to={'/subCategory/13'} className="dropdown-item">Dining Table With 6 Chairs</Link></li>
                     <li><Link to={'/subCategory/14'} className="dropdown-item">Dining Table With 4 Chairs</Link></li>
                   </ul>
                   <ul>
-                    <li><Link to={''} className="dropdown-item">kitchen</Link></li>
+                    <li><Link to={'#'} className="dropdown-item">kitchen</Link></li>
                     <li><Link to={'/subCategory/15'} className="dropdown-item">Base Cabinets</Link></li>
                     <li><Link to={'/subCategory/16'} className="dropdown-item">Wall Cabinets</Link></li>
                     <li><Link to={'/subCategory/17'} className="dropdown-item">High Cabinets</Link></li>
@@ -109,7 +109,7 @@ function NewNav() {
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <ul>
-                    <li><Link to={''} className="dropdown-item">Garden Furniture</Link></li>
+                    <li><Link to={'#'} className="dropdown-item">Garden Furniture</Link></li>
                     <li><Link to={'/subCategory/19'} className="dropdown-item">Outdoor Sofa Set</Link></li>
                     <li><Link to={'/subCategory/20'} className="dropdown-item">Outdoor Dining Set</Link></li>
                     <li><Link to={'/subCategory/21'} className="dropdown-item">Hammock</Link></li>
