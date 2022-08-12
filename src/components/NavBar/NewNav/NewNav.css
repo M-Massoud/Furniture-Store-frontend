@@ -11,18 +11,7 @@ header {
     border-radius: 5px;
     padding: 0.7em;
   }
-  
-  .logo{
-    border-top-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    padding: 6px 15px;
-    
-    background-color: transparent;
-    color: rgb(255, 253, 253);
-  }
-  .font{
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  }
+
   @media only screen and (min-width: 992px) {
     .dropdown:hover .dropdown-menu {
       display: flex;
@@ -85,4 +74,10 @@ header {
   .header-cart-qty{
     top: 85%;
   }
+}
+@media (max-width: 1200px){
+  .NVM {
+    max-width: 1050px !important;
+  }
+  
 }

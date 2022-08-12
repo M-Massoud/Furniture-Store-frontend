@@ -1,0 +1,10 @@
+.shopItem .itemlist {
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .shopItem .itemlist:hover {
+      color: #c02234;
+  
+  }
+  

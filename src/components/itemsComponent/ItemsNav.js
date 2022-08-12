@@ -1,3 +1,4 @@
+import './ItemsNav.css'
 
 function NavBar(props) {
  let listItem1 = document.getElementById('item1');
@@ -34,7 +35,7 @@ function NavBar(props) {
       <nav className="navbar navbar-expand bg-light">
         <div className="container-fluid">
           <div className="collapse navbar-collapse" id="navbarNav">
-                      <ul className="navbar-nav">
+                      <ul className="navbar-nav shopItem">
                       <li className="nav-item active itemlist " onClick={()=>displayFun1()}>
                                   {props.living }
               </li>
