@@ -142,11 +142,13 @@ function NewNav() {
             <Link to={"/wishList"} >
               <span className='header-cart' >
                   <FaRegHeart
-                    className={`hover white}`}
+                    className={`hover white }`}
                   style={{
                     color: `white`,
                     fontSize: "22px",
-                    marginLeft: "20px"
+                    marginLeft: "10px",
+                    marginRight: "5px"
+
                   }}
                 />
               </span>

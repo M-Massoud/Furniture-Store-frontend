@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axiosInstance from '../../network/Config';
 import { Store } from 'react-notifications-component';
 
 function AddProductForm({ title }) {
+    
+    const history = useHistory();
 
     const [productImg, setProductImg] = useState("default-product-img.jpg")
     const [subCategoriesData, setSubCategoriesData] = useState([])
@@ -130,6 +133,7 @@ function AddProductForm({ title }) {
                     duration: 2000,
                 },
             });
+            history.push("/admin-dashboard/products")
         }
         catch (error) {
             Store.addNotification({
@@ -171,14 +175,7 @@ function AddProductForm({ title }) {
         </div>
     }
 
-    // to auto hide the alerts 
-    function hideAlertMsg() {
-        setTimeout(() => {
-            setShowErrorAlert(false)
-            setShowSuccessAlert(false)
-        }, 4000);
-    }
-
+  
     // regex to check if it only contains numbers 
     const onlyNumbersRegex = new RegExp(/^\d+$/)
 

@@ -3,7 +3,7 @@ import React from 'react'
 import './Guarntee.css'
 function Guarntee() {
     return (
-        <div className='Guarntee'>
+        <div className='Guarntee container'>
             <h1>Guarantee & After-Sales Service</h1>
             <p>Quite often, even after we’ve chosen an item and purchased it successfully, there may be some things we might want to change or repair afterward - either during or following the delivery process, when filing a return or applying for using our warranty. Here we'll try to explain in plain terms how does our store’s warranty policy works and how you can be using it when shopping with us!</p>
             {/* <p className="imgContainer"><img src={img} alt="img" /></p> */}

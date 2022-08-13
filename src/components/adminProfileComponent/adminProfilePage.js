@@ -32,7 +32,12 @@ function AdminProfile({ title }) {
                     <h6 className="text-center p-2"> Welcome Back, </h6> 
 
                     <h3 className="text-center border p-2 col-12 shadow bg-white rounded">{adminData.firstName} </h3>
+                    <Link to={"/register-admin"} >
 
+                <button className="btn btn-dark mx-5 my-5" >
+                    Register New Admin
+                </button>
+                    </Link>
                 </div>
                 <div className=" col-11 m-auto mt-4 mb-4 mb-md-3 mt-md-3 col-md-7 offset-md-1  p-5 shadow rounded">
                     <h3 className=" shadow p-3  m-auto rounded "> Admin Information  </h3>
@@ -59,7 +64,3 @@ function AdminProfile({ title }) {
 };
 
 export default AdminProfile;
-
-// {{
-//     pathname: "/editProduct", state: product
-// }}

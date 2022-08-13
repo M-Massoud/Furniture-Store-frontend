@@ -37,7 +37,7 @@ export default function LoginForm({ title }) {
   }
 
   function tooglePasswordEncrypt() {
-    console.log('toogle');
+    // console.log('toogle');
     isShownPassword ? setIsShownPassword(false) : setIsShownPassword(true);
   }
 

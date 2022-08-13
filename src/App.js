@@ -104,7 +104,7 @@ function App() {
         <Route path={'/search/:id'} component={() => <Search title='Search' />} />
         <Route path={'/return-policy'} exact component={() => <ReturnPolicyPage title='Furniture Store | Return Policy' />} />
         <Route path={'/about-us'} exact component={() => <AboutUsPage title='Furniture Store | About Us' />} />
-        <Route path={'/our-guarantee'} exact component={() => <AboutUsPage title='Furniture Store | Our Guarantee' />} />
+        <Route path={'/our-guarantee'} exact component={() => <GuaranteePage title='Furniture Store | Our Guarantee' />} />
         <Route path={'*'} component={() => <NotFound title='Furniture Store | Page Not Found' />} />
       </Switch>
       <Footer />
