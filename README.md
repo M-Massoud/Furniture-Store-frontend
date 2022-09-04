@@ -4,9 +4,9 @@ ITI Graduation Project team 4 - Furniture Store
 "furniture store" is an e-commerce website that lets our users browse the products through various categories and sort our products by name or by price.
 
 main frontend technologies:
--React js
--React-router
--Redux toolkit 
+- React js
+- React-router
+- Redux toolkit 
 - bootstrap
 - JWT
 - Stripe
